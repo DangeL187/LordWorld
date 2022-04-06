@@ -1,0 +1,7 @@
+REPLACE INCLUDEs WITH FUNCTIONS INSTEAD
+
+REMOVE DEATH FUNCTION FROM EVERYWHERE AND PUT IT IN THE MAIN CYCLE
+
+version 0.0.8:
+has been added function to pick up items
+todo: add function to drop items; connect it with inventory interface; change drop function to drag&drop from inventory

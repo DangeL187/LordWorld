@@ -1,0 +1,6 @@
+-lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -L"ws2_32" -lwsock32 -std=gnu++0x
+
+"x,y"
+
+
+-std=gnu++0x -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -fpermissive -L"ws2_32" -lwsock32 -std=gnu++0x -curl-config -curl-dev

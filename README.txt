@@ -1,0 +1,26 @@
+-----------------------------------------------------
+Lord World (LW) by DangeL
+-----------------------------------------------------
+Folders:
+bin - all executable applications
+build - build files
+doc - documentation for every LW's module
+lib - libraries that you will need to build LW
+src - LW's source code
+test - LW's files used for testing
+versions - LW's previous versions
+-----------------------------------------------------
+Source files:
+LW.cpp - main application
+For more info about source files read headers.h
+-----------------------------------------------------
+Compilation:
+Go to the bin folder and type:
+./build.sh
+or
+./build_and_run.sh
+-----------------------------------------------------
+How to see the TODO list:
+Go to the bin folder and type:
+./todo.sh
+-----------------------------------------------------

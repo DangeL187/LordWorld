@@ -1,0 +1,21 @@
+                              WARNING!
+Versions in folder 'Versions' might not work properly with current files, so DO NOT compile it!
+----------------------------------------------------------------------------------------------------
+0.0.1 - first working version where you can move
+0.0.2 alpha - better code
+0.0.2 - solved all problems with server-client communication, working connect-disconnect system
+0.0.3 alpha - migration from Windows to Linux started
+0.0.3 - migration has been finished successfully
+0.0.4 alpha - first monster
+0.0.4 beta - fixed coords
+0.0.4 - first combat system
+0.0.5 alpha - targeting
+0.0.5 - simple interface
+0.0.6 alpha - added conditions for spells, fixed some targeting bugs
+0.0.6 beta - fixed combat system
+0.0.6 charlie - spells update
+0.0.6 delta - almost final spells update, added cooldowns
+0.0.7 interface update, GuiHpBar, added sth like running
+0.0.8 - inventory update, fixed cooldowns a bit [current]
+0.0.9 - final interface update
+0.0.10 - final combat update
