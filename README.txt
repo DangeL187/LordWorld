@@ -24,3 +24,6 @@ How to see the TODO list:
 Go to the bin folder and type:
 ./todo.sh
 -----------------------------------------------------
+How to clone this repository:
+git clone https://github.com/DangeL187/LordWorld LWgit
+-----------------------------------------------------
