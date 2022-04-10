@@ -1,6 +1,8 @@
 -----------------------------------------------------
 Lord World (LW) by DangeL
 -----------------------------------------------------
+Lord World is a free-to-play 2D RPG game for Linux
+-----------------------------------------------------
 Folders:
 bin - all executable applications
 build - build files
