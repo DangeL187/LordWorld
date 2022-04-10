@@ -61,12 +61,15 @@ if (Keyboard::isKeyPressed(Keyboard::K)) {
 if (Keyboard::isKeyPressed(Keyboard::E)) {
 	if (items_floor.size() != 0) {
 	    for (int i = 0; i <= items_floor.size(); i++) {
-	    	if (items_floor[i].getitemcoordinateX()/1 - range*64 <= player_x && player_x <= items_floor[i].getitemcoordinateX()/1 + range*64 && items_floor[i].getitemcoordinateY()/1 - range*64 <= player_y && player_y <= items_floor[i].getitemcoordinateY()/1 + range*64) {
+	    	if (items_floor_x[i]/1 - range*64 <= player_x && player_x <= items_floor_x[i]/1 + range*64 && items_floor_y[i]/1 - range*64 <= player_y && player_y <= items_floor_y[i]/1 + range*64) {
                 for (int j = 0; j <= 33; j++) {
             	    if (inv_items[j] == 0) {
-				    	inv_items[j] = items_floor[i].getid();
-						//std::cout << "!!! " << inv_items[j] << std::endl; //TEMP, TODO: DELETE
+				    	inv_items[j] = items_floor[i];
+						std::cout << "!!! " << inv_items[j] << std::endl; //TEMP, TODO: DELETE
 				    	items_floor.erase(items_floor.begin() + i);
+						items_floor_x.erase(items_floor_x.begin() + i);
+						items_floor_y.erase(items_floor_y.begin() + i);
+						items_floor_sprite.erase(items_floor_sprite.begin() + i);
 				    	break4items = true;
 			    		break;
 			    	}
@@ -77,6 +80,17 @@ if (Keyboard::isKeyPressed(Keyboard::E)) {
 			    break;
 		    }
 	    }
+    }
+}
+if (Keyboard::isKeyPressed(Keyboard::G)) {
+	if (inv_items[0] != 0) {
+		std::cout << "DROP\n";
+	    items_floor.push_back(inv_items[0]);
+		items_floor_x.push_back(player_x);
+		items_floor_y.push_back(player_y);
+		items_floor_sprite.push_back(item1.getitemsprite()); //this is temp, TODO: replace with get_item_sprite_by_id();
+		//TODO: create function get_item_sprite_by_id()
+	    inv_items[0] = 0;
     }
 }
 if (Keyboard::isKeyPressed(Keyboard::I)) {

@@ -1,6 +1,6 @@
 class Player {
 	public:
-		float x, y;
+	float x, y;
         float w, h, dx, dy, speed;
         int dir = 0;
         Image image;
@@ -196,11 +196,11 @@ public:
     void makeiteminvisible() {
 		x = -3000; y = -3000;
 	}
-	void setx(float set_x) {
+    void setx(float set_x) {
         x = set_x;
     }
     void sety(float set_y) {
-	    y = set_y;
+	y = set_y;
     }
 	int getitemsprite() {
 		return static_sprite;

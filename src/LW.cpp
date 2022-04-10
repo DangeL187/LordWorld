@@ -76,8 +76,12 @@ int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
 std::vector<Monster> v_monsters; //whole monsters
 std::vector<Monster> target_m; //targeted monster
 std::vector<int> damaged_numbers; //monsters under attack
-std::vector<Item> items_floor;
 int target_number = 0;
+std::vector<Item> v_items; //whole items
+std::vector<int> items_floor;
+std::vector<int> items_floor_x;
+std::vector<int> items_floor_y;
+std::vector<int> items_floor_sprite;
 int inv_items[33]; //items inventory
 std::vector<std::string> inv_spells; //spells inventory
 std::string hotbar_spells[4]; //spells hotbar
@@ -164,7 +168,15 @@ int main() {
 
     Item item00(-3000, -3000, 50.0, 62.0, "Zero Item"); //zero item
     Item item1(600, 600, 50.0, 62.0, "Wooden Sword");
-    items_floor.push_back(item1);
+    v_items.push_back(item1); //add item1 to whole items
+    items_floor.push_back(item1.getid()); //add item1's id to items_floor
+    items_floor_x.push_back(item1.getitemcoordinateX()); //add item1's x to items_floor_x
+    items_floor_y.push_back(item1.getitemcoordinateY()); //add item1's y to items_floor_y
+    items_floor_sprite.push_back(item1.getitemsprite()); //add item1's' sprite to items_floor_sprite
+
+    //for (int vi = 0; vi < v_items.size(); vi++) {
+    //    items_floor.push_back(v_items[vi]);
+    //}
 
     //Monster rat3 = somemonster(200, 200, 50.0, 62.0, "Rat");
     //v_monsters.push_back(rat3);
