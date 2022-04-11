@@ -127,8 +127,6 @@ Monster somemonster(float X0, float Y0, float W0, float H0, std::string NAME0) {
 }
 
 int main() {
-    sf::RectangleShape rectangle(sf::Vector2f(120, 50));
-
     hotbar_spells[0] = "ColdSnap"; //temp
 //text part
     //target:
