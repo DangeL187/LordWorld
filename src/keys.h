@@ -83,15 +83,21 @@ if (Keyboard::isKeyPressed(Keyboard::E)) {
     }
 }
 if (Keyboard::isKeyPressed(Keyboard::G)) {
-	if (inv_items[0] != 0) {
-		std::cout << "DROP\n";
-	    items_floor.push_back(inv_items[0]);
-		items_floor_x.push_back(player_x);
-		items_floor_y.push_back(player_y);
-		items_floor_sprite.push_back(item1.getitemsprite()); //this is temp, TODO: replace with get_item_sprite_by_id();
-		//TODO: create function get_item_sprite_by_id()
-	    inv_items[0] = 0;
-    }
+	int out = player_x - (960 - Mouse::getPosition().x);
+	int outy = player_y - (570 - Mouse::getPosition().y);
+	int vx = view.getCenter().x + 232;
+	int vy = view.getCenter().y - 352;
+	if (inventory_open && vx/1 <= out && out <= vx/1 + 115 && vy/1 <= outy && outy <= vy/1 + 106) {
+		if (inv_items[0] != 0) {
+			std::cout << "DROP\n";
+		    items_floor.push_back(inv_items[0]);
+			items_floor_x.push_back(player_x);
+			items_floor_y.push_back(player_y);
+			items_floor_sprite.push_back(item1.getitemsprite()); //this is temp, TODO: replace with get_item_sprite_by_id();
+			//TODO: create function getItemSpriteById()
+		    inv_items[0] = 0;
+	    }
+	}
 }
 if (Keyboard::isKeyPressed(Keyboard::I)) {
 	if (!inventory_open) {
