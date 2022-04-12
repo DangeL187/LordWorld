@@ -55,12 +55,12 @@ int range = 1; //*32
 std::string spell_name;
 bool aiming_kid = false;
 bool aiming = false;
-bool inventory_open = false;
+bool is_inventory_open = false;
 
 int attack1_cd = 0;
 int spell_slot = 0;
 int timer_ColdSnap;
-int timer_ColdSnapTick;
+int timer_ColdSnap_tick;
 int cooldowns[9] {0, 0, 0, 0, 0, 0, 0, 0, 0}; //cooldowns
 
 std::string weapon = "Wooden Sword";
@@ -68,8 +68,6 @@ int player_hp = 10000, player_mp = 10000, player_lvl = 1;
 int damage = 1;
 int attack_speed = 1000; //1 second
 int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
-
-#include "weapon_types.h"
 
 #include "classes.h"
 
@@ -86,12 +84,14 @@ int inv_items[33]; //items inventory
 std::vector<std::string> inv_spells; //spells inventory
 std::string hotbar_spells[4]; //spells hotbar
 
+#include "weapon_types.h"
+
 void targeting() {
     int out = player_x - (960 - Mouse::getPosition().x);
 	int outy = player_y - (570 - Mouse::getPosition().y);
 	for (int v = 0; v < v_monsters.size(); v++) {
-		float mx = v_monsters[v].getmonstercoordinateX();
-		float my = v_monsters[v].getmonstercoordinateY();
+		float mx = v_monsters[v].getMonsterCoordinateX();
+		float my = v_monsters[v].getMonsterCoordinateY();
 		if (mx/1 <= out && out <= mx/1 + range*64 && my/1 <= outy && outy <= my/1 + range*64) {
 			if (target_m.size() == 0) { target_m.push_back(v_monsters[v]); target_number = v; }
 			else { target_m[0] = v_monsters[v]; target_number = v; }
@@ -99,24 +99,24 @@ void targeting() {
 	}
 }
 
-void spell_damaged() { //TODO: different types of damage range, unite it with monsters_damaged?
+void spellDamaged() { //TODO: different types of damage range, unite it with monsters_damaged?
     damaged_numbers.clear();
     int out = player_x - (960 - Mouse::getPosition().x);
 	int outy = player_y - (570 - Mouse::getPosition().y);
 	for (int v = 0; v < v_monsters.size(); v++) {
-		float mx = v_monsters[v].getmonstercoordinateX();
-		float my = v_monsters[v].getmonstercoordinateY();
+        float mx = v_monsters[v].getMonsterCoordinateX();
+		float my = v_monsters[v].getMonsterCoordinateY();
 		if (mx/1 <= out && out <= mx/1 + range*64 && my/1 <= outy && outy <= my/1 + range*64) { //TODO: fix aoe range?
 			damaged_numbers.push_back(v);
 		}
 	}
 }
 
-void monsters_damaged() { //TODO: different types of damage range?
+void monstersDamaged() { //TODO: different types of damage range?
     damaged_numbers.clear();
 	for (int v = 0; v < v_monsters.size(); v++) {
-		float mx = v_monsters[v].getmonstercoordinateX();
-		float my = v_monsters[v].getmonstercoordinateY();
+        float mx = v_monsters[v].getMonsterCoordinateX();
+		float my = v_monsters[v].getMonsterCoordinateY();
 		damaged_numbers.push_back(v);
 	}
 }
@@ -152,7 +152,7 @@ int main() {
     }
     //
 
-    #include "images.h"
+    #include "images.h" //load images
 
     std::cout << "I tink its k\n";
 
@@ -169,10 +169,10 @@ int main() {
     Item item00(-3000, -3000, 50.0, 62.0, "Zero Item"); //zero item
     Item item1(600, 600, 50.0, 62.0, "Wooden Sword");
     v_items.push_back(item1); //add item1 to whole items
-    items_floor.push_back(item1.getid()); //add item1's id to items_floor
-    items_floor_x.push_back(item1.getitemcoordinateX()); //add item1's x to items_floor_x
-    items_floor_y.push_back(item1.getitemcoordinateY()); //add item1's y to items_floor_y
-    items_floor_sprite.push_back(item1.getitemsprite()); //add item1's' sprite to items_floor_sprite
+    items_floor.push_back(item1.getId()); //add item1's id to items_floor
+    items_floor_x.push_back(item1.getItemCoordinateX()); //add item1's x to items_floor_x
+    items_floor_y.push_back(item1.getItemCoordinateY()); //add item1's y to items_floor_y
+    items_floor_sprite.push_back(item1.getItemSprite()); //add item1's' sprite to items_floor_sprite
 
     //for (int vi = 0; vi < v_items.size(); vi++) {
     //    items_floor.push_back(v_items[vi]);
@@ -200,7 +200,7 @@ int main() {
         time = time/800;
 
         for (int v0 = 0; v0 < v_monsters.size(); v0++) {
-			v_monsters[v0].checkbuff(time);
+			v_monsters[v0].checkBuff(time);
             v_monsters[v0].update(time);
 		}
 
@@ -228,10 +228,12 @@ int main() {
         //std::cout << "INV: " << inv_items[0] << std::endl; //TEMP, TODO: DELETE
 
         if (attack == 1 && attack1_cd == 0) {
-            monsters_damaged();
+            monstersDamaged();
             for (int v = 0; v < damaged_numbers.size(); v++) {
-                if (check_weapons_range(v_monsters[damaged_numbers[v]].getmonstercoordinateX(), v_monsters[damaged_numbers[v]].getmonstercoordinateY())) {
-                    v_monsters[damaged_numbers[v]].hitmonster(damage, time);
+                float mx = v_monsters[damaged_numbers[v]].getMonsterCoordinateX();
+        		float my = v_monsters[damaged_numbers[v]].getMonsterCoordinateY();
+                if (checkWeaponsRange(mx, my)) {
+                    v_monsters[damaged_numbers[v]].hitMonster(damage, time);
                     attack = 0;
                 }
             }
@@ -239,8 +241,8 @@ int main() {
         }
 
         for (int i = 0; i < v_monsters.size(); i++) {
-            if (v_monsters[i].getmonsterHP() <= 0) {
-                other_sprites.erase(other_sprites.begin() + v_monsters[i].getmonstersprite());
+            if (v_monsters[i].getMonsterHP() <= 0) {
+                other_sprites.erase(other_sprites.begin() + v_monsters[i].getMonsterSprite());
                 v_monsters.erase(v_monsters.begin() + i);
                 if (damaged_numbers[i] == target_number) {
                     target_m.erase(target_m.begin() + 0);
@@ -260,18 +262,26 @@ int main() {
         if (target_m.size() != 0) {
             target_m[0] = v_monsters[target_number];
             std::stringstream ss; std::stringstream ss2; std::string t_lvl; std::string t_hp;
-	        ss<<target_m[0].getmonsterLVL();
+	        ss<<target_m[0].getMonsterLVL();
 	        ss>>t_lvl;
-            ss2<<target_m[0].getmonsterHP();
+            ss2<<target_m[0].getMonsterHP();
             ss2>>t_hp;
-            text.setString("TARGET: " + target_m[0].getmonsterNAME() + "\nLVL: " + t_lvl + "\nHP: " + t_hp);
+            text.setString("TARGET: " + target_m[0].getMonsterName() + "\nLVL: " + t_lvl + "\nHP: " + t_hp);
         }
 
         p.update(time);
         window.setView(view);
         window.clear();
 
-        #include "drawmap.h"
+        for (int i = 0; i < HEIGHT_MAP; i++) {
+            for (int j = 0; j < WIDTH_MAP; j++) {
+                if (TileMap[i][j] == ' ')  s_map.setTextureRect(IntRect(0, 0, 64, 64));
+                if (TileMap[i][j] == 's')  s_map.setTextureRect(IntRect(64, 0, 64, 64));
+                if ((TileMap[i][j] == '0')) s_map.setTextureRect(IntRect(128, 0, 64, 64));
+                s_map.setPosition(j * 64, i * 64);
+                window.draw(s_map);
+            }
+        }
 
         #include "gui.h"
 
@@ -279,7 +289,7 @@ int main() {
         for (int lol = 0; lol < other_sprites.size(); lol++) {
             window.draw(other_sprites[lol]);
         }
-        if (inventory_open) {
+        if (is_inventory_open) {
             window.draw(GuiInventorySprite);
             window.draw(InventorySlotWeaponSprite);
             window.draw(InventorySlotShieldSprite);

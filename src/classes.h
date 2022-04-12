@@ -1,10 +1,10 @@
 class Player {
-	public:
+public:
 	float x, y;
-        float w, h, dx, dy, speed;
-        int dir = 0;
-        Image image;
-        Texture texture;
+    float w, h, dx, dy, speed;
+    int dir = 0;
+    Image image;
+    Texture texture;
 
     Player(float X, float Y, float W, float H) {
 		dx=0;dy=0;speed=0;
@@ -50,10 +50,10 @@ class Player {
 		herosprite.setPosition(x, y);
 	}
 
-    float getplayercoordinateX() {
+    float getPlayerCoordinateX() {
         return x;
     }
-    float getplayercoordinateY() {
+    float getPlayerCoordinateY() {
 	    return y;
     }
 };
@@ -121,7 +121,7 @@ public:
 		other_sprites[static_sprite].setPosition(x, y);
 	}
 
-	void checkbuff(float globaltime) {
+	void checkBuff(float globaltime) {
 		for (int v = 0; v < buffs.size(); v++) {
 			#include "buffs.h"
 			#include "timers.h"
@@ -131,35 +131,35 @@ public:
 			}
 		}
 	}
-	void hitmonster(int local_dmg, float hittime) {
+	void hitMonster(int local_dmg, float hittime) {
 		hp -= local_dmg;
 		dealt = true;
-		checkbuff(hittime);
+		checkBuff(hittime);
 		dealt = false;
 	}
-	void givebuff(std::string somebuff, int sometime) {
+	void giveBuff(std::string somebuff, int sometime) {
 		timers.push_back(sometime);
 		buffs.push_back(somebuff);
 	}
-	int getmonstersprite() {
+	int getMonsterSprite() {
 		return static_sprite;
 	}
-	float getmonstercoordinateX() {
+	float getMonsterCoordinateX() {
         return x;
     }
-    float getmonstercoordinateY() {
+    float getMonsterCoordinateY() {
 	    return y;
     }
-	int getmonsterHP() {
+	int getMonsterHP() {
         return hp;
     }
-	int getmonsterMP() {
+	int getMonsterMP() {
 		return mp;
 	}
-	int getmonsterLVL() {
+	int getMonsterLVL() {
 		return lvl;
 	}
-	std::string getmonsterNAME() {
+	std::string getMonsterName() {
 		return name;
 	}
 };
@@ -193,28 +193,28 @@ public:
 		other_sprites[static_sprite].setPosition(x, y);
 	}
 
-    void makeiteminvisible() {
+    void makeItemInvisible() {
 		x = -3000; y = -3000;
 	}
-    void setx(float set_x) {
+    void setX(float set_x) {
         x = set_x;
     }
-    void sety(float set_y) {
+    void setY(float set_y) {
 	y = set_y;
     }
-	int getitemsprite() {
+	int getItemSprite() {
 		return static_sprite;
 	}
-	int getid() {
+	int getId() {
 		return id;
 	}
-	float getitemcoordinateX() {
+	float getItemCoordinateX() {
         return x;
     }
-    float getitemcoordinateY() {
+    float getItemCoordinateY() {
 	    return y;
     }
-	std::string getitemNAME() {
+	std::string getItemName() {
 		return name;
 	}
 };

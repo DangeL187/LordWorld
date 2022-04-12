@@ -13,7 +13,7 @@ if (Keyboard::isKeyPressed(Keyboard::A) && key_d == false && key_w == false && k
 	CurrentFrame += 0.005*time;
 	if(CurrentFrame > 3) CurrentFrame -= 3;
 	herosprite.setTextureRect(IntRect(52 * int(CurrentFrame), 64, 50, 62));
-	getplayercoordinateforview(p.getplayercoordinateX(), p.getplayercoordinateY());
+	getPlayerCoordinateForView(p.getPlayerCoordinateX(), p.getPlayerCoordinateY());
 } else { key_a = false; }
 if (Keyboard::isKeyPressed(Keyboard::D) && key_a == false && key_w == false && key_s == false) {
 	key_d = true;
@@ -22,7 +22,7 @@ if (Keyboard::isKeyPressed(Keyboard::D) && key_a == false && key_w == false && k
 	CurrentFrame += 0.005*time;
 	if(CurrentFrame > 3) CurrentFrame -= 3;
 	herosprite.setTextureRect(IntRect(52 * int(CurrentFrame), 128, 50, 62));
-	getplayercoordinateforview(p.getplayercoordinateX(), p.getplayercoordinateY());
+	getPlayerCoordinateForView(p.getPlayerCoordinateX(), p.getPlayerCoordinateY());
 } else { key_d = false; }
 if (Keyboard::isKeyPressed(Keyboard::W) && key_d == false && key_a == false && key_s == false) {
 	key_w = true;
@@ -31,7 +31,7 @@ if (Keyboard::isKeyPressed(Keyboard::W) && key_d == false && key_a == false && k
 	CurrentFrame += 0.005*time;
 	if(CurrentFrame > 3) CurrentFrame -= 3;
 	herosprite.setTextureRect(IntRect(52 * int(CurrentFrame), 192, 50, 62));
-	getplayercoordinateforview(p.getplayercoordinateX(), p.getplayercoordinateY());
+	getPlayerCoordinateForView(p.getPlayerCoordinateX(), p.getPlayerCoordinateY());
 } else { key_w = false; }
 if (Keyboard::isKeyPressed(Keyboard::S) && key_d == false && key_w == false && key_a == false) {
 	key_s = true;
@@ -40,22 +40,22 @@ if (Keyboard::isKeyPressed(Keyboard::S) && key_d == false && key_w == false && k
 	CurrentFrame += 0.005*time;
 	if(CurrentFrame > 3) CurrentFrame -= 3;
 	herosprite.setTextureRect(IntRect(52 * int(CurrentFrame), 0, 50, 62));
-	getplayercoordinateforview(p.getplayercoordinateX(), p.getplayercoordinateY());
+	getPlayerCoordinateForView(p.getPlayerCoordinateX(), p.getPlayerCoordinateY());
 } else { key_s = false; }
 if (Keyboard::isKeyPressed(Keyboard::LShift)) {
 	p.speed = 0.3;
-	getplayercoordinateforview(p.getplayercoordinateX(), p.getplayercoordinateY());
+	getPlayerCoordinateForView(p.getPlayerCoordinateX(), p.getPlayerCoordinateY());
 }
 //temp:
 if (Keyboard::isKeyPressed(Keyboard::L) && tempstop2) {
-	inv_items[0] = item1.getid();
-	item1.makeiteminvisible();
+	inv_items[0] = item1.getId();
+	item1.makeItemInvisible();
 	tempstop2 = false;
 }
 if (Keyboard::isKeyPressed(Keyboard::K)) {
-	inv_items[0] = item00.getid();
-	item1.setx(200);
-	item1.sety(200);
+	inv_items[0] = item00.getId();
+	item1.setX(200);
+	item1.setY(200);
 }
 //
 if (Keyboard::isKeyPressed(Keyboard::E)) {
@@ -87,26 +87,26 @@ if (Keyboard::isKeyPressed(Keyboard::G)) {
 	int outy = player_y - (570 - Mouse::getPosition().y);
 	int vx = view.getCenter().x + 232;
 	int vy = view.getCenter().y - 352;
-	if (inventory_open && vx/1 <= out && out <= vx/1 + 115 && vy/1 <= outy && outy <= vy/1 + 106) {
+	if (is_inventory_open && vx/1 <= out && out <= vx/1 + 115 && vy/1 <= outy && outy <= vy/1 + 106) {
 		if (inv_items[0] != 0) {
 			std::cout << "DROP\n";
 		    items_floor.push_back(inv_items[0]);
 			items_floor_x.push_back(player_x);
 			items_floor_y.push_back(player_y);
-			items_floor_sprite.push_back(item1.getitemsprite()); //this is temp, TODO: replace with get_item_sprite_by_id();
+			items_floor_sprite.push_back(item1.getItemSprite()); //this is temp, TODO: replace with getItemSpriteById();
 			//TODO: create function getItemSpriteById()
 		    inv_items[0] = 0;
 	    }
 	}
 }
 if (Keyboard::isKeyPressed(Keyboard::I)) {
-	if (!inventory_open) {
-		inventory_open = true;
+	if (!is_inventory_open) {
+		is_inventory_open = true;
 	}
 }
 if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-	if (inventory_open) {
-		inventory_open = false;
+	if (is_inventory_open) {
+		is_inventory_open = false;
 	}
 }
 //
