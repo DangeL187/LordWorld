@@ -90,7 +90,7 @@ public:
 
 	void interactionWithMap() {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
-	        for (int j = x / 64; j<(x + w) / 64; j++) {
+	        for (int j = x / 64; j < (x + w) / 64; j++) {
 		        if (TileMap[i][j] == '0') {
 			        if (dy>0) y = i * 64 - h;
 			        if (dy<0) y = i * 64 + 64;
@@ -205,7 +205,7 @@ public:
 	int getItemSprite() {
 		return static_sprite;
 	}
-	int getId() {
+	int getID() {
 		return id;
 	}
 	float getItemCoordinateX() {

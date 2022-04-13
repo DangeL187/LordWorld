@@ -1,4 +1,5 @@
-bool key_a = false, key_d = false, key_w = false, key_s = false, key_m1 = false, key_m2 = false;
+bool key_a = false, key_d = false, key_w = false, key_s = false;
+bool key_m1 = false, key_m2 = false;
 bool key_1 = false, key_2 = false, key_3 = false, key_4 = false;
 bool key_i = false;
 bool nums = false;
@@ -6,81 +7,79 @@ bool tempstop = true;
 bool tempstop2 = true;
 bool break4items = false;
 
-if (Keyboard::isKeyPressed(Keyboard::A) && key_d == false && key_w == false && key_s == false) {
-	key_a = true;
-	p.dir = 1;
-	p.speed = 0.15;
-	CurrentFrame += 0.005*time;
-	if(CurrentFrame > 3) CurrentFrame -= 3;
-	herosprite.setTextureRect(IntRect(52 * int(CurrentFrame), 64, 50, 62));
-	getPlayerCoordinateForView(p.getPlayerCoordinateX(), p.getPlayerCoordinateY());
-} else { key_a = false; }
-if (Keyboard::isKeyPressed(Keyboard::D) && key_a == false && key_w == false && key_s == false) {
+if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) {
 	key_d = true;
-	p.dir = 0;
-	p.speed = 0.15;
-	CurrentFrame += 0.005*time;
-	if(CurrentFrame > 3) CurrentFrame -= 3;
-	herosprite.setTextureRect(IntRect(52 * int(CurrentFrame), 128, 50, 62));
-	getPlayerCoordinateForView(p.getPlayerCoordinateX(), p.getPlayerCoordinateY());
+	player.speed = 0.15;
+	player.dir = 0;
+	herosprite.setTextureRect(IntRect(52 * int(current_frame), 128, 50, 62));
+	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
+	moveCurrentFrame(time);
 } else { key_d = false; }
-if (Keyboard::isKeyPressed(Keyboard::W) && key_d == false && key_a == false && key_s == false) {
+if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s) {
+	key_a = true;
+	player.speed = 0.15;
+	player.dir = 1;
+	herosprite.setTextureRect(IntRect(52 * int(current_frame), 64, 50, 62));
+	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
+	moveCurrentFrame(time);
+} else { key_a = false; }
+if (Keyboard::isKeyPressed(Keyboard::W) && !key_d && !key_a && !key_s) {
 	key_w = true;
-	p.dir = 2;
-	p.speed = 0.15;
-	CurrentFrame += 0.005*time;
-	if(CurrentFrame > 3) CurrentFrame -= 3;
-	herosprite.setTextureRect(IntRect(52 * int(CurrentFrame), 192, 50, 62));
-	getPlayerCoordinateForView(p.getPlayerCoordinateX(), p.getPlayerCoordinateY());
+	player.speed = 0.15;
+	player.dir = 2;
+	herosprite.setTextureRect(IntRect(52 * int(current_frame), 192, 50, 62));
+	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
+	moveCurrentFrame(time);
 } else { key_w = false; }
-if (Keyboard::isKeyPressed(Keyboard::S) && key_d == false && key_w == false && key_a == false) {
+if (Keyboard::isKeyPressed(Keyboard::S) && !key_d && !key_w && !key_a) {
 	key_s = true;
-	p.dir = 3;
-	p.speed = 0.15;
-	CurrentFrame += 0.005*time;
-	if(CurrentFrame > 3) CurrentFrame -= 3;
-	herosprite.setTextureRect(IntRect(52 * int(CurrentFrame), 0, 50, 62));
-	getPlayerCoordinateForView(p.getPlayerCoordinateX(), p.getPlayerCoordinateY());
+	player.speed = 0.15;
+	player.dir = 3;
+	herosprite.setTextureRect(IntRect(52 * int(current_frame), 0, 50, 62));
+	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
+	moveCurrentFrame(time);
 } else { key_s = false; }
 if (Keyboard::isKeyPressed(Keyboard::LShift)) {
-	p.speed = 0.3;
-	getPlayerCoordinateForView(p.getPlayerCoordinateX(), p.getPlayerCoordinateY());
+	player.speed = 0.3;
+	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 }
 //temp:
 if (Keyboard::isKeyPressed(Keyboard::L) && tempstop2) {
-	inv_items[0] = item1.getId();
+	inv_items[0] = item1.getID();
 	item1.makeItemInvisible();
 	tempstop2 = false;
 }
 if (Keyboard::isKeyPressed(Keyboard::K)) {
-	inv_items[0] = item00.getId();
+	inv_items[0] = item00.getID();
 	item1.setX(200);
 	item1.setY(200);
 }
 //
-if (Keyboard::isKeyPressed(Keyboard::E)) {
-	if (items_floor.size() != 0) {
-	    for (int i = 0; i <= items_floor.size(); i++) {
-	    	if (items_floor_x[i]/1 - range*64 <= player_x && player_x <= items_floor_x[i]/1 + range*64 && items_floor_y[i]/1 - range*64 <= player_y && player_y <= items_floor_y[i]/1 + range*64) {
-                for (int j = 0; j <= 33; j++) {
-            	    if (inv_items[j] == 0) {
-				    	inv_items[j] = items_floor[i];
-						std::cout << "!!! " << inv_items[j] << std::endl; //TEMP, TODO: DELETE
-				    	items_floor.erase(items_floor.begin() + i);
-						items_floor_x.erase(items_floor_x.begin() + i);
-						items_floor_y.erase(items_floor_y.begin() + i);
-						items_floor_sprite.erase(items_floor_sprite.begin() + i);
-				    	break4items = true;
-			    		break;
-			    	}
-                }
+if (Keyboard::isKeyPressed(Keyboard::E) && items_floor.size() != 0) {
+	for (int i = 0; i <= items_floor.size(); i++) {
+	    float condx_m = items_floor_x[i]/1 - range*64;
+	    float condx_p = items_floor_x[i]/1 + range*64;
+		float condy_m = items_floor_y[i]/1 - range*64;
+		float condy_p = items_floor_y[i]/1 + range*64;
+	    if (condx_m <= player_x && player_x <= condx_p && condy_m <= player_y && player_y <= condy_p) {
+            for (int j = 0; j <= 33; j++) {
+                if (inv_items[j] == 0) {
+				    inv_items[j] = items_floor[i];
+					std::cout << "!!! " << inv_items[j] << std::endl; //TEMP, TODO: DELETE
+				    items_floor.erase(items_floor.begin() + i);
+					items_floor_x.erase(items_floor_x.begin() + i);
+					items_floor_y.erase(items_floor_y.begin() + i);
+					items_floor_sprite.erase(items_floor_sprite.begin() + i);
+				    break4items = true;
+			    	break;
+			    }
             }
-		    if (break4items) {
-		    	break4items = false;
-			    break;
-		    }
-	    }
-    }
+        }
+		if (break4items) {
+		    break4items = false;
+			break;
+		}
+	}
 }
 if (Keyboard::isKeyPressed(Keyboard::G)) {
 	int out = player_x - (960 - Mouse::getPosition().x);
@@ -110,7 +109,7 @@ if (Keyboard::isKeyPressed(Keyboard::Escape)) {
 	}
 }
 //
-if (Keyboard::isKeyPressed(Keyboard::Num1) && key_2 == false && key_3 == false && key_4 == false) {
+if (Keyboard::isKeyPressed(Keyboard::Num1) && !key_2 && !key_3 && !key_4) {
 	key_1 = true;
 } else { key_1 = false; }
 //
@@ -118,7 +117,7 @@ if (Mouse::isButtonPressed(Mouse::Left)) {
 	key_m1 = true;
 	if (aiming) {
 		aiming = false;
-		#include "spells.h"
+		spells(time);
 	}
 	attack = 1; //first type of attack
 } else { key_m1 = false; }

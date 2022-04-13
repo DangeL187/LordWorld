@@ -3,34 +3,25 @@
 #include <string>
 using namespace std;
 
-auto map(string type, vector<auto> vals) {
-    vector<auto> vals2;
-    for (int i = 0, i < vals.size(), i++) {
-        if (type == "int") {
-            vals2.push_back(stoi(vals[i]));
-        } else if (type == "string") {
-            vals2.push_back(to_string(vals[i]));
-        } else if (type == "char") {
-            vals2.push_back(stoi(vals[i]));
-        }
-    }
-}
-
 int main() {
-    //#define map(int, y) map(0, y) //fock it
-    vector<int> v1;
-    v1.push_back("1");
-    v1.push_back("2");
-    v1.push_back("3");
-    vector<string> v2;
-    v2.push_back("1");
-    v2.push_back("2");
-    v2.push_back("3");
-    vector<char> v3;
-    v3.push_back("a");
-    v3.push_back("b");
-    v3.push_back("c");
-    cout << map("int", v1) << endl;
-    cout << map("string", v2) << endl;
-    cout << map("char", v3) << endl;
+    int out = 0 - 1;
+	int outy = 0 - 2;
+    float mx = 3;
+    float my = 4;
+    float condx = mx/1 + 64;
+    float condy = my/1 + 64;
+
+    cout << out << " " << outy << endl;
+    cout << mx << " " << my << endl;
+    cout << condx << " " << condy << endl;
+
+    //mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy
+    //3 <= -1 <= 67 && 4 <= -2 <= 68
+    //3 <= 4 && 4 <= 67 && 4 <= 5 && 5 <= 68
+    if (400/1 <= 336 <= 464 && 400/1 <= 352 <= 464) {
+        cout << "SEX" << endl;
+    }
+    if (300/1 <= 336 <= 364 && 300/1 <= 352 <= 364) {
+        cout << "SEX2" << endl;
+    }
 }

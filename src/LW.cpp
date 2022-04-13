@@ -14,18 +14,10 @@
 
 using namespace sf;
 
-Sprite GuiBarSprite, GuiInventorySprite;
 Image GuiBarImage, GuiInventoryImage;
 Texture GuiBarTexture, GuiInventoryTexture;
+Sprite GuiBarSprite, GuiInventorySprite;
 
-//InventorySlots
-Sprite InventorySlotsSprite[27];
-Sprite InventorySlotHelmSprite;
-Sprite InventorySlotChestSprite;
-Sprite InventorySlotPantsSprite;
-Sprite InventorySlotBootsSprite;
-Sprite InventorySlotWeaponSprite;
-Sprite InventorySlotShieldSprite;
 Image InventorySlotsImage[27];
 Image InventorySlotHelmImage;
 Image InventorySlotChestImage;
@@ -40,51 +32,67 @@ Texture InventorySlotPantsTexture;
 Texture InventorySlotBootsTexture;
 Texture InventorySlotWeaponTexture;
 Texture InventorySlotShieldTexture;
-//
+Sprite InventorySlotsSprite[27];
+Sprite InventorySlotHelmSprite;
+Sprite InventorySlotChestSprite;
+Sprite InventorySlotPantsSprite;
+Sprite InventorySlotBootsSprite;
+Sprite InventorySlotWeaponSprite;
+Sprite InventorySlotShieldSprite;
 
-Sprite herosprite;
-Sprite herosprites[3];
-std::vector<Sprite> other_sprites;
 String File[3]{"../images/main.png", "../images/main0.png", "../images/main3.png"};
-Image all_images[3]; Texture all_textures[3];
-int sprite_counter = 0;
+Image all_images[3];
+Image map_image;
+Texture all_textures[3];
+Texture map;
+Sprite herosprite;
+Sprite s_map; //rename to map_sprite
+std::vector<Sprite> other_sprites;
+
+Font font; //шрифт
+Text text("", font, 40);
+Text player_stats_hp("", font, 40);
+Text player_stats_mp("", font, 40);
+Text player_stats_lvl("", font, 40);
 
 int player_x = 0, player_y = 0;
 int attack = 0;
-int range = 1; //*32
-std::string spell_name;
-bool aiming_kid = false;
-bool aiming = false;
-bool is_inventory_open = false;
-
+int range = 1; //*64
+int sprite_counter = 0;
 int attack1_cd = 0;
 int spell_slot = 0;
 int timer_ColdSnap;
 int timer_ColdSnap_tick;
-int cooldowns[9] {0, 0, 0, 0, 0, 0, 0, 0, 0}; //cooldowns
-
-std::string weapon = "Wooden Sword";
 int player_hp = 10000, player_mp = 10000, player_lvl = 1;
 int damage = 1;
 int attack_speed = 1000; //1 second
 int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
+int target_number = 0;
+int inv_items[33]; //items inventory
+int cooldowns[9] {0, 0, 0, 0, 0, 0, 0, 0, 0}; //cooldowns
+float attack1_cd_timer = 0;
+float current_frame = 0;
+bool aiming_kid = false;
+bool aiming = false;
+bool is_inventory_open = false;
+std::string spell_name;
+std::string weapon = "Wooden Sword"; //temp weapon
 
 #include "classes.h"
+#include "drawmap.h"
+#include "weapon_types.h"
+#include "gui.h"
 
 std::vector<Monster> v_monsters; //whole monsters
 std::vector<Monster> target_m; //targeted monster
-std::vector<int> damaged_numbers; //monsters under attack
-int target_number = 0;
 std::vector<Item> v_items; //whole items
+std::vector<int> damaged_numbers; //monsters under attack
 std::vector<int> items_floor;
 std::vector<int> items_floor_x;
 std::vector<int> items_floor_y;
 std::vector<int> items_floor_sprite;
-int inv_items[33]; //items inventory
 std::vector<std::string> inv_spells; //spells inventory
 std::string hotbar_spells[4]; //spells hotbar
-
-#include "weapon_types.h"
 
 void targeting() {
     int out = player_x - (960 - Mouse::getPosition().x);
@@ -92,17 +100,17 @@ void targeting() {
 	for (int v = 0; v < v_monsters.size(); v++) {
 		float mx = v_monsters[v].getMonsterCoordinateX();
 		float my = v_monsters[v].getMonsterCoordinateY();
-                int condx = mx/1 + range*64;
-                int condy = my/1 + range*64;
+        float condx = mx/1 + range*64;
+        float condy = my/1 + range*64;
 		if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) {
-			if (target_m.size() == 0) { 
-                            target_m.push_back(v_monsters[v]);
-                            target_number = v;
-                        }
+			if (target_m.size() == 0) {
+                target_m.push_back(v_monsters[v]);
+                target_number = v;
+            }
 			else {
-                            target_m[0] = v_monsters[v];
-                            target_number = v;
-                        }
+                target_m[0] = v_monsters[v];
+                target_number = v;
+            }
 		}
 	}
 }
@@ -114,7 +122,9 @@ void spellDamaged() { //TODO: different types of damage range, unite it with mon
 	for (int v = 0; v < v_monsters.size(); v++) {
         float mx = v_monsters[v].getMonsterCoordinateX();
 		float my = v_monsters[v].getMonsterCoordinateY();
-		if (mx/1 <= out && out <= mx/1 + range*64 && my/1 <= outy && outy <= my/1 + range*64) { //TODO: fix aoe range?
+        float condx = mx/1 + range*64;
+        float condy = my/1 + range*64;
+		if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) { //TODO: fix aoe range?
 			damaged_numbers.push_back(v);
 		}
 	}
@@ -129,6 +139,15 @@ void monstersDamaged() { //TODO: different types of damage range?
 	}
 }
 
+void moveCurrentFrame(float get_time) {
+	current_frame += 0.005 * get_time;
+	if (current_frame > 3) {
+        current_frame -= 3;
+    }
+}
+
+#include "spells.h"
+
 Monster somemonster(float X0, float Y0, float W0, float H0, std::string NAME0) {
     Monster somemonster0(X0, Y0, W0, H0, NAME0);
     return somemonster0;
@@ -136,29 +155,19 @@ Monster somemonster(float X0, float Y0, float W0, float H0, std::string NAME0) {
 
 int main() {
     hotbar_spells[0] = "ColdSnap"; //temp
-//text part
-    //target:
-    Font font;//шрифт
+
     font.loadFromFile("../font/OceanSummer.ttf");
-    Text text("", font, 40);
     text.setColor(Color::White);
-    //text.setStyle(sf::Text::Bold);
-    //player:
-    Text player_stats_hp("", font, 40);
     player_stats_hp.setColor(Color::White);
     player_stats_hp.setStyle(sf::Text::Bold);
-    Text player_stats_mp("", font, 40);
     player_stats_mp.setColor(Color::White);
     player_stats_mp.setStyle(sf::Text::Bold);
-    Text player_stats_lvl("", font, 40);
     player_stats_lvl.setColor(Color::White);
     player_stats_lvl.setStyle(sf::Text::Bold);
-//
-    //add zero items in inventory
-    for (int i = 0; i <= 33; i++) {
+
+    for (int i = 0; i <= 33; i++) { //add zero items in inventory
         inv_items[i] = 0;
     }
-    //
 
     #include "images.h" //load images
 
@@ -167,7 +176,7 @@ int main() {
     RenderWindow window(VideoMode(1920, 1080), "Lord World");
     view.reset(FloatRect(0, 0, 1920, 1080));
 
-    Player p(500, 500, 50.0, 62.0);
+    Player player(500, 500, 50.0, 62.0);
 
     Monster rat(300, 300, 50.0, 62.0, "Rat");
     v_monsters.push_back(rat);
@@ -176,31 +185,18 @@ int main() {
 
     Item item00(-3000, -3000, 50.0, 62.0, "Zero Item"); //zero item
     Item item1(600, 600, 50.0, 62.0, "Wooden Sword");
+
     v_items.push_back(item1); //add item1 to whole items
-    items_floor.push_back(item1.getId()); //add item1's id to items_floor
+    items_floor.push_back(item1.getID()); //add item1's id to items_floor
     items_floor_x.push_back(item1.getItemCoordinateX()); //add item1's x to items_floor_x
     items_floor_y.push_back(item1.getItemCoordinateY()); //add item1's y to items_floor_y
     items_floor_sprite.push_back(item1.getItemSprite()); //add item1's' sprite to items_floor_sprite
 
-    //for (int vi = 0; vi < v_items.size(); vi++) {
-    //    items_floor.push_back(v_items[vi]);
-    //}
+    map_image.loadFromFile("../images/map.png");
+    map.loadFromImage(map_image);
+    s_map.setTexture(map);
 
-    //Monster rat3 = somemonster(200, 200, 50.0, 62.0, "Rat");
-    //v_monsters.push_back(rat3);
-    //v_monsters.push_back(somemonster(300, 300, 25.0, 31.0, "Rat")); WHY DA FUCK IT DOESN'T WOOOOORK!?
-    //v_monsters.push_back(somemonster(400, 400, 25.0, 31.0, "Rat2"));
-
-    Image map_image;
-	map_image.loadFromFile("../images/map.png");
-	Texture map;
-	map.loadFromImage(map_image);
-	Sprite s_map;
-	s_map.setTexture(map);
-
-    float attack1_cd_timer = 0;
-    float CurrentFrame = 0;
-	Clock clock;
+    Clock clock;
 
     while (window.isOpen()) {
         float time = clock.getElapsedTime().asMicroseconds();
@@ -269,29 +265,32 @@ int main() {
 
         if (target_m.size() != 0) {
             target_m[0] = v_monsters[target_number];
-            std::stringstream ss; std::stringstream ss2; std::string t_lvl; std::string t_hp;
+            std::stringstream ss;
+            std::stringstream ss2;
+            std::string t_lvl;
+            std::string t_hp;
+            std::string t_name;
 	        ss<<target_m[0].getMonsterLVL();
 	        ss>>t_lvl;
             ss2<<target_m[0].getMonsterHP();
             ss2>>t_hp;
-            text.setString("TARGET: " + target_m[0].getMonsterName() + "\nLVL: " + t_lvl + "\nHP: " + t_hp);
+            t_name = target_m[0].getMonsterName();
+            text.setString("TARGET: " + t_name + "\nLVL: " + t_lvl + "\nHP: " + t_hp);
         }
 
-        p.update(time);
+        player.update(time);
         window.setView(view);
         window.clear();
 
         for (int i = 0; i < HEIGHT_MAP; i++) {
             for (int j = 0; j < WIDTH_MAP; j++) {
-                if (TileMap[i][j] == ' ')  s_map.setTextureRect(IntRect(0, 0, 64, 64));
-                if (TileMap[i][j] == 's')  s_map.setTextureRect(IntRect(64, 0, 64, 64));
-                if ((TileMap[i][j] == '0')) s_map.setTextureRect(IntRect(128, 0, 64, 64));
+                defineTile(i, j);
                 s_map.setPosition(j * 64, i * 64);
                 window.draw(s_map);
             }
         }
 
-        #include "gui.h"
+        gui();
 
         window.draw(herosprite);
         for (int lol = 0; lol < other_sprites.size(); lol++) {
