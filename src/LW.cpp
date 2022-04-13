@@ -92,9 +92,17 @@ void targeting() {
 	for (int v = 0; v < v_monsters.size(); v++) {
 		float mx = v_monsters[v].getMonsterCoordinateX();
 		float my = v_monsters[v].getMonsterCoordinateY();
-		if (mx/1 <= out && out <= mx/1 + range*64 && my/1 <= outy && outy <= my/1 + range*64) {
-			if (target_m.size() == 0) { target_m.push_back(v_monsters[v]); target_number = v; }
-			else { target_m[0] = v_monsters[v]; target_number = v; }
+                int condx = mx/1 + range*64;
+                int condy = my/1 + range*64;
+		if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) {
+			if (target_m.size() == 0) { 
+                            target_m.push_back(v_monsters[v]);
+                            target_number = v;
+                        }
+			else {
+                            target_m[0] = v_monsters[v];
+                            target_number = v;
+                        }
 		}
 	}
 }
