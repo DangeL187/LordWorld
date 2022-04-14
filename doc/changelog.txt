@@ -19,6 +19,6 @@ Versions in folder 'versions' might not work properly with current files, so DO 
 0.0.6c - spells update
 0.0.6d - almost final spells update, added cooldowns
 0.0.7 interface update, GuiHpBar, added sth like running
-0.0.8 - inventory update, fixed cooldowns a bit, project has been uploaded to GitHub [current]
+0.0.8 - inventory update, fixed cooldowns a bit, replaced class Item with function [current]
 0.0.9 - final interface update
 0.0.10 - final combat update

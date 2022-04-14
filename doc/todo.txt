@@ -1,9 +1,6 @@
-REPLACE INCLUDEs WITH FUNCTIONS INSTEAD
-
 REMOVE DEATH FUNCTION FROM EVERYWHERE AND PUT IT IN THE MAIN CYCLE
 
-TODO: RENAME functions and methods from wordsecondword or word_second_word to wordSecondWord 
-TODO: RENAME variables, ex: inventory_open to is_inventory_open
+REMOVE TARGET AFTER DEATH
 
 version 0.0.8:
 has been added function to pick up items
