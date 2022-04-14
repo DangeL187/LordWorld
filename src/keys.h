@@ -1,4 +1,5 @@
 bool key_a = false, key_d = false, key_w = false, key_s = false;
+bool key_e = false, key_g = false;
 bool key_m1 = false, key_m2 = false;
 bool key_1 = false, key_2 = false, key_3 = false, key_4 = false;
 bool key_i = false;
@@ -43,20 +44,10 @@ if (Keyboard::isKeyPressed(Keyboard::LShift)) {
 	player.speed = 0.3;
 	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 }
-//temp:
-if (Keyboard::isKeyPressed(Keyboard::L) && tempstop2) {
-	inv_items[0] = item1.getID();
-	item1.makeItemInvisible();
-	tempstop2 = false;
-}
-if (Keyboard::isKeyPressed(Keyboard::K)) {
-	inv_items[0] = item00.getID();
-	item1.setX(200);
-	item1.setY(200);
-}
-//
-if (Keyboard::isKeyPressed(Keyboard::E) && items_floor.size() != 0) {
-	for (int i = 0; i <= items_floor.size(); i++) {
+
+if (Keyboard::isKeyPressed(Keyboard::E) && items_floor.size() != 0 && !key_g) {
+	key_e = true;
+	for (int i = 0; i < items_floor.size(); i++) {
 	    float condx_m = items_floor_x[i]/1 - range*64;
 	    float condx_p = items_floor_x[i]/1 + range*64;
 		float condy_m = items_floor_y[i]/1 - range*64;
@@ -69,7 +60,8 @@ if (Keyboard::isKeyPressed(Keyboard::E) && items_floor.size() != 0) {
 				    items_floor.erase(items_floor.begin() + i);
 					items_floor_x.erase(items_floor_x.begin() + i);
 					items_floor_y.erase(items_floor_y.begin() + i);
-					items_floor_sprite.erase(items_floor_sprite.begin() + i);
+					other_sprites.erase(other_sprites.begin() + items_floor_sprites[i]);
+					sprite_counter--;
 				    break4items = true;
 			    	break;
 			    }
@@ -80,8 +72,9 @@ if (Keyboard::isKeyPressed(Keyboard::E) && items_floor.size() != 0) {
 			break;
 		}
 	}
-}
-if (Keyboard::isKeyPressed(Keyboard::G)) {
+} else { key_e = false; }
+if (Keyboard::isKeyPressed(Keyboard::G) && !key_e) {
+	key_g = true;
 	int out = player_x - (960 - Mouse::getPosition().x);
 	int outy = player_y - (570 - Mouse::getPosition().y);
 	int vx = view.getCenter().x + 232;
@@ -89,15 +82,11 @@ if (Keyboard::isKeyPressed(Keyboard::G)) {
 	if (is_inventory_open && vx/1 <= out && out <= vx/1 + 115 && vy/1 <= outy && outy <= vy/1 + 106) {
 		if (inv_items[0] != 0) {
 			std::cout << "DROP\n";
-		    items_floor.push_back(inv_items[0]);
-			items_floor_x.push_back(player_x);
-			items_floor_y.push_back(player_y);
-			items_floor_sprite.push_back(item1.getItemSprite()); //this is temp, TODO: replace with getItemSpriteById();
-			//TODO: create function getItemSpriteById()
+			createItem(inv_items[0], player_x, player_y);
 		    inv_items[0] = 0;
 	    }
 	}
-}
+} else { key_g = false; }
 if (Keyboard::isKeyPressed(Keyboard::I)) {
 	if (!is_inventory_open) {
 		is_inventory_open = true;

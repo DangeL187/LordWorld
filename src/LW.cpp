@@ -90,7 +90,7 @@ std::vector<int> damaged_numbers; //monsters under attack
 std::vector<int> items_floor;
 std::vector<int> items_floor_x;
 std::vector<int> items_floor_y;
-std::vector<int> items_floor_sprite;
+std::vector<int> items_floor_sprites;
 std::vector<std::string> inv_spells; //spells inventory
 std::string hotbar_spells[4]; //spells hotbar
 
@@ -146,15 +146,43 @@ void moveCurrentFrame(float get_time) {
     }
 }
 
-#include "spells.h"
+Image tempImage1; //temp!
+Texture tempTexture1;
+Sprite tempSprite1;
+Image tempImage2;
+Texture tempTexture2;
+Sprite tempSprite2;
 
-Monster somemonster(float X0, float Y0, float W0, float H0, std::string NAME0) {
-    Monster somemonster0(X0, Y0, W0, H0, NAME0);
-    return somemonster0;
+int createItem(int ID, int get_x, int get_y) {
+    items_floor.push_back(ID);
+    items_floor_x.push_back(get_x);
+    items_floor_y.push_back(get_y);
+    items_floor_sprites.push_back(sprite_counter);
+
+    if (ID == 0) {
+        other_sprites.push_back(tempSprite2);
+    }
+    if (ID == 1) {
+        other_sprites.push_back(tempSprite1);
+    }
+
+    other_sprites[sprite_counter].setTextureRect(IntRect(0, 0, 100, 100));
+    other_sprites[sprite_counter].setPosition(get_x, get_y);
+    sprite_counter++;
+    std::cout << "SPRITE CREATED " << sprite_counter << std::endl;
 }
+
+#include "spells.h"
 
 int main() {
     hotbar_spells[0] = "ColdSnap"; //temp
+
+    tempImage1.loadFromFile("../images/Wooden Sword.png");
+    tempTexture1.loadFromImage(tempImage1);
+    tempSprite1.setTexture(tempTexture1);
+    tempImage2.loadFromFile("../images/Zero Item.png");
+    tempTexture2.loadFromImage(tempImage2);
+    tempSprite2.setTexture(tempTexture2);
 
     font.loadFromFile("../font/OceanSummer.ttf");
     text.setColor(Color::White);
@@ -183,14 +211,15 @@ int main() {
     Monster rat2(400, 400, 50.0, 62.0, "Rat2");
     v_monsters.push_back(rat2);
 
-    Item item00(-3000, -3000, 50.0, 62.0, "Zero Item"); //zero item
-    Item item1(600, 600, 50.0, 62.0, "Wooden Sword");
+    //v_items.push_back(item1); //add item1 to whole items
+    //items_floor.push_back(item1.getItemID()); //add item1's id to items_floor
+    //items_floor_x.push_back(item1.getItemCoordinateX()); //add item1's x to items_floor_x
+    //items_floor_y.push_back(item1.getItemCoordinateY()); //add item1's y to items_floor_y
+    //items_floor_sprites.push_back(item1.getItemSprite()); //add item1's' sprite to items_floor_sprite
+    //items_floor_static_sprites.push_back(item1.getItemStaticSprite());
 
-    v_items.push_back(item1); //add item1 to whole items
-    items_floor.push_back(item1.getID()); //add item1's id to items_floor
-    items_floor_x.push_back(item1.getItemCoordinateX()); //add item1's x to items_floor_x
-    items_floor_y.push_back(item1.getItemCoordinateY()); //add item1's y to items_floor_y
-    items_floor_sprite.push_back(item1.getItemSprite()); //add item1's' sprite to items_floor_sprite
+    createItem(1, 600, 600);
+    createItem(0, 700, 700);
 
     map_image.loadFromFile("../images/map.png");
     map.loadFromImage(map_image);
@@ -207,11 +236,6 @@ int main() {
 			v_monsters[v0].checkBuff(time);
             v_monsters[v0].update(time);
 		}
-
-        //temp:
-        item00.update(time);
-        item1.update(time);
-        //
 
         if (attack1_cd > 0) {
             attack1_cd -= time;
