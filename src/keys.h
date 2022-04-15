@@ -60,7 +60,18 @@ if (Keyboard::isKeyPressed(Keyboard::E) && items_floor.size() != 0 && !key_g) {
 				    items_floor.erase(items_floor.begin() + i);
 					items_floor_x.erase(items_floor_x.begin() + i);
 					items_floor_y.erase(items_floor_y.begin() + i);
+					for (int k = 0; k < items_floor_sprites.size(); k++) {
+	                    if (k > i) {
+	                        items_floor_sprites[k] = items_floor_sprites[k] - 1;
+	                    }
+	                }
+					for (int k = 0; k < v_monsters.size(); k++) {
+						if (v_monsters[k].getMonsterSprite() > items_floor_sprites[i]) {
+						    v_monsters[k].reduceMonsterSprite();
+						}
+	                }
 					other_sprites.erase(other_sprites.begin() + items_floor_sprites[i]);
+                    items_floor_sprites.erase(items_floor_sprites.begin() + i);
 					sprite_counter--;
 				    break4items = true;
 			    	break;

@@ -37,12 +37,3 @@
         InventorySlotsSprite[i].setTexture(InventorySlotsTexture[i]);
     }
 //
-
-all_images[0].loadFromFile(File[0]);
-all_textures[0].loadFromImage(all_images[0]);
-
-all_images[1].loadFromFile(File[1]);
-all_textures[1].loadFromImage(all_images[1]);
-
-all_images[2].loadFromFile(File[2]);
-all_textures[2].loadFromImage(all_images[2]);

@@ -9,7 +9,7 @@ public:
     Player(float X, float Y, float W, float H) {
 		dx=0;dy=0;speed=0;
 		w = W; h = H;
-		image.loadFromFile(File[0]); //TODO: replace with hero image
+		image.loadFromFile("../images/hero.png");
 		texture.loadFromImage(image);
 		herosprite.setTexture(texture);
 		x = X; y = Y;
@@ -140,6 +140,9 @@ public:
 	void giveBuff(std::string somebuff, int sometime) {
 		timers.push_back(sometime);
 		buffs.push_back(somebuff);
+	}
+	void reduceMonsterSprite() {
+		static_sprite--;
 	}
 	int getMonsterSprite() {
 		return static_sprite;

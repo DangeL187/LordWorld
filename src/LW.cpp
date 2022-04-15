@@ -40,13 +40,10 @@ Sprite InventorySlotBootsSprite;
 Sprite InventorySlotWeaponSprite;
 Sprite InventorySlotShieldSprite;
 
-String File[3]{"../images/main.png", "../images/main0.png", "../images/main3.png"};
-Image all_images[3];
 Image map_image;
-Texture all_textures[3];
-Texture map;
+Texture map_texture;
+Sprite map_sprite;
 Sprite herosprite;
-Sprite s_map; //rename to map_sprite
 std::vector<Sprite> other_sprites;
 
 Font font; //шрифт
@@ -85,7 +82,6 @@ std::string weapon = "Wooden Sword"; //temp weapon
 
 std::vector<Monster> v_monsters; //whole monsters
 std::vector<Monster> target_m; //targeted monster
-std::vector<Item> v_items; //whole items
 std::vector<int> damaged_numbers; //monsters under attack
 std::vector<int> items_floor;
 std::vector<int> items_floor_x;
@@ -211,19 +207,12 @@ int main() {
     Monster rat2(400, 400, 50.0, 62.0, "Rat2");
     v_monsters.push_back(rat2);
 
-    //v_items.push_back(item1); //add item1 to whole items
-    //items_floor.push_back(item1.getItemID()); //add item1's id to items_floor
-    //items_floor_x.push_back(item1.getItemCoordinateX()); //add item1's x to items_floor_x
-    //items_floor_y.push_back(item1.getItemCoordinateY()); //add item1's y to items_floor_y
-    //items_floor_sprites.push_back(item1.getItemSprite()); //add item1's' sprite to items_floor_sprite
-    //items_floor_static_sprites.push_back(item1.getItemStaticSprite());
-
     createItem(1, 600, 600);
-    createItem(0, 700, 700);
+    createItem(1, 700, 700);
 
     map_image.loadFromFile("../images/map.png");
-    map.loadFromImage(map_image);
-    s_map.setTexture(map);
+    map_texture.loadFromImage(map_image);
+    map_sprite.setTexture(map_texture);
 
     Clock clock;
 
@@ -249,11 +238,6 @@ int main() {
                 cooldowns[i] = 0;
             }
         }
-        //std::cout << "?: " << cooldowns[0] << std::endl;
-        //for (int i = 0; i <= 33; i++) {
-        //    std::cout << "INV: " << inv_items[i] << std::endl;
-        //}
-        //std::cout << "INV: " << inv_items[0] << std::endl; //TEMP, TODO: DELETE
 
         if (attack == 1 && attack1_cd == 0) {
             monstersDamaged();
@@ -271,10 +255,21 @@ int main() {
         for (int i = 0; i < v_monsters.size(); i++) {
             if (v_monsters[i].getMonsterHP() <= 0) {
                 other_sprites.erase(other_sprites.begin() + v_monsters[i].getMonsterSprite());
-                v_monsters.erase(v_monsters.begin() + i);
+                sprite_counter--;
                 if (damaged_numbers[i] == target_number) {
                     target_m.erase(target_m.begin() + 0);
                 }
+                for (int j = 0; j < v_monsters.size(); j++) {
+                    if (j > i) {
+                        v_monsters[j].reduceMonsterSprite();
+                    }
+                }
+                for (int j = 0; j < items_floor_sprites.size(); j++) {
+                    if (items_floor_sprites[j] > v_monsters[i].getMonsterSprite()) {
+                        items_floor_sprites[j] = items_floor_sprites[j] - 1;
+                    }
+                }
+                v_monsters.erase(v_monsters.begin() + i);
             }
         }
 
@@ -309,8 +304,8 @@ int main() {
         for (int i = 0; i < HEIGHT_MAP; i++) {
             for (int j = 0; j < WIDTH_MAP; j++) {
                 defineTile(i, j);
-                s_map.setPosition(j * 64, i * 64);
-                window.draw(s_map);
+                map_sprite.setPosition(j * 64, i * 64);
+                window.draw(map_sprite);
             }
         }
 
@@ -338,7 +333,6 @@ int main() {
         window.draw(player_stats_mp);
         window.draw(player_stats_lvl);
         window.display();
-//
     }
 	return 0;
 }
