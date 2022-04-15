@@ -6,4 +6,6 @@ version 0.0.8:
 has been added function to pick up items
 has been added function to drop items
 drop function now works with first inventory slot only
+added sprites for dropped items
+fixed bug with sprites
 todo: connect drop function with other slots
