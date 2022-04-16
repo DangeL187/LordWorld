@@ -1,7 +1,3 @@
-void spellCast() {
-
-}
-
 void spells(float get_time) {
     if (spell_name == "ColdSnap" and cooldowns[spell_slot] == 0) {
         int damage_from_spell = 2; //2 * lvl_ice_magic

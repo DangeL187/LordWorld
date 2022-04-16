@@ -40,6 +40,31 @@ Sprite InventorySlotBootsSprite;
 Sprite InventorySlotWeaponSprite;
 Sprite InventorySlotShieldSprite;
 
+Image InventoryItemsImage[27];
+Image InventoryItemEmptyImage;
+Image InventoryItemHelmImage;
+Image InventoryItemChestImage;
+Image InventoryItemPantsImage;
+Image InventoryItemBootsImage;
+Image InventoryItemWeaponImage;
+Image InventoryItemShieldImage;
+Texture InventoryItemsTexture[27];
+Texture InventoryItemEmptyTexture;
+Texture InventoryItemHelmTexture;
+Texture InventoryItemChestTexture;
+Texture InventoryItemPantsTexture;
+Texture InventoryItemBootsTexture;
+Texture InventoryItemWeaponTexture;
+Texture InventoryItemShieldTexture;
+Sprite InventoryItemsSprite[27];
+Sprite InventoryItemEmptySprite;
+Sprite InventoryItemHelmSprite;
+Sprite InventoryItemChestSprite;
+Sprite InventoryItemPantsSprite;
+Sprite InventoryItemBootsSprite;
+Sprite InventoryItemWeaponSprite;
+Sprite InventoryItemShieldSprite;
+
 Image map_image;
 Texture map_texture;
 Sprite map_sprite;
@@ -83,10 +108,10 @@ std::string weapon = "Wooden Sword"; //temp weapon
 std::vector<Monster> v_monsters; //whole monsters
 std::vector<Monster> target_m; //targeted monster
 std::vector<int> damaged_numbers; //monsters under attack
-std::vector<int> items_floor;
-std::vector<int> items_floor_x;
-std::vector<int> items_floor_y;
-std::vector<int> items_floor_sprites;
+std::vector<int> items_dropped_id; //rename to items_dropped
+std::vector<int> items_dropped_x;
+std::vector<int> items_dropped_y;
+std::vector<int> items_dropped_sprites;
 std::vector<std::string> inv_spells; //spells inventory
 std::string hotbar_spells[4]; //spells hotbar
 
@@ -150,10 +175,10 @@ Texture tempTexture2;
 Sprite tempSprite2;
 
 int createItem(int ID, int get_x, int get_y) {
-    items_floor.push_back(ID);
-    items_floor_x.push_back(get_x);
-    items_floor_y.push_back(get_y);
-    items_floor_sprites.push_back(sprite_counter);
+    items_dropped_id.push_back(ID);
+    items_dropped_x.push_back(get_x);
+    items_dropped_y.push_back(get_y);
+    items_dropped_sprites.push_back(sprite_counter);
 
     if (ID == 0) {
         other_sprites.push_back(tempSprite2);
@@ -162,7 +187,7 @@ int createItem(int ID, int get_x, int get_y) {
         other_sprites.push_back(tempSprite1);
     }
 
-    other_sprites[sprite_counter].setTextureRect(IntRect(0, 0, 100, 100));
+    other_sprites[sprite_counter].setTextureRect(IntRect(0, 0, 56, 56));
     other_sprites[sprite_counter].setPosition(get_x, get_y);
     sprite_counter++;
     std::cout << "SPRITE CREATED " << sprite_counter << std::endl;
@@ -193,7 +218,7 @@ int main() {
         inv_items[i] = 0;
     }
 
-    #include "images.h" //load images
+    #include "images.h" //load images //TODO: move drawing items sprites here
 
     std::cout << "I tink its k\n";
 
@@ -264,9 +289,9 @@ int main() {
                         v_monsters[j].reduceMonsterSprite();
                     }
                 }
-                for (int j = 0; j < items_floor_sprites.size(); j++) {
-                    if (items_floor_sprites[j] > v_monsters[i].getMonsterSprite()) {
-                        items_floor_sprites[j] = items_floor_sprites[j] - 1;
+                for (int j = 0; j < items_dropped_sprites.size(); j++) {
+                    if (items_dropped_sprites[j] > v_monsters[i].getMonsterSprite()) {
+                        items_dropped_sprites[j] = items_dropped_sprites[j] - 1;
                     }
                 }
                 v_monsters.erase(v_monsters.begin() + i);
@@ -325,6 +350,15 @@ int main() {
             window.draw(InventorySlotBootsSprite);
             for (int i = 0; i < 27; i++) {
                 window.draw(InventorySlotsSprite[i]);
+            }
+            window.draw(InventoryItemWeaponSprite);
+            window.draw(InventoryItemShieldSprite);
+            window.draw(InventoryItemChestSprite);
+            window.draw(InventoryItemHelmSprite);
+            window.draw(InventoryItemPantsSprite);
+            window.draw(InventoryItemBootsSprite);
+            for (int i = 0; i < 27; i++) {
+                window.draw(InventoryItemsSprite[i]);
             }
         }
         window.draw(GuiBarSprite);

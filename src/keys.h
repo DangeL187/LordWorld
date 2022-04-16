@@ -45,33 +45,35 @@ if (Keyboard::isKeyPressed(Keyboard::LShift)) {
 	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 }
 
-if (Keyboard::isKeyPressed(Keyboard::E) && items_floor.size() != 0 && !key_g) {
+if (Keyboard::isKeyPressed(Keyboard::E) && items_dropped_id.size() != 0 && !key_g) {
 	key_e = true;
-	for (int i = 0; i < items_floor.size(); i++) {
-	    float condx_m = items_floor_x[i]/1 - range*64;
-	    float condx_p = items_floor_x[i]/1 + range*64;
-		float condy_m = items_floor_y[i]/1 - range*64;
-		float condy_p = items_floor_y[i]/1 + range*64;
+	for (int i = 0; i < items_dropped_id.size(); i++) {
+	    float condx_m = items_dropped_x[i]/1 - range*64;
+	    float condx_p = items_dropped_x[i]/1 + range*64;
+		float condy_m = items_dropped_y[i]/1 - range*64;
+		float condy_p = items_dropped_y[i]/1 + range*64;
 	    if (condx_m <= player_x && player_x <= condx_p && condy_m <= player_y && player_y <= condy_p) {
-            for (int j = 0; j <= 33; j++) {
+            for (int j = 0; j <= 27; j++) {
                 if (inv_items[j] == 0) {
-				    inv_items[j] = items_floor[i];
+				    inv_items[j] = items_dropped_id[i];
+					InventoryItemsSprite[j] = other_sprites[items_dropped_sprites[i]];
+					InventoryItemsSprite[j].setTextureRect(IntRect(0, 0, 56, 56));
 					std::cout << "!!! " << inv_items[j] << std::endl; //TEMP, TODO: DELETE
-				    items_floor.erase(items_floor.begin() + i);
-					items_floor_x.erase(items_floor_x.begin() + i);
-					items_floor_y.erase(items_floor_y.begin() + i);
-					for (int k = 0; k < items_floor_sprites.size(); k++) {
+				    items_dropped_id.erase(items_dropped_id.begin() + i);
+					items_dropped_x.erase(items_dropped_x.begin() + i);
+					items_dropped_y.erase(items_dropped_y.begin() + i);
+					for (int k = 0; k < items_dropped_sprites.size(); k++) {
 	                    if (k > i) {
-	                        items_floor_sprites[k] = items_floor_sprites[k] - 1;
+	                        items_dropped_sprites[k] = items_dropped_sprites[k] - 1;
 	                    }
 	                }
 					for (int k = 0; k < v_monsters.size(); k++) {
-						if (v_monsters[k].getMonsterSprite() > items_floor_sprites[i]) {
+						if (v_monsters[k].getMonsterSprite() > items_dropped_sprites[i]) {
 						    v_monsters[k].reduceMonsterSprite();
 						}
 	                }
-					other_sprites.erase(other_sprites.begin() + items_floor_sprites[i]);
-                    items_floor_sprites.erase(items_floor_sprites.begin() + i);
+					other_sprites.erase(other_sprites.begin() + items_dropped_sprites[i]);
+                    items_dropped_sprites.erase(items_dropped_sprites.begin() + i);
 					sprite_counter--;
 				    break4items = true;
 			    	break;
@@ -93,6 +95,7 @@ if (Keyboard::isKeyPressed(Keyboard::G) && !key_e) {
 	if (is_inventory_open && vx/1 <= out && out <= vx/1 + 115 && vy/1 <= outy && outy <= vy/1 + 106) {
 		if (inv_items[0] != 0) {
 			std::cout << "DROP\n";
+			InventoryItemsSprite[0] = InventoryItemEmptySprite;
 			createItem(inv_items[0], player_x, player_y);
 		    inv_items[0] = 0;
 	    }
