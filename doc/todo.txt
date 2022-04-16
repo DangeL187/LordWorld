@@ -8,5 +8,5 @@ has been added function to drop items
 drop function now works with first inventory slot only
 added sprites for dropped items
 fixed bug with sprites
-todo: draw sprite in inv slot; connect drop function with other slots
+todo: connect drop function with other slots
 todo: when drop of equip item, move items after this item to slot-1
