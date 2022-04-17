@@ -18,21 +18,6 @@ void gui() {
     GuiBarSprite.setPosition(view.getCenter().x - 960, view.getCenter().y - 540);
     GuiInventorySprite.setPosition(view.getCenter().x - 300, view.getCenter().y - 400);
 
-    InventorySlotWeaponSprite.setPosition(view.getCenter().x - 260, view.getCenter().y - 256);
-    InventorySlotShieldSprite.setPosition(view.getCenter().x + 60, view.getCenter().y - 256);
-    InventorySlotChestSprite.setPosition(view.getCenter().x - 100, view.getCenter().y - 256);
-    InventorySlotHelmSprite.setPosition(view.getCenter().x - 100, view.getCenter().y - 380);
-    InventorySlotPantsSprite.setPosition(view.getCenter().x - 100, view.getCenter().y - 132);
-    InventorySlotBootsSprite.setPosition(view.getCenter().x - 100, view.getCenter().y - 8);
-    InventorySlotsSprite[24].setPosition(view.getCenter().x - 232, view.getCenter().y + 156);
-    InventorySlotsSprite[25].setPosition(view.getCenter().x - 100, view.getCenter().y + 156);
-    InventorySlotsSprite[26].setPosition(view.getCenter().x + 32, view.getCenter().y + 156);
-    for (int i = 0; i < 6; i++) {
-        for (int j = 0; j < 4; j++) {
-            InventorySlotsSprite[i * 4 + j].setPosition(view.getCenter().x + 232 + 112 * j, view.getCenter().y - 372 + 112 * i);
-        }
-    }
-
     InventoryItemWeaponSprite.setPosition(view.getCenter().x - 260, view.getCenter().y - 256);
     InventoryItemShieldSprite.setPosition(view.getCenter().x + 60, view.getCenter().y - 256);
     InventoryItemChestSprite.setPosition(view.getCenter().x - 100, view.getCenter().y - 256);
@@ -44,7 +29,6 @@ void gui() {
     InventoryItemsSprite[26].setPosition(view.getCenter().x + 32, view.getCenter().y + 156);
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 4; j++) {
-            //InventoryItemsSprite[i * 4 + j].setPosition(view.getCenter().x + 232 + 112 * j, view.getCenter().y - 372 + 112 * i);
             InventoryItemsSprite[i * 4 + j].setPosition(view.getCenter().x + 261 + 112 * j, view.getCenter().y - 343 + 112 * i);
         }
     }

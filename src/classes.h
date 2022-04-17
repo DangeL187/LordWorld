@@ -119,6 +119,7 @@ public:
 		speed = 0;
 		interactionWithMap();
 		other_sprites[static_sprite].setPosition(x, y);
+		checkBuff(time);
 	}
 
 	void checkBuff(float globaltime) {

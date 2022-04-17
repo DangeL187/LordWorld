@@ -18,28 +18,6 @@ Image GuiBarImage, GuiInventoryImage;
 Texture GuiBarTexture, GuiInventoryTexture;
 Sprite GuiBarSprite, GuiInventorySprite;
 
-Image InventorySlotsImage[27];
-Image InventorySlotHelmImage;
-Image InventorySlotChestImage;
-Image InventorySlotPantsImage;
-Image InventorySlotBootsImage;
-Image InventorySlotWeaponImage;
-Image InventorySlotShieldImage;
-Texture InventorySlotsTexture[27];
-Texture InventorySlotHelmTexture;
-Texture InventorySlotChestTexture;
-Texture InventorySlotPantsTexture;
-Texture InventorySlotBootsTexture;
-Texture InventorySlotWeaponTexture;
-Texture InventorySlotShieldTexture;
-Sprite InventorySlotsSprite[27];
-Sprite InventorySlotHelmSprite;
-Sprite InventorySlotChestSprite;
-Sprite InventorySlotPantsSprite;
-Sprite InventorySlotBootsSprite;
-Sprite InventorySlotWeaponSprite;
-Sprite InventorySlotShieldSprite;
-
 Image InventoryItemsImage[27];
 Image InventoryItemEmptyImage;
 Image InventoryItemHelmImage;
@@ -116,12 +94,12 @@ std::vector<std::string> inv_spells; //spells inventory
 std::string hotbar_spells[4]; //spells hotbar
 
 void targeting() {
-    int out = player_x - (960 - Mouse::getPosition().x);
-	int outy = player_y - (570 - Mouse::getPosition().y);
+    int out = player_x - (962 - Mouse::getPosition().x); //960
+	int outy = player_y - (544 - Mouse::getPosition().y); //570
 	for (int v = 0; v < v_monsters.size(); v++) {
 		float mx = v_monsters[v].getMonsterCoordinateX();
 		float my = v_monsters[v].getMonsterCoordinateY();
-        float condx = mx/1 + range*64;
+        float condx = mx/1 + range*64 - 14;
         float condy = my/1 + range*64;
 		if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) {
 			if (target_m.size() == 0) {
@@ -218,11 +196,11 @@ int main() {
         inv_items[i] = 0;
     }
 
-    #include "images.h" //load images //TODO: move drawing items sprites here
+    #include "images.h" //load images
 
     std::cout << "I tink its k\n";
 
-    RenderWindow window(VideoMode(1920, 1080), "Lord World");
+    RenderWindow window(VideoMode(1920, 1080), "Lord World", sf::Style::Fullscreen);
     view.reset(FloatRect(0, 0, 1920, 1080));
 
     Player player(500, 500, 50.0, 62.0);
@@ -234,6 +212,18 @@ int main() {
 
     createItem(1, 600, 600);
     createItem(1, 700, 700);
+    createItem(1, 800, 700);
+    createItem(1, 900, 700);
+    createItem(1, 1000, 700);
+    createItem(1, 1100, 700);
+    createItem(1, 1200, 700);
+    createItem(1, 1300, 700);
+    createItem(1, 1400, 700);
+    createItem(1, 1500, 700);
+    createItem(1, 1600, 700);
+    createItem(1, 1700, 700);
+    createItem(1, 1800, 700);
+    createItem(1, 1900, 700);
 
     map_image.loadFromFile("../images/map.png");
     map_texture.loadFromImage(map_image);
@@ -247,7 +237,6 @@ int main() {
         time = time/800;
 
         for (int v0 = 0; v0 < v_monsters.size(); v0++) {
-			v_monsters[v0].checkBuff(time);
             v_monsters[v0].update(time);
 		}
 
@@ -283,6 +272,7 @@ int main() {
                 sprite_counter--;
                 if (damaged_numbers[i] == target_number) {
                     target_m.erase(target_m.begin() + 0);
+                    text.setString("");
                 }
                 for (int j = 0; j < v_monsters.size(); j++) {
                     if (j > i) {
@@ -342,15 +332,6 @@ int main() {
         }
         if (is_inventory_open) {
             window.draw(GuiInventorySprite);
-            window.draw(InventorySlotWeaponSprite);
-            window.draw(InventorySlotShieldSprite);
-            window.draw(InventorySlotChestSprite);
-            window.draw(InventorySlotHelmSprite);
-            window.draw(InventorySlotPantsSprite);
-            window.draw(InventorySlotBootsSprite);
-            for (int i = 0; i < 27; i++) {
-                window.draw(InventorySlotsSprite[i]);
-            }
             window.draw(InventoryItemWeaponSprite);
             window.draw(InventoryItemShieldSprite);
             window.draw(InventoryItemChestSprite);

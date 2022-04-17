@@ -88,16 +88,28 @@ if (Keyboard::isKeyPressed(Keyboard::E) && items_dropped_id.size() != 0 && !key_
 } else { key_e = false; }
 if (Keyboard::isKeyPressed(Keyboard::G) && !key_e) {
 	key_g = true;
-	int out = player_x - (960 - Mouse::getPosition().x);
-	int outy = player_y - (570 - Mouse::getPosition().y);
-	int vx = view.getCenter().x + 232;
-	int vy = view.getCenter().y - 352;
-	if (is_inventory_open && vx/1 <= out && out <= vx/1 + 115 && vy/1 <= outy && outy <= vy/1 + 106) {
-		if (inv_items[0] != 0) {
-			std::cout << "DROP\n";
-			InventoryItemsSprite[0] = InventoryItemEmptySprite;
-			createItem(inv_items[0], player_x, player_y);
-		    inv_items[0] = 0;
+	int out = player_x - (962 - Mouse::getPosition().x);
+	int outy = player_y - (544 - Mouse::getPosition().y);
+	int vx = view.getCenter().x + 261;
+	int vy = view.getCenter().y - 343;
+	if (is_inventory_open) {
+		std::cout << "-----\n";
+		for (int i = 0; i < 6; i++) {
+			vx = view.getCenter().x + 261;
+			for (int j = 0; j < 4; j++) {
+				std::cout << "i: " << i << " j: " << j << std::endl;
+				std::cout << "vx: " << vx << " vy: " << vy << std::endl;
+		        if (inv_items[i * 4 + j] != 0) {
+					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+			            std::cout << "DROP\n";
+			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
+			            createItem(inv_items[i * 4 + j], player_x, player_y);
+		                inv_items[i * 4 + j] = 0;
+				    }
+	            }
+				vx += 112;
+	        }
+			vy += 112;
 	    }
 	}
 } else { key_g = false; }
