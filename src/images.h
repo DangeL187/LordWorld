@@ -1,3 +1,7 @@
+map_image.loadFromFile("../images/map.png");
+map_texture.loadFromImage(map_image);
+map_sprite.setTexture(map_texture);
+
 GuiBarImage.loadFromFile("../images/GuiBar.png");
 GuiBarTexture.loadFromImage(GuiBarImage);
 GuiBarSprite.setTexture(GuiBarTexture);

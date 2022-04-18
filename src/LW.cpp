@@ -68,7 +68,9 @@ int damage = 1;
 int attack_speed = 1000; //1 second
 int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
 int target_number = 0;
-int inv_items[33]; //items inventory
+int inv_items[33]; //items inventory //from [24] to [26] - other
+//[27] - weapon, [28] - shield, [29] - helmet, [30] - chestplate, [31] - pants, [32] - boots
+int inv_types[24]; //item types invenory
 int cooldowns[9] {0, 0, 0, 0, 0, 0, 0, 0, 0}; //cooldowns
 float attack1_cd_timer = 0;
 float current_frame = 0;
@@ -89,7 +91,9 @@ std::vector<int> damaged_numbers; //monsters under attack
 std::vector<int> items_dropped_id; //rename to items_dropped
 std::vector<int> items_dropped_x;
 std::vector<int> items_dropped_y;
-std::vector<int> items_dropped_sprites;
+std::vector<int> items_dropped_sprites; //rename to sprite
+std::vector<int> items_dropped_type; //0 - nothing, 1 - weapon, 2 - shield
+//3 - helmet, 4 - chestplate, 5 - pants, 6 - boots, 7 - item, 8.. - others
 std::vector<std::string> inv_spells; //spells inventory
 std::string hotbar_spells[4]; //spells hotbar
 
@@ -157,13 +161,7 @@ int createItem(int ID, int get_x, int get_y) {
     items_dropped_x.push_back(get_x);
     items_dropped_y.push_back(get_y);
     items_dropped_sprites.push_back(sprite_counter);
-
-    if (ID == 0) {
-        other_sprites.push_back(tempSprite2);
-    }
-    if (ID == 1) {
-        other_sprites.push_back(tempSprite1);
-    }
+    #include "item_types.h"
 
     other_sprites[sprite_counter].setTextureRect(IntRect(0, 0, 56, 56));
     other_sprites[sprite_counter].setPosition(get_x, get_y);
@@ -224,10 +222,6 @@ int main() {
     createItem(1, 1700, 700);
     createItem(1, 1800, 700);
     createItem(1, 1900, 700);
-
-    map_image.loadFromFile("../images/map.png");
-    map_texture.loadFromImage(map_image);
-    map_sprite.setTexture(map_texture);
 
     Clock clock;
 

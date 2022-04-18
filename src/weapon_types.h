@@ -1,6 +1,6 @@
 bool checkWeaponsRange(float get_x, float get_y) {
     if (weapon == "Wooden Sword") {
-        damage = 1;
+        damage = 1; //todo: move to Class Player.update()
         float condxm = get_x/1 - range*64;
         float condxp = get_x/1 + range*64;
         float condym = get_y/1 - range*64;

@@ -18,15 +18,15 @@ void gui() {
     GuiBarSprite.setPosition(view.getCenter().x - 960, view.getCenter().y - 540);
     GuiInventorySprite.setPosition(view.getCenter().x - 300, view.getCenter().y - 400);
 
-    InventoryItemWeaponSprite.setPosition(view.getCenter().x - 260, view.getCenter().y - 256);
-    InventoryItemShieldSprite.setPosition(view.getCenter().x + 60, view.getCenter().y - 256);
-    InventoryItemChestSprite.setPosition(view.getCenter().x - 100, view.getCenter().y - 256);
-    InventoryItemHelmSprite.setPosition(view.getCenter().x - 100, view.getCenter().y - 380);
-    InventoryItemPantsSprite.setPosition(view.getCenter().x - 100, view.getCenter().y - 132);
-    InventoryItemBootsSprite.setPosition(view.getCenter().x - 100, view.getCenter().y - 8);
-    InventoryItemsSprite[24].setPosition(view.getCenter().x - 232, view.getCenter().y + 156);
-    InventoryItemsSprite[25].setPosition(view.getCenter().x - 100, view.getCenter().y + 156);
-    InventoryItemsSprite[26].setPosition(view.getCenter().x + 32, view.getCenter().y + 156);
+    InventoryItemWeaponSprite.setPosition(view.getCenter().x - 231, view.getCenter().y - 227);
+    InventoryItemShieldSprite.setPosition(view.getCenter().x + 89, view.getCenter().y - 227);
+    InventoryItemChestSprite.setPosition(view.getCenter().x - 71, view.getCenter().y - 227);
+    InventoryItemHelmSprite.setPosition(view.getCenter().x - 71, view.getCenter().y - 351);
+    InventoryItemPantsSprite.setPosition(view.getCenter().x - 71, view.getCenter().y - 103);
+    InventoryItemBootsSprite.setPosition(view.getCenter().x - 71, view.getCenter().y + 21);
+    InventoryItemsSprite[24].setPosition(view.getCenter().x - 203, view.getCenter().y + 185);
+    InventoryItemsSprite[25].setPosition(view.getCenter().x - 71, view.getCenter().y + 185);
+    InventoryItemsSprite[26].setPosition(view.getCenter().x + 61, view.getCenter().y + 185);
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 4; j++) {
             InventoryItemsSprite[i * 4 + j].setPosition(view.getCenter().x + 261 + 112 * j, view.getCenter().y - 343 + 112 * i);

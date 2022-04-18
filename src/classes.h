@@ -48,6 +48,7 @@ public:
 		player_x = x/1;
 		player_y = y/1;
 		herosprite.setPosition(x, y);
+		//todo: set equipment
 	}
 
     float getPlayerCoordinateX() {
