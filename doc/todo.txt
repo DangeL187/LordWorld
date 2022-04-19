@@ -7,4 +7,6 @@ drop function now works with first inventory slot only
 added sprites for dropped items
 fixed bug with sprites
 connected drop function with other slots
-todo: add function to equip weapon and armor
+added function to equip weapon and armor
+added armor and shield
+todo: add rings, delete equipment's background from inventory.png
