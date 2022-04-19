@@ -59,6 +59,7 @@ if (Keyboard::isKeyPressed(Keyboard::E) && items_dropped_id.size() != 0 && !key_
 					inv_types[j] = items_dropped_type[i];
 					InventoryItemsSprite[j] = other_sprites[items_dropped_sprites[i]];
 					InventoryItemsSprite[j].setTextureRect(IntRect(0, 0, 56, 56));
+					InventoryItemsSprite[j].setScale(1.5, 1.5);
 					std::cout << "!!! " << inv_items[j] << std::endl; //TEMP, TODO: DELETE
 				    items_dropped_id.erase(items_dropped_id.begin() + i);
 					items_dropped_x.erase(items_dropped_x.begin() + i);
@@ -145,8 +146,8 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 		for (int i = 0; i < 6; i++) {
 			vx = view.getCenter().x + 261;
 			for (int j = 0; j < 4; j++) {
-				if (inv_types[i * 4 + j] == 1 && inv_items[27] == 0) { //weapon
-					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				    if (inv_types[i * 4 + j] == 1 && inv_items[27] == 0) { //weapon
 			            std::cout << "EQUIP\n";
 						InventoryItemWeaponSprite = InventoryItemsSprite[i * 4 + j];
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
@@ -154,14 +155,54 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_items[i * 4 + j] = 0;
 						inv_types[i * 4 + j] = 0;
 				    }
+					if (inv_types[i * 4 + j] == 2 && inv_items[28] == 0) { //shield
+						std::cout << "EQUIP\n";
+						InventoryItemShieldSprite = InventoryItemsSprite[i * 4 + j];
+			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
+						inv_items[28] = inv_items[i * 4 + j];
+						inv_items[i * 4 + j] = 0;
+						inv_types[i * 4 + j] = 0;
+					}
+					if (inv_types[i * 4 + j] == 3 && inv_items[29] == 0) { //helmet
+						std::cout << "EQUIP\n";
+						InventoryItemHelmSprite = InventoryItemsSprite[i * 4 + j];
+			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
+						inv_items[29] = inv_items[i * 4 + j];
+						inv_items[i * 4 + j] = 0;
+						inv_types[i * 4 + j] = 0;
+					}
+					if (inv_types[i * 4 + j] == 4 && inv_items[30] == 0) { //chestplate
+						std::cout << "EQUIP\n";
+						InventoryItemChestSprite = InventoryItemsSprite[i * 4 + j];
+			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
+						inv_items[30] = inv_items[i * 4 + j];
+						inv_items[i * 4 + j] = 0;
+						inv_types[i * 4 + j] = 0;
+					}
+					if (inv_types[i * 4 + j] == 5 && inv_items[31] == 0) { //pants
+						std::cout << "EQUIP\n";
+						InventoryItemPantsSprite = InventoryItemsSprite[i * 4 + j];
+			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
+						inv_items[31] = inv_items[i * 4 + j];
+						inv_items[i * 4 + j] = 0;
+						inv_types[i * 4 + j] = 0;
+					}
+					if (inv_types[i * 4 + j] == 6 && inv_items[32] == 0) { //boots
+						std::cout << "EQUIP\n";
+						InventoryItemBootsSprite = InventoryItemsSprite[i * 4 + j];
+			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
+						inv_items[32] = inv_items[i * 4 + j];
+						inv_items[i * 4 + j] = 0;
+						inv_types[i * 4 + j] = 0;
+					}
 				}
 				vx += 112;
-	        }
+		    }
 			vy += 112;
 	    }
-		vx = view.getCenter().x - 231;
-		vy = view.getCenter().y - 227;
 		if (inv_items[27] != 0) {
+			vx = view.getCenter().x - 231;
+			vy = view.getCenter().y - 227;
 			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 				std::cout << "UNEQUIP\n";
 				for (int j = 0; j < 24; j++) {
@@ -171,6 +212,86 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_items[j] = inv_items[27];
 						inv_types[j] = 1;
 				        inv_items[27] = 0;
+					}
+				}
+			}
+		}
+		if (inv_items[28] != 0) {
+			vx = view.getCenter().x + 89;
+			vy = view.getCenter().y - 227;
+			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				std::cout << "UNEQUIP\n";
+				for (int j = 0; j < 24; j++) {
+					if (inv_items[j] == 0) {
+				        InventoryItemsSprite[j] = InventoryItemShieldSprite;
+				        InventoryItemShieldSprite = InventoryItemEmptySprite;
+						inv_items[j] = inv_items[28];
+						inv_types[j] = 2;
+				        inv_items[28] = 0;
+					}
+				}
+			}
+		}
+		if (inv_items[29] != 0) {
+			vx = view.getCenter().x - 71;
+			vy = view.getCenter().y - 351;
+			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				std::cout << "UNEQUIP\n";
+				for (int j = 0; j < 24; j++) {
+					if (inv_items[j] == 0) {
+				        InventoryItemsSprite[j] = InventoryItemHelmSprite;
+				        InventoryItemHelmSprite = InventoryItemEmptySprite;
+						inv_items[j] = inv_items[29];
+						inv_types[j] = 3;
+				        inv_items[29] = 0;
+					}
+				}
+			}
+		}
+		if (inv_items[30] != 0) {
+			vx = view.getCenter().x - 71;
+			vy = view.getCenter().y - 227;
+			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				std::cout << "UNEQUIP\n";
+				for (int j = 0; j < 24; j++) {
+					if (inv_items[j] == 0) {
+				        InventoryItemsSprite[j] = InventoryItemChestSprite;
+				        InventoryItemChestSprite = InventoryItemEmptySprite;
+						inv_items[j] = inv_items[30];
+						inv_types[j] = 4;
+				        inv_items[30] = 0;
+					}
+				}
+			}
+		}
+		if (inv_items[31] != 0) {
+			vx = view.getCenter().x - 71;
+			vy = view.getCenter().y - 103;
+			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				std::cout << "UNEQUIP\n";
+				for (int j = 0; j < 24; j++) {
+					if (inv_items[j] == 0) {
+				        InventoryItemsSprite[j] = InventoryItemPantsSprite;
+				        InventoryItemPantsSprite = InventoryItemEmptySprite;
+						inv_items[j] = inv_items[31];
+						inv_types[j] = 5;
+				        inv_items[31] = 0;
+					}
+				}
+			}
+		}
+		if (inv_items[32] != 0) {
+			vx = view.getCenter().x - 71;
+			vy = view.getCenter().y + 21;
+			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				std::cout << "UNEQUIP\n";
+				for (int j = 0; j < 24; j++) {
+					if (inv_items[j] == 0) {
+				        InventoryItemsSprite[j] = InventoryItemBootsSprite;
+				        InventoryItemBootsSprite = InventoryItemEmptySprite;
+						inv_items[j] = inv_items[32];
+						inv_types[j] = 6;
+				        inv_items[32] = 0;
 					}
 				}
 			}

@@ -3,10 +3,10 @@ map_texture.loadFromImage(map_image);
 map_sprite.setTexture(map_texture);
 
 GuiBarImage.loadFromFile("../images/GuiBar.png");
-GuiBarTexture.loadFromImage(GuiBarImage);
-GuiBarSprite.setTexture(GuiBarTexture);
 GuiInventoryImage.loadFromFile("../images/GuiInventory.png");
+GuiBarTexture.loadFromImage(GuiBarImage);
 GuiInventoryTexture.loadFromImage(GuiInventoryImage);
+GuiBarSprite.setTexture(GuiBarTexture);
 GuiInventorySprite.setTexture(GuiInventoryTexture);
 
 InventoryItemEmptyImage.loadFromFile("../images/GuiEmptyItem.png");
@@ -39,3 +39,22 @@ InventoryItemBootsSprite.setTexture(InventoryItemBootsTexture);
 for (int i = 0; i < 27; i++) {
     InventoryItemsSprite[i].setTexture(InventoryItemsTexture[i]);
 }
+////////////////////////////////////////////////////////////////////////////////
+WoodenSwordImage.loadFromFile("../images/Wooden Sword.png");
+IronShieldImage.loadFromFile("../images/Iron Shield.png");
+IronHelmetImage.loadFromFile("../images/Iron Helmet.png");
+IronChestplateImage.loadFromFile("../images/Iron Chestplate.png");
+IronPantsImage.loadFromFile("../images/Iron Pants.png");
+IronBootsImage.loadFromFile("../images/Iron Boots.png");
+WoodenSwordTexture.loadFromImage(WoodenSwordImage);
+IronShieldTexture.loadFromImage(IronShieldImage);
+IronHelmetTexture.loadFromImage(IronHelmetImage);
+IronChestplateTexture.loadFromImage(IronChestplateImage);
+IronPantsTexture.loadFromImage(IronPantsImage);
+IronBootsTexture.loadFromImage(IronBootsImage);
+WoodenSwordSprite.setTexture(WoodenSwordTexture);
+IronShieldSprite.setTexture(IronShieldTexture);
+IronHelmetSprite.setTexture(IronHelmetTexture);
+IronChestplateSprite.setTexture(IronChestplateTexture);
+IronPantsSprite.setTexture(IronPantsTexture);
+IronBootsSprite.setTexture(IronBootsTexture);

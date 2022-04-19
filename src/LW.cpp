@@ -84,6 +84,7 @@ std::string weapon = "Wooden Sword"; //temp weapon
 #include "drawmap.h"
 #include "weapon_types.h"
 #include "gui.h"
+#include "init_images.h"
 
 std::vector<Monster> v_monsters; //whole monsters
 std::vector<Monster> target_m; //targeted monster
@@ -93,7 +94,7 @@ std::vector<int> items_dropped_x;
 std::vector<int> items_dropped_y;
 std::vector<int> items_dropped_sprites; //rename to sprite
 std::vector<int> items_dropped_type; //0 - nothing, 1 - weapon, 2 - shield
-//3 - helmet, 4 - chestplate, 5 - pants, 6 - boots, 7 - item, 8.. - others
+//3 - helmet, 4 - chestplate, 5 - pants, 6 - boots, 7 - ring, 8.. - item
 std::vector<std::string> inv_spells; //spells inventory
 std::string hotbar_spells[4]; //spells hotbar
 
@@ -149,13 +150,6 @@ void moveCurrentFrame(float get_time) {
     }
 }
 
-Image tempImage1; //temp!
-Texture tempTexture1;
-Sprite tempSprite1;
-Image tempImage2;
-Texture tempTexture2;
-Sprite tempSprite2;
-
 int createItem(int ID, int get_x, int get_y) {
     items_dropped_id.push_back(ID);
     items_dropped_x.push_back(get_x);
@@ -173,13 +167,6 @@ int createItem(int ID, int get_x, int get_y) {
 
 int main() {
     hotbar_spells[0] = "ColdSnap"; //temp
-
-    tempImage1.loadFromFile("../images/Wooden Sword.png");
-    tempTexture1.loadFromImage(tempImage1);
-    tempSprite1.setTexture(tempTexture1);
-    tempImage2.loadFromFile("../images/Zero Item.png");
-    tempTexture2.loadFromImage(tempImage2);
-    tempSprite2.setTexture(tempTexture2);
 
     font.loadFromFile("../font/OceanSummer.ttf");
     text.setColor(Color::White);
@@ -209,11 +196,11 @@ int main() {
     v_monsters.push_back(rat2);
 
     createItem(1, 600, 600);
-    createItem(1, 700, 700);
-    createItem(1, 800, 700);
-    createItem(1, 900, 700);
-    createItem(1, 1000, 700);
-    createItem(1, 1100, 700);
+    createItem(2, 700, 700);
+    createItem(3, 800, 700);
+    createItem(4, 900, 700);
+    createItem(5, 1000, 700);
+    createItem(6, 1100, 700);
     createItem(1, 1200, 700);
     createItem(1, 1300, 700);
     createItem(1, 1400, 700);
