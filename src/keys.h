@@ -147,6 +147,30 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x + 261;
 			for (int j = 0; j < 4; j++) {
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					if (inv_types[i * 4 + j] == 7 && inv_items[24] == 0) { //other1
+			            std::cout << "EQUIP\n";
+						InventoryItemsSprite[24] = InventoryItemsSprite[i * 4 + j];
+			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
+						inv_items[24] = inv_items[i * 4 + j];
+						inv_items[i * 4 + j] = 0;
+						inv_types[i * 4 + j] = 0;
+				    }
+					if (inv_types[i * 4 + j] == 7 && inv_items[25] == 0) { //other2
+			            std::cout << "EQUIP\n";
+						InventoryItemsSprite[25] = InventoryItemsSprite[i * 4 + j];
+			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
+						inv_items[25] = inv_items[i * 4 + j];
+						inv_items[i * 4 + j] = 0;
+						inv_types[i * 4 + j] = 0;
+				    }
+					if (inv_types[i * 4 + j] == 7 && inv_items[26] == 0) { //other3
+			            std::cout << "EQUIP\n";
+						InventoryItemsSprite[26] = InventoryItemsSprite[i * 4 + j];
+			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
+						inv_items[26] = inv_items[i * 4 + j];
+						inv_items[i * 4 + j] = 0;
+						inv_types[i * 4 + j] = 0;
+				    }
 				    if (inv_types[i * 4 + j] == 1 && inv_items[27] == 0) { //weapon
 			            std::cout << "EQUIP\n";
 						InventoryItemWeaponSprite = InventoryItemsSprite[i * 4 + j];
@@ -200,6 +224,54 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 		    }
 			vy += 112;
 	    }
+		if (inv_items[24] != 0) {
+			vx = view.getCenter().x - 203;
+			vy = view.getCenter().y + 185;
+			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				std::cout << "UNEQUIP\n";
+				for (int j = 0; j < 24; j++) {
+					if (inv_items[j] == 0) {
+				        InventoryItemsSprite[j] = InventoryItemsSprite[24];
+				        InventoryItemsSprite[24] = InventoryItemEmptySprite;
+						inv_items[j] = inv_items[24];
+						inv_types[j] = 7;
+				        inv_items[24] = 0;
+					}
+				}
+			}
+		}
+		if (inv_items[25] != 0) {
+			vx = view.getCenter().x - 71;
+			vy = view.getCenter().y + 185;
+			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				std::cout << "UNEQUIP\n";
+				for (int j = 0; j < 24; j++) {
+					if (inv_items[j] == 0) {
+				        InventoryItemsSprite[j] = InventoryItemsSprite[25];
+				        InventoryItemsSprite[25] = InventoryItemEmptySprite;
+						inv_items[j] = inv_items[25];
+						inv_types[j] = 7;
+				        inv_items[25] = 0;
+					}
+				}
+			}
+		}
+		if (inv_items[26] != 0) {
+			vx = view.getCenter().x + 61;
+			vy = view.getCenter().y + 185;
+			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				std::cout << "UNEQUIP\n";
+				for (int j = 0; j < 24; j++) {
+					if (inv_items[j] == 0) {
+				        InventoryItemsSprite[j] = InventoryItemsSprite[26];
+				        InventoryItemsSprite[26] = InventoryItemEmptySprite;
+						inv_items[j] = inv_items[26];
+						inv_types[j] = 7;
+				        inv_items[26] = 0;
+					}
+				}
+			}
+		}
 		if (inv_items[27] != 0) {
 			vx = view.getCenter().x - 231;
 			vy = view.getCenter().y - 227;
@@ -212,6 +284,9 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_items[j] = inv_items[27];
 						inv_types[j] = 1;
 				        inv_items[27] = 0;
+						InventoryItemWeaponSprite.setTexture(InventoryItemWeaponTexture);
+						InventoryItemWeaponSprite.setTextureRect(IntRect(0, 0, 116, 115));
+						break;
 					}
 				}
 			}
@@ -228,6 +303,9 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_items[j] = inv_items[28];
 						inv_types[j] = 2;
 				        inv_items[28] = 0;
+						InventoryItemShieldSprite.setTexture(InventoryItemShieldTexture);
+						InventoryItemShieldSprite.setTextureRect(IntRect(0, 0, 116, 115));
+						break;
 					}
 				}
 			}
@@ -244,6 +322,9 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_items[j] = inv_items[29];
 						inv_types[j] = 3;
 				        inv_items[29] = 0;
+						InventoryItemHelmSprite.setTexture(InventoryItemHelmTexture);
+						InventoryItemHelmSprite.setTextureRect(IntRect(0, 0, 116, 115));
+						break;
 					}
 				}
 			}
@@ -260,6 +341,9 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_items[j] = inv_items[30];
 						inv_types[j] = 4;
 				        inv_items[30] = 0;
+						InventoryItemChestSprite.setTexture(InventoryItemChestTexture);
+						InventoryItemChestSprite.setTextureRect(IntRect(0, 0, 116, 115));
+						break;
 					}
 				}
 			}
@@ -276,6 +360,9 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_items[j] = inv_items[31];
 						inv_types[j] = 5;
 				        inv_items[31] = 0;
+						InventoryItemPantsSprite.setTexture(InventoryItemPantsTexture);
+						InventoryItemPantsSprite.setTextureRect(IntRect(0, 0, 116, 115));
+						break;
 					}
 				}
 			}
@@ -292,6 +379,9 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_items[j] = inv_items[32];
 						inv_types[j] = 6;
 				        inv_items[32] = 0;
+						InventoryItemBootsSprite.setTexture(InventoryItemBootsTexture);
+						InventoryItemBootsSprite.setTextureRect(IntRect(0, 0, 116, 115));
+						break;
 					}
 				}
 			}

@@ -22,3 +22,7 @@ else if (ID == 6) { //Iron Boots
     other_sprites.push_back(IronBootsSprite);
     items_dropped_type.push_back(6); //boots
 }
+else if (ID == 7) { //Iron Ring
+    other_sprites.push_back(IronRingSprite);
+    items_dropped_type.push_back(7); //other
+}

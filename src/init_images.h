@@ -22,3 +22,7 @@ Sprite IronPantsSprite;
 Image IronBootsImage;
 Texture IronBootsTexture;
 Sprite IronBootsSprite;
+//Ring:
+Image IronRingImage;
+Texture IronRingTexture;
+Sprite IronRingSprite;

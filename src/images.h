@@ -10,12 +10,12 @@ GuiBarSprite.setTexture(GuiBarTexture);
 GuiInventorySprite.setTexture(GuiInventoryTexture);
 
 InventoryItemEmptyImage.loadFromFile("../images/GuiEmptyItem.png");
-InventoryItemWeaponImage.loadFromFile("../images/GuiEmptyItem.png");
-InventoryItemShieldImage.loadFromFile("../images/GuiEmptyItem.png");
-InventoryItemHelmImage.loadFromFile("../images/GuiEmptyItem.png");
-InventoryItemChestImage.loadFromFile("../images/GuiEmptyItem.png");
-InventoryItemPantsImage.loadFromFile("../images/GuiEmptyItem.png");
-InventoryItemBootsImage.loadFromFile("../images/GuiEmptyItem.png");
+InventoryItemWeaponImage.loadFromFile("../images/GuiSlotWeapon.png");
+InventoryItemShieldImage.loadFromFile("../images/GuiSlotShield.png");
+InventoryItemHelmImage.loadFromFile("../images/GuiSlotHelm.png");
+InventoryItemChestImage.loadFromFile("../images/GuiSlotChest.png");
+InventoryItemPantsImage.loadFromFile("../images/GuiSlotPants.png");
+InventoryItemBootsImage.loadFromFile("../images/GuiSlotBoots.png");
 for (int i = 0; i < 27; i++) {
     InventoryItemsImage[i].loadFromFile("../images/GuiEmptyItem.png");
 }
@@ -46,15 +46,18 @@ IronHelmetImage.loadFromFile("../images/Iron Helmet.png");
 IronChestplateImage.loadFromFile("../images/Iron Chestplate.png");
 IronPantsImage.loadFromFile("../images/Iron Pants.png");
 IronBootsImage.loadFromFile("../images/Iron Boots.png");
+IronRingImage.loadFromFile("../images/Iron Ring.png");
 WoodenSwordTexture.loadFromImage(WoodenSwordImage);
 IronShieldTexture.loadFromImage(IronShieldImage);
 IronHelmetTexture.loadFromImage(IronHelmetImage);
 IronChestplateTexture.loadFromImage(IronChestplateImage);
 IronPantsTexture.loadFromImage(IronPantsImage);
 IronBootsTexture.loadFromImage(IronBootsImage);
+IronRingTexture.loadFromImage(IronRingImage);
 WoodenSwordSprite.setTexture(WoodenSwordTexture);
 IronShieldSprite.setTexture(IronShieldTexture);
 IronHelmetSprite.setTexture(IronHelmetTexture);
 IronChestplateSprite.setTexture(IronChestplateTexture);
 IronPantsSprite.setTexture(IronPantsTexture);
 IronBootsSprite.setTexture(IronBootsTexture);
+IronRingSprite.setTexture(IronRingTexture);

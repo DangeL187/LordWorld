@@ -201,9 +201,9 @@ int main() {
     createItem(4, 900, 700);
     createItem(5, 1000, 700);
     createItem(6, 1100, 700);
-    createItem(1, 1200, 700);
-    createItem(1, 1300, 700);
-    createItem(1, 1400, 700);
+    createItem(7, 1200, 700);
+    createItem(7, 1300, 700);
+    createItem(7, 1400, 700);
     createItem(1, 1500, 700);
     createItem(1, 1600, 700);
     createItem(1, 1700, 700);
@@ -330,5 +330,6 @@ int main() {
         window.draw(player_stats_lvl);
         window.display();
     }
+    while(true){}
 	return 0;
 }
