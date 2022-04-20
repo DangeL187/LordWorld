@@ -1,12 +1,3 @@
 REMOVE DEATH FUNCTION FROM EVERYWHERE AND PUT IT IN THE MAIN CYCLE
 
-version 0.0.8:
-has been added function to pick up items
-has been added function to drop items
-drop function now works with first inventory slot only
-added sprites for dropped items
-fixed bug with sprites
-connected drop function with other slots
-added function to equip weapon and armor
-added armor and shield
-todo: add rings, delete equipment's background from inventory.png
+create hero armor and weapon preview window //not really nessesary

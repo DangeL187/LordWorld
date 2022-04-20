@@ -1,0 +1,14 @@
+----------------------------------------------------------------------------------------------------
+Lord World (LW) by DangeL
+----------------------------------------------------------------------------------------------------
+Version 0.0.8 ChangeLog
+----------------------------------------------------------------------------------------------------
+Has been added function to pick up items
+Has been added function to drop items
+Drop function now works with first inventory slot only
+Added sprites for dropped items
+Fixed bug with sprites
+Connected drop function with other slots
+Added function to equip weapon and armor
+Added armor and shield
+Added rings and deleted equipment's background from inventory.png
