@@ -6,7 +6,7 @@ Lord World is a free-to-play 2D RPG game for Linux
 Folders:
 bin - all executable applications
 build - build files
-doc - documentation for every LW's module
+doc - changelog and other documentation
 lib - libraries that you will need to build LW
 src - LW's source code
 test - LW's files used for testing
