@@ -14,9 +14,9 @@
 
 using namespace sf;
 
-Image GuiBarImage, GuiInventoryImage;
-Texture GuiBarTexture, GuiInventoryTexture;
-Sprite GuiBarSprite, GuiInventorySprite;
+Image GuiBarImage, GuiInventoryImage, GuiSpellsHotbarImage;
+Texture GuiBarTexture, GuiInventoryTexture, GuiSpellsHotbarTexture;
+Sprite GuiBarSprite, GuiInventorySprite, GuiSpellsHotbarSprite;
 
 Image InventoryItemsImage[27];
 Image InventoryItemEmptyImage;
@@ -311,6 +311,7 @@ int main() {
         for (int lol = 0; lol < other_sprites.size(); lol++) {
             window.draw(other_sprites[lol]);
         }
+        window.draw(GuiSpellsHotbarSprite);
         if (is_inventory_open) {
             window.draw(GuiInventorySprite);
             window.draw(InventoryItemWeaponSprite);

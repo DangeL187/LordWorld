@@ -17,6 +17,7 @@ void gui() {
 
     GuiBarSprite.setPosition(view.getCenter().x - 960, view.getCenter().y - 540);
     GuiInventorySprite.setPosition(view.getCenter().x - 300, view.getCenter().y - 400);
+    GuiSpellsHotbarSprite.setPosition(view.getCenter().x - 540, view.getCenter().y + 380);
 
     if (inv_items[27] != 0) {
         InventoryItemWeaponSprite.setPosition(view.getCenter().x - 231 - 15, view.getCenter().y - 227 - 15);

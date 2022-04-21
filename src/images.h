@@ -4,10 +4,13 @@ map_sprite.setTexture(map_texture);
 
 GuiBarImage.loadFromFile("../images/GuiBar.png");
 GuiInventoryImage.loadFromFile("../images/GuiInventory.png");
+GuiSpellsHotbarImage.loadFromFile("../images/GuiSpellsHotbar.png");
 GuiBarTexture.loadFromImage(GuiBarImage);
 GuiInventoryTexture.loadFromImage(GuiInventoryImage);
+GuiSpellsHotbarTexture.loadFromImage(GuiSpellsHotbarImage);
 GuiBarSprite.setTexture(GuiBarTexture);
 GuiInventorySprite.setTexture(GuiInventoryTexture);
+GuiSpellsHotbarSprite.setTexture(GuiSpellsHotbarTexture);
 
 InventoryItemEmptyImage.loadFromFile("../images/GuiEmptyItem.png");
 InventoryItemWeaponImage.loadFromFile("../images/GuiSlotWeapon.png");
