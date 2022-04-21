@@ -1,0 +1,14 @@
+----------------------------------------------------------------------------------------------------
+Lord World (LW) by DangeL
+----------------------------------------------------------------------------------------------------
+getPlayerCoordinateForView() - set view's center
+split() - split function as in Python
+defineTile() - draw tiles on the map
+gui() - set position of the gui elements
+targeting() - target monster
+spellDamaged() - define damaged monsters by spell
+monstersDamaged() - define damaged monsters by attack
+moveCurrentFrame() - move hero's frame
+createItem() - create item
+spells() - cast spell
+----------------------------------------------------------------------------------------------------
