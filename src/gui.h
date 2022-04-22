@@ -57,4 +57,8 @@ void gui() {
             InventoryItemsSprite[i * 4 + j].setPosition(view.getCenter().x + 261 - 15 + 112 * j, view.getCenter().y - 343 - 15 + 112 * i);
         }
     }
+
+    for (int i = 0; i < 9; i++) {
+        SpellsHotbarSprites[i].setPosition(view.getCenter().x - 536 + 112 * i, view.getCenter().y + 384);
+    }
 }

@@ -43,6 +43,10 @@ Sprite InventoryItemBootsSprite;
 Sprite InventoryItemWeaponSprite;
 Sprite InventoryItemShieldSprite;
 
+Image SpellsHotbarImages[9];
+Texture SpellsHotbarTextures[9];
+Sprite SpellsHotbarSprites[9];
+
 Image map_image;
 Texture map_texture;
 Sprite map_sprite;
@@ -312,6 +316,9 @@ int main() {
             window.draw(other_sprites[lol]);
         }
         window.draw(GuiSpellsHotbarSprite);
+        for (int i = 0; i < 9; i++) {
+            window.draw(SpellsHotbarSprites[i]);
+        }
         if (is_inventory_open) {
             window.draw(GuiInventorySprite);
             window.draw(InventoryItemWeaponSprite);

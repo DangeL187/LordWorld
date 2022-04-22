@@ -19,9 +19,6 @@ InventoryItemHelmImage.loadFromFile("../images/GuiSlotHelm.png");
 InventoryItemChestImage.loadFromFile("../images/GuiSlotChest.png");
 InventoryItemPantsImage.loadFromFile("../images/GuiSlotPants.png");
 InventoryItemBootsImage.loadFromFile("../images/GuiSlotBoots.png");
-for (int i = 0; i < 27; i++) {
-    InventoryItemsImage[i].loadFromFile("../images/GuiEmptyItem.png");
-}
 InventoryItemEmptyTexture.loadFromImage(InventoryItemEmptyImage);
 InventoryItemWeaponTexture.loadFromImage(InventoryItemWeaponImage);
 InventoryItemShieldTexture.loadFromImage(InventoryItemShieldImage);
@@ -29,9 +26,6 @@ InventoryItemHelmTexture.loadFromImage(InventoryItemHelmImage);
 InventoryItemChestTexture.loadFromImage(InventoryItemChestImage);
 InventoryItemPantsTexture.loadFromImage(InventoryItemPantsImage);
 InventoryItemBootsTexture.loadFromImage(InventoryItemBootsImage);
-for (int i = 0; i < 27; i++) {
-    InventoryItemsTexture[i].loadFromImage(InventoryItemsImage[i]);
-}
 InventoryItemEmptySprite.setTexture(InventoryItemEmptyTexture);
 InventoryItemWeaponSprite.setTexture(InventoryItemWeaponTexture);
 InventoryItemShieldSprite.setTexture(InventoryItemShieldTexture);
@@ -40,7 +34,15 @@ InventoryItemChestSprite.setTexture(InventoryItemChestTexture);
 InventoryItemPantsSprite.setTexture(InventoryItemPantsTexture);
 InventoryItemBootsSprite.setTexture(InventoryItemBootsTexture);
 for (int i = 0; i < 27; i++) {
+    InventoryItemsImage[i].loadFromFile("../images/GuiEmptyItem.png");
+    InventoryItemsTexture[i].loadFromImage(InventoryItemsImage[i]);
     InventoryItemsSprite[i].setTexture(InventoryItemsTexture[i]);
+}
+
+for (int i = 0; i < 9; i++) {
+    SpellsHotbarImages[i].loadFromFile("../images/GuiEmptySpell.png");
+    SpellsHotbarTextures[i].loadFromImage(SpellsHotbarImages[i]);
+    SpellsHotbarSprites[i].setTexture(SpellsHotbarTextures[i]);
 }
 ////////////////////////////////////////////////////////////////////////////////
 WoodenSwordImage.loadFromFile("../images/Wooden Sword.png");
