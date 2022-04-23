@@ -26,3 +26,7 @@ Sprite IronBootsSprite;
 Image IronRingImage;
 Texture IronRingTexture;
 Sprite IronRingSprite;
+//Spells:
+Image ColdSnapImage;
+Texture ColdSnapTexture;
+Sprite ColdSnapSprite;

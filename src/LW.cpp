@@ -5,7 +5,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <cstdlib>
-#include <string.h>
+#include <string>
 #include <sstream>
 #include <cmath>
 #include "map.h"
@@ -54,6 +54,15 @@ Sprite herosprite;
 std::vector<Sprite> other_sprites;
 
 Font font; //шрифт
+Text text_cd_0("", font, 40);
+Text text_cd_1("", font, 40);
+Text text_cd_2("", font, 40);
+Text text_cd_3("", font, 40);
+Text text_cd_4("", font, 40);
+Text text_cd_5("", font, 40);
+Text text_cd_6("", font, 40);
+Text text_cd_7("", font, 40);
+Text text_cd_8("", font, 40);
 Text text("", font, 40);
 Text player_stats_hp("", font, 40);
 Text player_stats_mp("", font, 40);
@@ -71,7 +80,7 @@ int player_hp = 10000, player_mp = 10000, player_lvl = 1;
 int damage = 1;
 int attack_speed = 1000; //1 second
 int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
-int target_number = 0;
+int target_number = -1;
 int inv_items[33]; //items inventory //from [24] to [26] - other
 //[27] - weapon, [28] - shield, [29] - helmet, [30] - chestplate, [31] - pants, [32] - boots
 int inv_types[24]; //item types invenory
@@ -138,15 +147,6 @@ void spellDamaged() { //TODO: different types of damage range, unite it with mon
 	}
 }
 
-void monstersDamaged() { //TODO: different types of damage range?
-    damaged_numbers.clear();
-	for (int v = 0; v < v_monsters.size(); v++) {
-        float mx = v_monsters[v].getMonsterCoordinateX();
-		float my = v_monsters[v].getMonsterCoordinateY();
-		damaged_numbers.push_back(v);
-	}
-}
-
 void moveCurrentFrame(float get_time) {
 	current_frame += 0.005 * get_time;
 	if (current_frame > 3) {
@@ -170,9 +170,21 @@ int createItem(int ID, int get_x, int get_y) {
 #include "spells.h"
 
 int main() {
+    #include "images.h" //load images
+
     hotbar_spells[0] = "ColdSnap"; //temp
+    SpellsHotbarSprites[0] = ColdSnapSprite; //move this to fucntion setImagesToHotbar(): for(i < 9);
 
     font.loadFromFile("../font/OceanSummer.ttf");
+    text_cd_0.setColor(Color::White);
+    text_cd_1.setColor(Color::White);
+    text_cd_2.setColor(Color::White);
+    text_cd_3.setColor(Color::White);
+    text_cd_4.setColor(Color::White);
+    text_cd_5.setColor(Color::White);
+    text_cd_6.setColor(Color::White);
+    text_cd_7.setColor(Color::White);
+    text_cd_8.setColor(Color::White);
     text.setColor(Color::White);
     player_stats_hp.setColor(Color::White);
     player_stats_hp.setStyle(sf::Text::Bold);
@@ -185,7 +197,7 @@ int main() {
         inv_items[i] = 0;
     }
 
-    #include "images.h" //load images
+    //there was images.h //todo: move it back here after a while
 
     std::cout << "I tink its k\n";
 
@@ -239,12 +251,11 @@ int main() {
         }
 
         if (attack == 1 && attack1_cd == 0) {
-            monstersDamaged();
-            for (int v = 0; v < damaged_numbers.size(); v++) {
-                float mx = v_monsters[damaged_numbers[v]].getMonsterCoordinateX();
-        		float my = v_monsters[damaged_numbers[v]].getMonsterCoordinateY();
+            for (int v = 0; v < v_monsters.size(); v++) {
+                float mx = v_monsters[v].getMonsterCoordinateX();
+        		float my = v_monsters[v].getMonsterCoordinateY();
                 if (checkWeaponsRange(mx, my)) {
-                    v_monsters[damaged_numbers[v]].hitMonster(damage, time);
+                    v_monsters[v].hitMonster(damage, time);
                     attack = 0;
                 }
             }
@@ -255,8 +266,9 @@ int main() {
             if (v_monsters[i].getMonsterHP() <= 0) {
                 other_sprites.erase(other_sprites.begin() + v_monsters[i].getMonsterSprite());
                 sprite_counter--;
-                if (damaged_numbers[i] == target_number) {
+                if (i == target_number) {
                     target_m.erase(target_m.begin() + 0);
+                    target_number = -1;
                     text.setString("");
                 }
                 for (int j = 0; j < v_monsters.size(); j++) {
@@ -332,6 +344,15 @@ int main() {
             }
         }
         window.draw(GuiBarSprite);
+        window.draw(text_cd_0);
+        window.draw(text_cd_1);
+        window.draw(text_cd_2);
+        window.draw(text_cd_3);
+        window.draw(text_cd_4);
+        window.draw(text_cd_5);
+        window.draw(text_cd_6);
+        window.draw(text_cd_7);
+        window.draw(text_cd_8);
         window.draw(text);
         window.draw(player_stats_hp);
         window.draw(player_stats_mp);

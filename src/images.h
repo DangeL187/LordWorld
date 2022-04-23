@@ -45,6 +45,10 @@ for (int i = 0; i < 9; i++) {
     SpellsHotbarSprites[i].setTexture(SpellsHotbarTextures[i]);
 }
 ////////////////////////////////////////////////////////////////////////////////
+ColdSnapImage.loadFromFile("../images/ColdSnap.png");
+ColdSnapTexture.loadFromImage(ColdSnapImage);
+ColdSnapSprite.setTexture(ColdSnapTexture);
+////////////////////////////////////////////////////////////////////////////////
 WoodenSwordImage.loadFromFile("../images/Wooden Sword.png");
 IronShieldImage.loadFromFile("../images/Iron Shield.png");
 IronHelmetImage.loadFromFile("../images/Iron Helmet.png");

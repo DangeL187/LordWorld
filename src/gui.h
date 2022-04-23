@@ -14,6 +14,16 @@ void gui() {
     player_stats_mp.setPosition(view.getCenter().x - 690, view.getCenter().y - 450);
     player_stats_lvl.setPosition(view.getCenter().x - 690, view.getCenter().y - 382);
     text.setPosition(view.getCenter().x + 700, view.getCenter().y - 500);
+    text_cd_0.setString(std::to_string(cooldowns[0]/1000));
+    text_cd_1.setString(std::to_string(cooldowns[1]/1000));
+    text_cd_2.setString(std::to_string(cooldowns[2]/1000));
+    text_cd_3.setString(std::to_string(cooldowns[3]/1000));
+    text_cd_4.setString(std::to_string(cooldowns[4]/1000));
+    text_cd_5.setString(std::to_string(cooldowns[5]/1000));
+    text_cd_6.setString(std::to_string(cooldowns[6]/1000));
+    text_cd_7.setString(std::to_string(cooldowns[7]/1000));
+    text_cd_8.setString(std::to_string(cooldowns[8]/1000));
+    text_cd_0.setPosition(view.getCenter().x - 490, view.getCenter().y + 414);
 
     GuiBarSprite.setPosition(view.getCenter().x - 960, view.getCenter().y - 540);
     GuiInventorySprite.setPosition(view.getCenter().x - 300, view.getCenter().y - 400);
