@@ -14,16 +14,60 @@ void gui() {
     player_stats_mp.setPosition(view.getCenter().x - 690, view.getCenter().y - 450);
     player_stats_lvl.setPosition(view.getCenter().x - 690, view.getCenter().y - 382);
     text.setPosition(view.getCenter().x + 700, view.getCenter().y - 500);
-    text_cd_0.setString(std::to_string(cooldowns[0]/1000));
-    text_cd_1.setString(std::to_string(cooldowns[1]/1000));
-    text_cd_2.setString(std::to_string(cooldowns[2]/1000));
-    text_cd_3.setString(std::to_string(cooldowns[3]/1000));
-    text_cd_4.setString(std::to_string(cooldowns[4]/1000));
-    text_cd_5.setString(std::to_string(cooldowns[5]/1000));
-    text_cd_6.setString(std::to_string(cooldowns[6]/1000));
-    text_cd_7.setString(std::to_string(cooldowns[7]/1000));
-    text_cd_8.setString(std::to_string(cooldowns[8]/1000));
-    text_cd_0.setPosition(view.getCenter().x - 490, view.getCenter().y + 414);
+    if (cooldowns[0] != 0) {
+        text_cd_0.setString(std::to_string(cooldowns[0]/1000));
+    } else {
+        text_cd_0.setString("");
+    }
+    if (cooldowns[1] != 0) {
+        text_cd_1.setString(std::to_string(cooldowns[1]/1000));
+    } else {
+        text_cd_1.setString("");
+    }
+    if (cooldowns[2] != 0) {
+        text_cd_2.setString(std::to_string(cooldowns[2]/1000));
+    } else {
+        text_cd_2.setString("");
+    }
+    if (cooldowns[3] != 0) {
+        text_cd_3.setString(std::to_string(cooldowns[3]/1000));
+    } else {
+        text_cd_3.setString("");
+    }
+    if (cooldowns[4] != 0) {
+        text_cd_4.setString(std::to_string(cooldowns[4]/1000));
+    } else {
+        text_cd_4.setString("");
+    }
+    if (cooldowns[5] != 0) {
+        text_cd_5.setString(std::to_string(cooldowns[5]/1000));
+    } else {
+        text_cd_5.setString("");
+    }
+    if (cooldowns[6] != 0) {
+        text_cd_6.setString(std::to_string(cooldowns[6]/1000));
+    } else {
+        text_cd_6.setString("");
+    }
+    if (cooldowns[7] != 0) {
+        text_cd_7.setString(std::to_string(cooldowns[7]/1000));
+    } else {
+        text_cd_7.setString("");
+    }
+    if (cooldowns[8] != 0) {
+        text_cd_8.setString(std::to_string(cooldowns[8]/1000));
+    } else {
+        text_cd_8.setString("");
+    }
+    text_cd_0.setPosition(view.getCenter().x - 490, view.getCenter().y + 404);
+    text_cd_1.setPosition(view.getCenter().x - 380, view.getCenter().y + 404);
+    text_cd_2.setPosition(view.getCenter().x - 265, view.getCenter().y + 404);
+    text_cd_3.setPosition(view.getCenter().x - 155, view.getCenter().y + 404);
+    text_cd_4.setPosition(view.getCenter().x - 45, view.getCenter().y + 404);
+    text_cd_5.setPosition(view.getCenter().x + 70, view.getCenter().y + 404);
+    text_cd_6.setPosition(view.getCenter().x + 180, view.getCenter().y + 404);
+    text_cd_7.setPosition(view.getCenter().x + 295, view.getCenter().y + 404);
+    text_cd_8.setPosition(view.getCenter().x + 405, view.getCenter().y + 404);
 
     GuiBarSprite.setPosition(view.getCenter().x - 960, view.getCenter().y - 540);
     GuiInventorySprite.setPosition(view.getCenter().x - 300, view.getCenter().y - 400);

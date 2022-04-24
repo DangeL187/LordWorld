@@ -54,15 +54,15 @@ Sprite herosprite;
 std::vector<Sprite> other_sprites;
 
 Font font; //шрифт
-Text text_cd_0("", font, 40);
-Text text_cd_1("", font, 40);
-Text text_cd_2("", font, 40);
-Text text_cd_3("", font, 40);
-Text text_cd_4("", font, 40);
-Text text_cd_5("", font, 40);
-Text text_cd_6("", font, 40);
-Text text_cd_7("", font, 40);
-Text text_cd_8("", font, 40);
+Text text_cd_0("", font, 60);
+Text text_cd_1("", font, 60);
+Text text_cd_2("", font, 60);
+Text text_cd_3("", font, 60);
+Text text_cd_4("", font, 60);
+Text text_cd_5("", font, 60);
+Text text_cd_6("", font, 60);
+Text text_cd_7("", font, 60);
+Text text_cd_8("", font, 60);
 Text text("", font, 40);
 Text player_stats_hp("", font, 40);
 Text player_stats_mp("", font, 40);
@@ -134,8 +134,8 @@ void targeting() {
 
 void spellDamaged() { //TODO: different types of damage range, unite it with monsters_damaged?
     damaged_numbers.clear();
-    int out = player_x - (960 - Mouse::getPosition().x);
-	int outy = player_y - (570 - Mouse::getPosition().y);
+    int out = player_x - (962 - Mouse::getPosition().x);
+	int outy = player_y - (544 - Mouse::getPosition().y);
 	for (int v = 0; v < v_monsters.size(); v++) {
         float mx = v_monsters[v].getMonsterCoordinateX();
 		float my = v_monsters[v].getMonsterCoordinateY();
@@ -208,7 +208,7 @@ int main() {
 
     Monster rat(300, 300, 50.0, 62.0, "Rat");
     v_monsters.push_back(rat);
-    Monster rat2(400, 400, 50.0, 62.0, "Rat2");
+    Monster rat2(400, 400, 50.0, 62.0, "Rat");
     v_monsters.push_back(rat2);
 
     createItem(1, 600, 600);
