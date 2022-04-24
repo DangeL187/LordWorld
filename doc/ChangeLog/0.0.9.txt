@@ -6,4 +6,5 @@ Version 0.0.9 ChangeLog
 21.04.2022 - added some docs, created file ColdSnap.png, added spells hotbar without functional
 23.04.2022 - added cooldown text counters, added first spell's image, fixed spell cast range
 23.04.2022 - deleted monstersDamaged() function, fixed bug with already dead target
+24.04.2022 - fixed spellDamaged() range, added Rat.png, setted position for other counters
 ----------------------------------------------------------------------------------------------------
