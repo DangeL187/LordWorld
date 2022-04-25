@@ -1,5 +1,5 @@
 bool checkWeaponsRange(float get_x, float get_y) {
-    if (weapon == "Wooden Sword") {
+    if (weapon_type == 1) {
         float condxm = get_x/1 - range*64;
         float condxp = get_x/1 + range*64;
         float condym = get_y/1 - range*64;

@@ -1,8 +1,10 @@
 void setWeaponStats() {
     if (inv_items[27] == 1) { //Wooden Sword
+        weapon_type = 1;
         damage = 2 * strength; //gives +2 attack damage
     }
     else {
+        weapon_type = 1;
         damage = 1 * strength; //nothing gives +1 attack damage
     }
 }
