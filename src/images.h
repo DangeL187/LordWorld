@@ -49,6 +49,10 @@ ColdSnapImage.loadFromFile("../images/ColdSnap.png");
 ColdSnapTexture.loadFromImage(ColdSnapImage);
 ColdSnapSprite.setTexture(ColdSnapTexture);
 ////////////////////////////////////////////////////////////////////////////////
+MonsterRatImage.loadFromFile("../images/Rat.png");
+MonsterRatTexture.loadFromImage(MonsterRatImage);
+MonsterRatSprite.setTexture(MonsterRatTexture);
+////////////////////////////////////////////////////////////////////////////////
 WoodenSwordImage.loadFromFile("../images/Wooden Sword.png");
 IronShieldImage.loadFromFile("../images/Iron Shield.png");
 IronHelmetImage.loadFromFile("../images/Iron Helmet.png");

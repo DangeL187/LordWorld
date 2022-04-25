@@ -30,3 +30,7 @@ Sprite IronRingSprite;
 Image ColdSnapImage;
 Texture ColdSnapTexture;
 Sprite ColdSnapSprite;
+
+Image MonsterRatImage;
+Texture MonsterRatTexture;
+Sprite MonsterRatSprite;

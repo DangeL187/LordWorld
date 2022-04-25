@@ -28,11 +28,12 @@ public:
 		if (TileMap[i][j] == 's') {
 			x = 300; y = 300;
 			TileMap[i][j] = ' ';
+			//TODO: make createMonster() available to call from here
 		}
 	    }
     }
 
-    void update(float time) {  // one more parameter with player's number!
+    void update(float time) {
 		switch (dir) {
 		case 0: dx = speed; dy = 0; break;
 		case 1: dx = -speed; dy = 0; break;
@@ -48,7 +49,12 @@ public:
 		player_x = x/1;
 		player_y = y/1;
 		herosprite.setPosition(x, y);
-		//todo: set equipment
+		setWeaponStats();
+		setShieldStats();
+		setHelmetStats();
+		setChestplateStats();
+		setPantsStats();
+		setBootsStats();
 	}
 
     float getPlayerCoordinateX() {
@@ -79,10 +85,7 @@ public:
 		w = W; h = H;
 		name = NAME;
 		#include "monsters.h"
-		image.loadFromFile("../images/" + NAME + ".png");
-		std::cout << NAME << std::endl;
-		texture.loadFromImage(image);
-		sprite.setTexture(texture);
+		std::cout << name << std::endl;
 		other_sprites.push_back(sprite);
 		x = X; y = Y;
 		other_sprites[static_sprite].setTextureRect(IntRect(0, 0, w, h));
@@ -106,7 +109,7 @@ public:
 	    }
     }
 
-    void update(float time) { //TODO: move checkbuff here
+    void update(float time) {
 		switch (dir) {
 		    case 0: dx = speed; dy = 0; break;
 		    case 1: dx = -speed; dy = 0; break;

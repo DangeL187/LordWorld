@@ -3,19 +3,31 @@
 #include <string>
 using namespace std;
 
-vector<int> v;
-int a;
-int b;
-int c;
+class Monster {
+public:
+    int mx = 0;
+    Monster(int get_x) {
+         mx = get_x;
+    }
+    int getX() {
+        return mx;
+    }
+};
 
-int vec(int X) {
-    a = X;
-    b = a;
-    c = b;
-    v.push_back(c);
+vector<Monster> v;
+
+void createInt(int i) {
+    int x = i;
+    v.push_back(x);
+}
+
+void create(Monster i) {
+    Monster x = i;
+    v.push_back(x);
 }
 
 int main() {
-    int arr[10] = {1, 1, 1, 2, 2, 6, 7, 8, 9, 10};
-    arr.erase(arr.begin() + 9);
+    create(Monster(1));
+    create(Monster(2));
+    cout << v[0].getX() << " " << v[1].getX() << endl;
 }

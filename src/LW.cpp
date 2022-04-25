@@ -68,16 +68,43 @@ Text player_stats_hp("", font, 40);
 Text player_stats_mp("", font, 40);
 Text player_stats_lvl("", font, 40);
 
+//stats:
+int strength = 1;
+int armor = 0;
+int magic = 1;
+int critical_chance = 1; //%
+//resists:
+int magic_resistance = 1; //%
+int physical_resistance = 1; //%
+//magic:
+int magic_ice = 1;
+int magic_fire = 1;
+int magic_earth = 1;
+int magic_wind = 1;
+int magic_dark = 1;
+int magic_light = 1;
+//skills:
+int stealth = 1;
+int knives = 1;
+int spears = 1;
+int scythes = 1;
+int staffs = 1;
+
 int player_x = 0, player_y = 0;
 int attack = 0;
 int range = 1; //*64
+int armor_shield = 0;
+int armor_helmet = 0;
+int armor_chestplate = 0;
+int armor_pants = 0;
+int armor_boots = 0;
 int sprite_counter = 0;
 int attack1_cd = 0;
 int spell_slot = 0;
 int timer_ColdSnap;
 int timer_ColdSnap_tick;
 int player_hp = 10000, player_mp = 10000, player_lvl = 1;
-int damage = 1;
+int damage = 1; //TODO: rename to player_damage
 int attack_speed = 1000; //1 second
 int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
 int target_number = -1;
@@ -90,19 +117,21 @@ float current_frame = 0;
 bool aiming_kid = false;
 bool aiming = false;
 bool is_inventory_open = false;
+bool is_skills_open = false;
 std::string spell_name;
-std::string weapon = "Wooden Sword"; //temp weapon
+std::string weapon = "";
 
+#include "init_images.h"
+#include "equipment.h"
 #include "classes.h"
 #include "drawmap.h"
 #include "weapon_types.h"
 #include "gui.h"
-#include "init_images.h"
 
 std::vector<Monster> v_monsters; //whole monsters
 std::vector<Monster> target_m; //targeted monster
 std::vector<int> damaged_numbers; //monsters under attack
-std::vector<int> items_dropped_id; //rename to items_dropped
+std::vector<int> items_dropped_id;
 std::vector<int> items_dropped_x;
 std::vector<int> items_dropped_y;
 std::vector<int> items_dropped_sprites; //rename to sprite
@@ -164,7 +193,11 @@ int createItem(int ID, int get_x, int get_y) {
     other_sprites[sprite_counter].setTextureRect(IntRect(0, 0, 56, 56));
     other_sprites[sprite_counter].setPosition(get_x, get_y);
     sprite_counter++;
-    std::cout << "SPRITE CREATED " << sprite_counter << std::endl;
+}
+
+void createMonster(float x, float y, float w, float h, std::string name) {
+    Monster m(x, y, w, h, name);
+    v_monsters.push_back(m);
 }
 
 #include "spells.h"
@@ -197,8 +230,6 @@ int main() {
         inv_items[i] = 0;
     }
 
-    //there was images.h //todo: move it back here after a while
-
     std::cout << "I tink its k\n";
 
     RenderWindow window(VideoMode(1920, 1080), "Lord World", sf::Style::Fullscreen);
@@ -206,10 +237,8 @@ int main() {
 
     Player player(500, 500, 50.0, 62.0);
 
-    Monster rat(300, 300, 50.0, 62.0, "Rat");
-    v_monsters.push_back(rat);
-    Monster rat2(400, 400, 50.0, 62.0, "Rat");
-    v_monsters.push_back(rat2);
+    createMonster(300, 300, 50.0, 62.0, "Rat");
+    createMonster(400, 400, 50.0, 62.0, "Rat");
 
     createItem(1, 600, 600);
     createItem(2, 700, 700);

@@ -1,0 +1,48 @@
+void setWeaponStats() {
+    if (inv_items[27] == 1) { //Wooden Sword
+        damage = 2 * strength; //gives +2 attack damage
+    }
+    else {
+        damage = 1 * strength; //nothing gives +1 attack damage
+    }
+}
+void setShieldStats() {
+    if (inv_items[28] == 3) { //Iron Shield
+        armor_shield = 1; //gives +1 armor
+    }
+    else {
+        armor_shield = 0; //nothing gives +1 armor
+    }
+}
+void setHelmetStats() {
+    if (inv_items[29] == 4) { //Iron Helmet
+        armor_helmet = 1; //gives +1 armor
+    }
+    else {
+        armor_helmet = 0; //nothing gives +1 armor
+    }
+}
+void setChestplateStats() {
+    if (inv_items[30] == 2) { //Iron Chestplate
+        armor_chestplate = 1; //gives +1 armor
+    }
+    else {
+        armor_chestplate = 0; //nothing gives +1 armor
+    }
+}
+void setPantsStats() {
+    if (inv_items[31] == 5) { //Iron Pants
+        armor_pants = 1; //gives +1 armor
+    }
+    else {
+        armor_pants = 0; //nothing gives +1 armor
+    }
+}
+void setBootsStats() {
+    if (inv_items[32] == 6) { //Iron Pants
+        armor_boots = 1; //gives +1 armor
+    }
+    else {
+        armor_boots = 0; //nothing gives +1 armor
+    }
+}

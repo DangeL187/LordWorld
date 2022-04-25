@@ -15,6 +15,13 @@ if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) {
 	herosprite.setTextureRect(IntRect(52 * int(current_frame), 128, 50, 62));
 	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 	moveCurrentFrame(time);
+	//everything below is temp:
+	std::cout << "Damage: " << damage << std::endl;
+	std::cout << "Shield: " << armor_shield << std::endl;
+	std::cout << "Helmet: " << armor_helmet << std::endl;
+	std::cout << "Chestplate: " << armor_chestplate << std::endl;
+	std::cout << "Pants: " << armor_pants << std::endl;
+	std::cout << "Boots: " << armor_boots << std::endl;
 } else { key_d = false; }
 if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s) {
 	key_a = true;
