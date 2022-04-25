@@ -55,6 +55,10 @@ public:
 		setChestplateStats();
 		setPantsStats();
 		setBootsStats();
+		armor = armor_shield + armor_helmet + armor_chestplate + armor_pants + armor_boots;
+		if (armor_helmet == armor_chestplate && armor_chestplate == armor_pants && armor_pants == armor_boots && armor_boots != 0) {
+			armor += 1;
+		}
 	}
 
     float getPlayerCoordinateX() {

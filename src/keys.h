@@ -22,6 +22,7 @@ if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) {
 	std::cout << "Chestplate: " << armor_chestplate << std::endl;
 	std::cout << "Pants: " << armor_pants << std::endl;
 	std::cout << "Boots: " << armor_boots << std::endl;
+	std::cout << "Armor: " << armor << std::endl;
 } else { key_d = false; }
 if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s) {
 	key_a = true;
