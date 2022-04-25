@@ -4,6 +4,7 @@ Lord World (LW) by DangeL
 buffs.h - process buffs
 classes.h - init classes
 drawmap.h - init defineTile()
+equipment.h - set equipment vars
 gui.h - init gui()
 images.h - set image sprites
 init_images.h - create image sprites
