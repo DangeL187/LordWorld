@@ -5,4 +5,5 @@ Version 0.1.0 ChangeLog
 ----------------------------------------------------------------------------------------------------
 25.04.2022 - created createMonster() function, created equipment.h with several funcs in it
 25.04.2022 - added equipment stats
+26.04.2022 - added showing description of items
 ----------------------------------------------------------------------------------------------------
