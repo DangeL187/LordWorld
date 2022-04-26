@@ -3,9 +3,7 @@ bool key_e = false, key_g = false;
 bool key_m1 = false, key_m2 = false;
 bool key_1 = false, key_2 = false, key_3 = false, key_4 = false;
 bool key_i = false;
-bool nums = false;
-bool tempstop = true;
-bool tempstop2 = true;
+bool is_info = false;
 bool break4items = false;
 
 if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) {
@@ -68,7 +66,6 @@ if (Keyboard::isKeyPressed(Keyboard::E) && items_dropped_id.size() != 0 && !key_
 					InventoryItemsSprite[j] = other_sprites[items_dropped_sprites[i]];
 					InventoryItemsSprite[j].setTextureRect(IntRect(0, 0, 56, 56));
 					InventoryItemsSprite[j].setScale(1.5, 1.5);
-					std::cout << "!!! " << inv_items[j] << std::endl; //TEMP, TODO: DELETE
 				    items_dropped_id.erase(items_dropped_id.begin() + i);
 					items_dropped_x.erase(items_dropped_x.begin() + i);
 					items_dropped_y.erase(items_dropped_y.begin() + i);
@@ -99,6 +96,7 @@ if (Keyboard::isKeyPressed(Keyboard::E) && items_dropped_id.size() != 0 && !key_
 } else { key_e = false; }
 if (Keyboard::isKeyPressed(Keyboard::G) && !key_e) {
 	key_g = true;
+	text_item_info.setString("");
 	int out = player_x - (962 - Mouse::getPosition().x);
 	int outy = player_y - (544 - Mouse::getPosition().y);
 	int vx = view.getCenter().x + 261;
@@ -109,7 +107,6 @@ if (Keyboard::isKeyPressed(Keyboard::G) && !key_e) {
 			for (int j = 0; j < 4; j++) {
 		        if (inv_items[i * 4 + j] != 0) {
 					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-			            std::cout << "DROP\n";
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
 			            createItem(inv_items[i * 4 + j], player_x, player_y);
 		                inv_items[i * 4 + j] = 0;
@@ -151,12 +148,12 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 	int vx = view.getCenter().x + 261;
 	int vy = view.getCenter().y - 343;
 	if (is_inventory_open) {
+		text_item_info.setString("");
 		for (int i = 0; i < 6; i++) {
 			vx = view.getCenter().x + 261;
 			for (int j = 0; j < 4; j++) {
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					if (inv_types[i * 4 + j] == 7 && inv_items[24] == 0) { //other1
-			            std::cout << "EQUIP\n";
 						InventoryItemsSprite[24] = InventoryItemsSprite[i * 4 + j];
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
 						inv_items[24] = inv_items[i * 4 + j];
@@ -164,7 +161,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_types[i * 4 + j] = 0;
 				    }
 					if (inv_types[i * 4 + j] == 7 && inv_items[25] == 0) { //other2
-			            std::cout << "EQUIP\n";
 						InventoryItemsSprite[25] = InventoryItemsSprite[i * 4 + j];
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
 						inv_items[25] = inv_items[i * 4 + j];
@@ -172,7 +168,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_types[i * 4 + j] = 0;
 				    }
 					if (inv_types[i * 4 + j] == 7 && inv_items[26] == 0) { //other3
-			            std::cout << "EQUIP\n";
 						InventoryItemsSprite[26] = InventoryItemsSprite[i * 4 + j];
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
 						inv_items[26] = inv_items[i * 4 + j];
@@ -180,7 +175,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_types[i * 4 + j] = 0;
 				    }
 				    if (inv_types[i * 4 + j] == 1 && inv_items[27] == 0) { //weapon
-			            std::cout << "EQUIP\n";
 						InventoryItemWeaponSprite = InventoryItemsSprite[i * 4 + j];
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
 						inv_items[27] = inv_items[i * 4 + j];
@@ -188,7 +182,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_types[i * 4 + j] = 0;
 				    }
 					if (inv_types[i * 4 + j] == 2 && inv_items[28] == 0) { //shield
-						std::cout << "EQUIP\n";
 						InventoryItemShieldSprite = InventoryItemsSprite[i * 4 + j];
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
 						inv_items[28] = inv_items[i * 4 + j];
@@ -196,7 +189,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_types[i * 4 + j] = 0;
 					}
 					if (inv_types[i * 4 + j] == 3 && inv_items[29] == 0) { //helmet
-						std::cout << "EQUIP\n";
 						InventoryItemHelmSprite = InventoryItemsSprite[i * 4 + j];
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
 						inv_items[29] = inv_items[i * 4 + j];
@@ -204,7 +196,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_types[i * 4 + j] = 0;
 					}
 					if (inv_types[i * 4 + j] == 4 && inv_items[30] == 0) { //chestplate
-						std::cout << "EQUIP\n";
 						InventoryItemChestSprite = InventoryItemsSprite[i * 4 + j];
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
 						inv_items[30] = inv_items[i * 4 + j];
@@ -212,7 +203,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_types[i * 4 + j] = 0;
 					}
 					if (inv_types[i * 4 + j] == 5 && inv_items[31] == 0) { //pants
-						std::cout << "EQUIP\n";
 						InventoryItemPantsSprite = InventoryItemsSprite[i * 4 + j];
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
 						inv_items[31] = inv_items[i * 4 + j];
@@ -220,7 +210,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 						inv_types[i * 4 + j] = 0;
 					}
 					if (inv_types[i * 4 + j] == 6 && inv_items[32] == 0) { //boots
-						std::cout << "EQUIP\n";
 						InventoryItemBootsSprite = InventoryItemsSprite[i * 4 + j];
 			            InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
 						inv_items[32] = inv_items[i * 4 + j];
@@ -236,7 +225,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x - 203;
 			vy = view.getCenter().y + 185;
 			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-				std::cout << "UNEQUIP\n";
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
 				        InventoryItemsSprite[j] = InventoryItemsSprite[24];
@@ -252,7 +240,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x - 71;
 			vy = view.getCenter().y + 185;
 			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-				std::cout << "UNEQUIP\n";
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
 				        InventoryItemsSprite[j] = InventoryItemsSprite[25];
@@ -268,7 +255,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x + 61;
 			vy = view.getCenter().y + 185;
 			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-				std::cout << "UNEQUIP\n";
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
 				        InventoryItemsSprite[j] = InventoryItemsSprite[26];
@@ -284,7 +270,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x - 231;
 			vy = view.getCenter().y - 227;
 			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-				std::cout << "UNEQUIP\n";
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
 				        InventoryItemsSprite[j] = InventoryItemWeaponSprite;
@@ -303,7 +288,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x + 89;
 			vy = view.getCenter().y - 227;
 			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-				std::cout << "UNEQUIP\n";
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
 				        InventoryItemsSprite[j] = InventoryItemShieldSprite;
@@ -322,7 +306,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x - 71;
 			vy = view.getCenter().y - 351;
 			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-				std::cout << "UNEQUIP\n";
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
 				        InventoryItemsSprite[j] = InventoryItemHelmSprite;
@@ -341,7 +324,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x - 71;
 			vy = view.getCenter().y - 227;
 			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-				std::cout << "UNEQUIP\n";
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
 				        InventoryItemsSprite[j] = InventoryItemChestSprite;
@@ -360,7 +342,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x - 71;
 			vy = view.getCenter().y - 103;
 			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-				std::cout << "UNEQUIP\n";
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
 				        InventoryItemsSprite[j] = InventoryItemPantsSprite;
@@ -379,7 +360,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x - 71;
 			vy = view.getCenter().y + 21;
 			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-				std::cout << "UNEQUIP\n";
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
 				        InventoryItemsSprite[j] = InventoryItemBootsSprite;
@@ -413,4 +393,27 @@ if (!key_1 && aiming_kid) {
 }
 if (Keyboard::isKeyPressed(Keyboard::LControl) && key_m2) {
 	targeting();
+}
+
+if (is_inventory_open) {
+    int out = player_x - (962 - Mouse::getPosition().x);
+    int outy = player_y - (544 - Mouse::getPosition().y);
+	int vx = view.getCenter().x + 261;
+	int vy = view.getCenter().y - 343;
+    for (int i = 0; i < 6; i++) {
+    	vx = view.getCenter().x + 261;
+	    for (int j = 0; j < 4; j++) {
+			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				setItemInfo(inv_items[i * 4 + j]);
+				GuiInfoSprite.setPosition(out - 10, outy);
+				text_item_info.setPosition(out, outy + 15);
+				is_info = true;
+			}
+		    vx += 112;
+    	}
+	    vy += 112;
+    }
+}
+if (!is_info) {
+	text_item_info.setString("");
 }

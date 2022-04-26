@@ -15,8 +15,11 @@
 using namespace sf;
 
 Image GuiBarImage, GuiInventoryImage, GuiSpellsHotbarImage;
+Image GuiInfoImage;
 Texture GuiBarTexture, GuiInventoryTexture, GuiSpellsHotbarTexture;
+Texture GuiInfoTexture;
 Sprite GuiBarSprite, GuiInventorySprite, GuiSpellsHotbarSprite;
+Sprite GuiInfoSprite;
 
 Image InventoryItemsImage[27];
 Image InventoryItemEmptyImage;
@@ -63,6 +66,7 @@ Text text_cd_5("", font, 60);
 Text text_cd_6("", font, 60);
 Text text_cd_7("", font, 60);
 Text text_cd_8("", font, 60);
+Text text_item_info("", font, 30);
 Text text("", font, 40);
 Text player_stats_hp("", font, 40);
 Text player_stats_mp("", font, 40);
@@ -127,6 +131,7 @@ std::string weapon = "";
 #include "drawmap.h"
 #include "weapon_types.h"
 #include "gui.h"
+#include "item_info.h"
 
 std::vector<Monster> v_monsters; //whole monsters
 std::vector<Monster> target_m; //targeted monster
@@ -373,6 +378,9 @@ int main() {
             }
         }
         window.draw(GuiBarSprite);
+        if (text_item_info.getString() != "") {
+            window.draw(GuiInfoSprite);
+        }
         window.draw(text_cd_0);
         window.draw(text_cd_1);
         window.draw(text_cd_2);
@@ -382,6 +390,7 @@ int main() {
         window.draw(text_cd_6);
         window.draw(text_cd_7);
         window.draw(text_cd_8);
+        window.draw(text_item_info);
         window.draw(text);
         window.draw(player_stats_hp);
         window.draw(player_stats_mp);
