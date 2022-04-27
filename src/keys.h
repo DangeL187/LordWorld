@@ -13,14 +13,6 @@ if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) {
 	herosprite.setTextureRect(IntRect(52 * int(current_frame), 128, 50, 62));
 	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 	moveCurrentFrame(time);
-	//everything below is temp:
-	std::cout << "Damage: " << damage << std::endl;
-	std::cout << "Shield: " << armor_shield << std::endl;
-	std::cout << "Helmet: " << armor_helmet << std::endl;
-	std::cout << "Chestplate: " << armor_chestplate << std::endl;
-	std::cout << "Pants: " << armor_pants << std::endl;
-	std::cout << "Boots: " << armor_boots << std::endl;
-	std::cout << "Armor: " << armor << std::endl;
 } else { key_d = false; }
 if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s) {
 	key_a = true;
@@ -378,7 +370,7 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 	key_m2 = true;
 	aiming = false;
 } else { key_m2 = false; }
-//
+
 if (!key_m1 && !key_m2) {
 	attack = 0;
 }
@@ -414,6 +406,49 @@ if (is_inventory_open) {
 	    vy += 112;
     }
 }
+
+int out = player_x - (962 - Mouse::getPosition().x);
+int outy = player_y - (544 - Mouse::getPosition().y);
+int vx = view.getCenter().x - 940;
+int vy = view.getCenter().y - 480;
+if (vx/1 <= out && out <= vx/1 + 170 && vy/1 <= outy && outy <= vy/1 + 100) {
+	text_strength.setString("Strength: " + std::to_string(strength));
+	text_armor.setString("Armor: " + std::to_string(armor));
+	text_magic.setString("Magic: " + std::to_string(magic));
+	text_critical_chance.setString("Critical Chance: " + std::to_string(critical_chance) + "%");
+	text_magic_resistance.setString("Magic Resistance: " + std::to_string(magic_resistance) + "%");
+	text_physical_resistance.setString("Physical Resistance: " + std::to_string(physical_resistance) + "%");
+	text_magic_ice.setString("Magic Ice: " + std::to_string(magic_ice));
+	text_magic_fire.setString("Magic Fire: " + std::to_string(magic_fire));
+	text_magic_earth.setString("Magic Earth: " + std::to_string(magic_earth));
+	text_magic_wind.setString("Magic Wind: " + std::to_string(magic_wind));
+	text_magic_dark.setString("Magic Dark: " + std::to_string(magic_dark));
+	text_magic_light.setString("Magic Light: " + std::to_string(magic_light));
+	text_knives.setString("Knives: " + std::to_string(knives));
+	text_spears.setString("Spears: " + std::to_string(spears));
+	text_scythes.setString("Scythes: " + std::to_string(scythes));
+	text_staffs.setString("Staffs: " + std::to_string(staffs));
+	is_stats_open = true;
+} else {
+	is_stats_open = false;
+	text_strength.setString("");
+	text_armor.setString("");
+	text_magic.setString("");
+	text_critical_chance.setString("");
+	text_magic_resistance.setString("");
+	text_physical_resistance.setString("");
+	text_magic_ice.setString("");
+	text_magic_fire.setString("");
+	text_magic_earth.setString("");
+	text_magic_wind.setString("");
+	text_magic_dark.setString("");
+	text_magic_light.setString("");
+	text_knives.setString("");
+	text_spears.setString("");
+	text_scythes.setString("");
+	text_staffs.setString("");
+}
+
 if (!is_info) {
 	text_item_info.setString("");
 }

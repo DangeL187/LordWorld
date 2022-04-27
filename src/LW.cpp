@@ -15,11 +15,11 @@
 using namespace sf;
 
 Image GuiBarImage, GuiInventoryImage, GuiSpellsHotbarImage;
-Image GuiInfoImage;
+Image GuiInfoImage, GuiStatsImage;
 Texture GuiBarTexture, GuiInventoryTexture, GuiSpellsHotbarTexture;
-Texture GuiInfoTexture;
+Texture GuiInfoTexture, GuiStatsTexture;
 Sprite GuiBarSprite, GuiInventorySprite, GuiSpellsHotbarSprite;
-Sprite GuiInfoSprite;
+Sprite GuiInfoSprite, GuiStatsSprite;
 
 Image InventoryItemsImage[27];
 Image InventoryItemEmptyImage;
@@ -66,6 +66,22 @@ Text text_cd_5("", font, 60);
 Text text_cd_6("", font, 60);
 Text text_cd_7("", font, 60);
 Text text_cd_8("", font, 60);
+Text text_strength("", font, 40);
+Text text_armor("", font, 40);
+Text text_magic("", font, 40);
+Text text_critical_chance("", font, 40); //%
+Text text_magic_resistance("", font, 40); //%
+Text text_physical_resistance("", font, 40); //%
+Text text_magic_ice("", font, 40);
+Text text_magic_fire("", font, 40);
+Text text_magic_earth("", font, 40);
+Text text_magic_wind("", font, 40);
+Text text_magic_dark("", font, 40);
+Text text_magic_light("", font, 40);
+Text text_knives("", font, 40);
+Text text_spears("", font, 40);
+Text text_scythes("", font, 40);
+Text text_staffs("", font, 40);
 Text text_item_info("", font, 30);
 Text text("", font, 40);
 Text player_stats_hp("", font, 40);
@@ -88,7 +104,6 @@ int magic_wind = 1;
 int magic_dark = 1;
 int magic_light = 1;
 //skills:
-int stealth = 1;
 int knives = 1;
 int spears = 1;
 int scythes = 1;
@@ -121,7 +136,7 @@ float current_frame = 0;
 bool aiming_kid = false;
 bool aiming = false;
 bool is_inventory_open = false;
-bool is_skills_open = false;
+bool is_stats_open = false;
 std::string spell_name;
 std::string weapon = "";
 
@@ -378,6 +393,9 @@ int main() {
             }
         }
         window.draw(GuiBarSprite);
+        if (is_stats_open) {
+            window.draw(GuiStatsSprite);
+        }
         if (text_item_info.getString() != "") {
             window.draw(GuiInfoSprite);
         }
@@ -390,6 +408,22 @@ int main() {
         window.draw(text_cd_6);
         window.draw(text_cd_7);
         window.draw(text_cd_8);
+        window.draw(text_strength);
+        window.draw(text_armor);
+        window.draw(text_magic);
+        window.draw(text_critical_chance);
+        window.draw(text_magic_resistance);
+        window.draw(text_physical_resistance);
+        window.draw(text_magic_ice);
+        window.draw(text_magic_fire);
+        window.draw(text_magic_earth);
+        window.draw(text_magic_wind);
+        window.draw(text_magic_dark);
+        window.draw(text_magic_light);
+        window.draw(text_knives);
+        window.draw(text_spears);
+        window.draw(text_scythes);
+        window.draw(text_staffs);
         window.draw(text_item_info);
         window.draw(text);
         window.draw(player_stats_hp);

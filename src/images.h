@@ -6,14 +6,17 @@ GuiBarImage.loadFromFile("../images/GuiBar.png");
 GuiInventoryImage.loadFromFile("../images/GuiInventory.png");
 GuiSpellsHotbarImage.loadFromFile("../images/GuiSpellsHotbar.png");
 GuiInfoImage.loadFromFile("../images/GuiInfo.png");
+GuiStatsImage.loadFromFile("../images/GuiStats.png");
 GuiBarTexture.loadFromImage(GuiBarImage);
 GuiInventoryTexture.loadFromImage(GuiInventoryImage);
 GuiSpellsHotbarTexture.loadFromImage(GuiSpellsHotbarImage);
 GuiInfoTexture.loadFromImage(GuiInfoImage);
+GuiStatsTexture.loadFromImage(GuiStatsImage);
 GuiBarSprite.setTexture(GuiBarTexture);
 GuiInventorySprite.setTexture(GuiInventoryTexture);
 GuiSpellsHotbarSprite.setTexture(GuiSpellsHotbarTexture);
 GuiInfoSprite.setTexture(GuiInfoTexture);
+GuiStatsSprite.setTexture(GuiStatsTexture);
 
 InventoryItemEmptyImage.loadFromFile("../images/GuiEmptyItem.png");
 InventoryItemWeaponImage.loadFromFile("../images/GuiSlotWeapon.png");
