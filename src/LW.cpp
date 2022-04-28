@@ -15,11 +15,11 @@
 using namespace sf;
 
 Image GuiBarImage, GuiInventoryImage, GuiSpellsHotbarImage;
-Image GuiInfoImage, GuiStatsImage;
+Image GuiInfoImage, GuiStatsImage, GuiPickedSpellImage;
 Texture GuiBarTexture, GuiInventoryTexture, GuiSpellsHotbarTexture;
-Texture GuiInfoTexture, GuiStatsTexture;
+Texture GuiInfoTexture, GuiStatsTexture, GuiPickedSpellTexture;
 Sprite GuiBarSprite, GuiInventorySprite, GuiSpellsHotbarSprite;
-Sprite GuiInfoSprite, GuiStatsSprite;
+Sprite GuiInfoSprite, GuiStatsSprite, GuiPickedSpellSprite;
 
 Image InventoryItemsImage[27];
 Image InventoryItemEmptyImage;
@@ -67,6 +67,7 @@ Text text_cd_6("", font, 60);
 Text text_cd_7("", font, 60);
 Text text_cd_8("", font, 60);
 Text text_strength("", font, 40);
+Text text_damage("", font, 40);
 Text text_armor("", font, 40);
 Text text_magic("", font, 40);
 Text text_critical_chance("", font, 40); //%
@@ -78,10 +79,8 @@ Text text_magic_earth("", font, 40);
 Text text_magic_wind("", font, 40);
 Text text_magic_dark("", font, 40);
 Text text_magic_light("", font, 40);
-Text text_knives("", font, 40);
-Text text_spears("", font, 40);
-Text text_scythes("", font, 40);
-Text text_staffs("", font, 40);
+Text text_melee_weapon("", font, 40);
+Text text_range_weapon("", font, 40);
 Text text_item_info("", font, 30);
 Text text("", font, 40);
 Text player_stats_hp("", font, 40);
@@ -104,10 +103,8 @@ int magic_wind = 1;
 int magic_dark = 1;
 int magic_light = 1;
 //skills:
-int knives = 1;
-int spears = 1;
-int scythes = 1;
-int staffs = 1;
+int melee_weapon = 1;
+int range_weapon = 1;
 
 int player_x = 0, player_y = 0;
 int attack = 0;
@@ -380,6 +377,9 @@ int main() {
         for (int i = 0; i < 9; i++) {
             window.draw(SpellsHotbarSprites[i]);
         }
+        if (aiming) {
+            window.draw(GuiPickedSpellSprite);
+        }
         if (is_inventory_open) {
             window.draw(GuiInventorySprite);
             window.draw(InventoryItemWeaponSprite);
@@ -409,6 +409,7 @@ int main() {
         window.draw(text_cd_7);
         window.draw(text_cd_8);
         window.draw(text_strength);
+        window.draw(text_damage);
         window.draw(text_armor);
         window.draw(text_magic);
         window.draw(text_critical_chance);
@@ -420,10 +421,8 @@ int main() {
         window.draw(text_magic_wind);
         window.draw(text_magic_dark);
         window.draw(text_magic_light);
-        window.draw(text_knives);
-        window.draw(text_spears);
-        window.draw(text_scythes);
-        window.draw(text_staffs);
+        window.draw(text_melee_weapon);
+        window.draw(text_range_weapon);
         window.draw(text_item_info);
         window.draw(text);
         window.draw(player_stats_hp);

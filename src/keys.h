@@ -413,6 +413,7 @@ int vx = view.getCenter().x - 940;
 int vy = view.getCenter().y - 480;
 if (vx/1 <= out && out <= vx/1 + 170 && vy/1 <= outy && outy <= vy/1 + 100) {
 	text_strength.setString("Strength: " + std::to_string(strength));
+	text_damage.setString("Damage: " + std::to_string(damage));
 	text_armor.setString("Armor: " + std::to_string(armor));
 	text_magic.setString("Magic: " + std::to_string(magic));
 	text_critical_chance.setString("Critical Chance: " + std::to_string(critical_chance) + "%");
@@ -424,14 +425,13 @@ if (vx/1 <= out && out <= vx/1 + 170 && vy/1 <= outy && outy <= vy/1 + 100) {
 	text_magic_wind.setString("Magic Wind: " + std::to_string(magic_wind));
 	text_magic_dark.setString("Magic Dark: " + std::to_string(magic_dark));
 	text_magic_light.setString("Magic Light: " + std::to_string(magic_light));
-	text_knives.setString("Knives: " + std::to_string(knives));
-	text_spears.setString("Spears: " + std::to_string(spears));
-	text_scythes.setString("Scythes: " + std::to_string(scythes));
-	text_staffs.setString("Staffs: " + std::to_string(staffs));
+	text_melee_weapon.setString("Melee Weapon: " + std::to_string(melee_weapon));
+	text_range_weapon.setString("Range Weapon: " + std::to_string(range_weapon));
 	is_stats_open = true;
 } else {
 	is_stats_open = false;
 	text_strength.setString("");
+	text_damage.setString("");
 	text_armor.setString("");
 	text_magic.setString("");
 	text_critical_chance.setString("");
@@ -443,10 +443,8 @@ if (vx/1 <= out && out <= vx/1 + 170 && vy/1 <= outy && outy <= vy/1 + 100) {
 	text_magic_wind.setString("");
 	text_magic_dark.setString("");
 	text_magic_light.setString("");
-	text_knives.setString("");
-	text_spears.setString("");
-	text_scythes.setString("");
-	text_staffs.setString("");
+	text_melee_weapon.setString("");
+	text_range_weapon.setString("");
 }
 
 if (!is_info) {

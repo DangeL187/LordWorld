@@ -48,3 +48,14 @@ void setBootsStats() {
         armor_boots = 0; //nothing gives +1 armor
     }
 }
+void setOtherStats() {
+    if (inv_items[24] == 7) { //Iron Ring
+        armor += 1; //gives +1 armor
+    }
+    if (inv_items[25] == 7) { //Iron Ring
+        armor += 1; //gives +1 armor
+    }
+    if (inv_items[26] == 7) { //Iron Ring
+        armor += 1; //gives +1 armor
+    }
+}

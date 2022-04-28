@@ -70,21 +70,20 @@ void gui() {
     text_cd_8.setPosition(view.getCenter().x + 405, view.getCenter().y + 404);
 
     text_strength.setPosition(view.getCenter().x - 900, view.getCenter().y - 300);
-	text_armor.setPosition(view.getCenter().x - 900, view.getCenter().y - 260);
-	text_magic.setPosition(view.getCenter().x - 900, view.getCenter().y - 220);
-	text_critical_chance.setPosition(view.getCenter().x - 900, view.getCenter().y - 180);
-	text_magic_resistance.setPosition(view.getCenter().x - 900, view.getCenter().y - 140);
-	text_physical_resistance.setPosition(view.getCenter().x - 900, view.getCenter().y - 100);
-	text_magic_ice.setPosition(view.getCenter().x - 900, view.getCenter().y - 60);
-	text_magic_fire.setPosition(view.getCenter().x - 900, view.getCenter().y - 20);
-	text_magic_earth.setPosition(view.getCenter().x - 900, view.getCenter().y + 20);
-	text_magic_wind.setPosition(view.getCenter().x - 900, view.getCenter().y + 60);
-	text_magic_dark.setPosition(view.getCenter().x - 900, view.getCenter().y + 100);
-	text_magic_light.setPosition(view.getCenter().x - 900, view.getCenter().y + 140);
-	text_knives.setPosition(view.getCenter().x - 900, view.getCenter().y + 180);
-	text_spears.setPosition(view.getCenter().x - 900, view.getCenter().y + 220);
-	text_scythes.setPosition(view.getCenter().x - 900, view.getCenter().y + 260);
-	text_staffs.setPosition(view.getCenter().x - 900, view.getCenter().y + 300);
+    text_damage.setPosition(view.getCenter().x - 900, view.getCenter().y - 260);
+	text_armor.setPosition(view.getCenter().x - 900, view.getCenter().y - 220);
+	text_magic.setPosition(view.getCenter().x - 900, view.getCenter().y - 180);
+	text_critical_chance.setPosition(view.getCenter().x - 900, view.getCenter().y - 140);
+	text_magic_resistance.setPosition(view.getCenter().x - 900, view.getCenter().y - 100);
+	text_physical_resistance.setPosition(view.getCenter().x - 900, view.getCenter().y - 60);
+	text_magic_ice.setPosition(view.getCenter().x - 900, view.getCenter().y - 20);
+	text_magic_fire.setPosition(view.getCenter().x - 900, view.getCenter().y + 20);
+	text_magic_earth.setPosition(view.getCenter().x - 900, view.getCenter().y + 60);
+	text_magic_wind.setPosition(view.getCenter().x - 900, view.getCenter().y + 100);
+	text_magic_dark.setPosition(view.getCenter().x - 900, view.getCenter().y + 140);
+	text_magic_light.setPosition(view.getCenter().x - 900, view.getCenter().y + 180);
+	text_melee_weapon.setPosition(view.getCenter().x - 900, view.getCenter().y + 220);
+	text_range_weapon.setPosition(view.getCenter().x - 900, view.getCenter().y + 260);
 
     GuiBarSprite.setPosition(view.getCenter().x - 960, view.getCenter().y - 540);
     GuiInventorySprite.setPosition(view.getCenter().x - 300, view.getCenter().y - 400);
@@ -129,8 +128,10 @@ void gui() {
             InventoryItemsSprite[i * 4 + j].setPosition(view.getCenter().x + 261 - 15 + 112 * j, view.getCenter().y - 343 - 15 + 112 * i);
         }
     }
-
     for (int i = 0; i < 9; i++) {
         SpellsHotbarSprites[i].setPosition(view.getCenter().x - 536 + 112 * i, view.getCenter().y + 384);
+    }
+    if (aiming && spell_slot == 0) {
+        GuiPickedSpellSprite.setPosition(view.getCenter().x - 536, view.getCenter().y + 384);
     }
 }
