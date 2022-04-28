@@ -1,3 +1,5 @@
 REMOVE DEATH FUNCTION FROM EVERYWHERE AND PUT IT IN THE MAIN CYCLE
 
 create hero armor and weapon preview window //not really nessesary
+
+todo: make other spells slots work
