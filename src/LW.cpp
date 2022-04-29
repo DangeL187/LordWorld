@@ -16,11 +16,15 @@ using namespace sf;
 
 Image GuiBarImage, GuiInventoryImage, GuiSpellsHotbarImage;
 Image GuiInfoImage, GuiStatsImage, GuiPickedSpellImage;
+Image GuiSpellsInventoryImage;
 Texture GuiBarTexture, GuiInventoryTexture, GuiSpellsHotbarTexture;
 Texture GuiInfoTexture, GuiStatsTexture, GuiPickedSpellTexture;
+Texture GuiSpellsInventoryTexture;
 Sprite GuiBarSprite, GuiInventorySprite, GuiSpellsHotbarSprite;
 Sprite GuiInfoSprite, GuiStatsSprite, GuiPickedSpellSprite;
+Sprite GuiSpellsInventorySprite;
 
+Image SpellsInventoryPageImage[27];
 Image InventoryItemsImage[27];
 Image InventoryItemEmptyImage;
 Image InventoryItemHelmImage;
@@ -29,6 +33,7 @@ Image InventoryItemPantsImage;
 Image InventoryItemBootsImage;
 Image InventoryItemWeaponImage;
 Image InventoryItemShieldImage;
+Texture SpellsInventoryPageTexture[27];
 Texture InventoryItemsTexture[27];
 Texture InventoryItemEmptyTexture;
 Texture InventoryItemHelmTexture;
@@ -37,6 +42,7 @@ Texture InventoryItemPantsTexture;
 Texture InventoryItemBootsTexture;
 Texture InventoryItemWeaponTexture;
 Texture InventoryItemShieldTexture;
+Sprite SpellsInventoryPageSprite[27];
 Sprite InventoryItemsSprite[27];
 Sprite InventoryItemEmptySprite;
 Sprite InventoryItemHelmSprite;
@@ -127,12 +133,14 @@ int target_number = -1;
 int inv_items[33]; //items inventory //from [24] to [26] - other
 //[27] - weapon, [28] - shield, [29] - helmet, [30] - chestplate, [31] - pants, [32] - boots
 int inv_types[24]; //item types invenory
+int inv_spells[300]; //spells inventory
 int cooldowns[9] {0, 0, 0, 0, 0, 0, 0, 0, 0}; //cooldowns
 float attack1_cd_timer = 0;
 float current_frame = 0;
 bool aiming_kid = false;
 bool aiming = false;
 bool is_inventory_open = false;
+bool is_spells_inventory_open = false;
 bool is_stats_open = false;
 std::string spell_name;
 std::string weapon = "";
@@ -154,7 +162,6 @@ std::vector<int> items_dropped_y;
 std::vector<int> items_dropped_sprites; //rename to sprite
 std::vector<int> items_dropped_type; //0 - nothing, 1 - weapon, 2 - shield
 //3 - helmet, 4 - chestplate, 5 - pants, 6 - boots, 7 - ring, 8.. - item
-std::vector<std::string> inv_spells; //spells inventory
 std::string hotbar_spells[4]; //spells hotbar
 
 void targeting() {
@@ -222,6 +229,7 @@ void createMonster(float x, float y, float w, float h, std::string name) {
 int main() {
     #include "images.h" //load images
 
+    inv_spells[0] = 1;
     hotbar_spells[0] = "ColdSnap"; //temp
     SpellsHotbarSprites[0] = ColdSnapSprite; //move this to fucntion setImagesToHotbar(): for(i < 9);
 
@@ -367,6 +375,7 @@ int main() {
             }
         }
 
+        #include "spells_set.h"
         gui();
 
         window.draw(herosprite);
@@ -390,6 +399,12 @@ int main() {
             window.draw(InventoryItemBootsSprite);
             for (int i = 0; i < 27; i++) {
                 window.draw(InventoryItemsSprite[i]);
+            }
+        }
+        if (is_spells_inventory_open) {
+            window.draw(GuiSpellsInventorySprite);
+            for (int i = 0; i < 27; i++) {
+                window.draw(SpellsInventoryPageSprite[i]);
             }
         }
         window.draw(GuiBarSprite);

@@ -87,6 +87,7 @@ void gui() {
 
     GuiBarSprite.setPosition(view.getCenter().x - 960, view.getCenter().y - 540);
     GuiInventorySprite.setPosition(view.getCenter().x - 300, view.getCenter().y - 400);
+    GuiSpellsInventorySprite.setPosition(view.getCenter().x - 300, view.getCenter().y - 496);
     GuiSpellsHotbarSprite.setPosition(view.getCenter().x - 540, view.getCenter().y + 380);
     GuiStatsSprite.setPosition(view.getCenter().x - 920, view.getCenter().y - 310);
 
@@ -125,7 +126,12 @@ void gui() {
     InventoryItemsSprite[26].setPosition(view.getCenter().x + 61 - 15, view.getCenter().y + 185 - 15);
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 4; j++) {
-            InventoryItemsSprite[i * 4 + j].setPosition(view.getCenter().x + 261 - 15 + 112 * j, view.getCenter().y - 343 - 15 + 112 * i);
+            float condix1 = view.getCenter().x + 261 - 15 + 112 * j;
+            float condiy1 = view.getCenter().y - 343 - 15 + 112 * i;
+            float condix2 = view.getCenter().x + 231 + 112 * j;
+            float condiy2 = view.getCenter().y - 373 + 112 * i;
+            InventoryItemsSprite[i * 4 + j].setPosition(condix1, condiy1);
+            SpellsInventoryPageSprite[i * 4 + j].setPosition(condix2, condiy2);
         }
     }
     for (int i = 0; i < 9; i++) {

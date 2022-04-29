@@ -112,13 +112,21 @@ if (Keyboard::isKeyPressed(Keyboard::G) && !key_e) {
 	}
 } else { key_g = false; }
 if (Keyboard::isKeyPressed(Keyboard::I)) {
-	if (!is_inventory_open) {
+	if (!is_inventory_open && !is_spells_inventory_open) {
 		is_inventory_open = true;
+	}
+}
+if (Keyboard::isKeyPressed(Keyboard::O)) {
+	if (!is_inventory_open && !is_spells_inventory_open) {
+		is_spells_inventory_open = true;
 	}
 }
 if (Keyboard::isKeyPressed(Keyboard::Escape)) {
 	if (is_inventory_open) {
 		is_inventory_open = false;
+	}
+	if (is_spells_inventory_open) {
+		is_spells_inventory_open = false;
 	}
 }
 //

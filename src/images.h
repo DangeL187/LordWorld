@@ -4,12 +4,14 @@ map_sprite.setTexture(map_texture);
 
 GuiBarImage.loadFromFile("../images/GuiBar.png");
 GuiInventoryImage.loadFromFile("../images/GuiInventory.png");
+GuiSpellsInventoryImage.loadFromFile("../images/GuiSpellsInventory.png");
 GuiSpellsHotbarImage.loadFromFile("../images/GuiSpellsHotbar.png");
 GuiInfoImage.loadFromFile("../images/GuiInfo.png");
 GuiStatsImage.loadFromFile("../images/GuiStats.png");
 GuiPickedSpellImage.loadFromFile("../images/GuiPickedSpell.png");
 GuiBarTexture.loadFromImage(GuiBarImage);
 GuiInventoryTexture.loadFromImage(GuiInventoryImage);
+GuiSpellsInventoryTexture.loadFromImage(GuiSpellsInventoryImage);
 GuiSpellsHotbarTexture.loadFromImage(GuiSpellsHotbarImage);
 GuiInfoTexture.loadFromImage(GuiInfoImage);
 GuiStatsTexture.loadFromImage(GuiStatsImage);
@@ -20,6 +22,7 @@ GuiSpellsHotbarSprite.setTexture(GuiSpellsHotbarTexture);
 GuiInfoSprite.setTexture(GuiInfoTexture);
 GuiStatsSprite.setTexture(GuiStatsTexture);
 GuiPickedSpellSprite.setTexture(GuiPickedSpellTexture);
+GuiSpellsInventorySprite.setTexture(GuiSpellsInventoryTexture);
 
 InventoryItemEmptyImage.loadFromFile("../images/GuiEmptyItem.png");
 InventoryItemWeaponImage.loadFromFile("../images/GuiSlotWeapon.png");
@@ -44,8 +47,11 @@ InventoryItemPantsSprite.setTexture(InventoryItemPantsTexture);
 InventoryItemBootsSprite.setTexture(InventoryItemBootsTexture);
 for (int i = 0; i < 27; i++) {
     InventoryItemsImage[i].loadFromFile("../images/GuiEmptyItem.png");
+    SpellsInventoryPageImage[i].loadFromFile("../images/GuiEmptyItem.png");
     InventoryItemsTexture[i].loadFromImage(InventoryItemsImage[i]);
+    SpellsInventoryPageTexture[i].loadFromImage(SpellsInventoryPageImage[i]);
     InventoryItemsSprite[i].setTexture(InventoryItemsTexture[i]);
+    SpellsInventoryPageSprite[i].setTexture(SpellsInventoryPageTexture[i]);
 }
 
 for (int i = 0; i < 9; i++) {
