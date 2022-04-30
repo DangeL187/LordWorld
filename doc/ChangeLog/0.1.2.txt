@@ -5,4 +5,6 @@ Version 0.1.2 ChangeLog
 ----------------------------------------------------------------------------------------------------
 28.04.2022 - added damage string, added showing picked spell
 29.04.2022 - added spells inventory without functional, added drawing spells in the inventory
+30.04.2022 - added functional for spells inventory and hotbar
+30.04.2022 - added setImagesToSpellsInventory() and setImagesToHotbar()
 ----------------------------------------------------------------------------------------------------
