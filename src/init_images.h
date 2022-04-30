@@ -28,9 +28,12 @@ Texture IronRingTexture;
 Sprite IronRingSprite;
 //Spells:
 Image ColdSnapImage;
+Image ColdSnap2Image;
 Texture ColdSnapTexture;
+Texture ColdSnap2Texture;
 Sprite ColdSnapSprite;
-
+Sprite ColdSnap2Sprite;
+//Monsters:
 Image MonsterRatImage;
 Texture MonsterRatTexture;
 Sprite MonsterRatSprite;

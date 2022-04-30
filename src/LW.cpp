@@ -129,11 +129,13 @@ int player_hp = 10000, player_mp = 10000, player_lvl = 1;
 int damage = 1; //TODO: rename to player_damage
 int attack_speed = 1000; //1 second
 int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
+int spell_name = 0;
 int target_number = -1;
 int inv_items[33]; //items inventory //from [24] to [26] - other
 //[27] - weapon, [28] - shield, [29] - helmet, [30] - chestplate, [31] - pants, [32] - boots
 int inv_types[24]; //item types invenory
 int inv_spells[300]; //spells inventory
+int hotbar_spells[9]; //spells hotbar
 int cooldowns[9] {0, 0, 0, 0, 0, 0, 0, 0, 0}; //cooldowns
 float attack1_cd_timer = 0;
 float current_frame = 0;
@@ -142,8 +144,8 @@ bool aiming = false;
 bool is_inventory_open = false;
 bool is_spells_inventory_open = false;
 bool is_stats_open = false;
-std::string spell_name;
-std::string weapon = "";
+int spell_to_hotbar = -1;
+std::string weapon = ""; //todo: delete
 
 #include "init_images.h"
 #include "equipment.h"
@@ -162,7 +164,6 @@ std::vector<int> items_dropped_y;
 std::vector<int> items_dropped_sprites; //rename to sprite
 std::vector<int> items_dropped_type; //0 - nothing, 1 - weapon, 2 - shield
 //3 - helmet, 4 - chestplate, 5 - pants, 6 - boots, 7 - ring, 8.. - item
-std::string hotbar_spells[4]; //spells hotbar
 
 void targeting() {
     int out = player_x - (962 - Mouse::getPosition().x); //960
@@ -230,8 +231,8 @@ int main() {
     #include "images.h" //load images
 
     inv_spells[0] = 1;
-    hotbar_spells[0] = "ColdSnap"; //temp
-    SpellsHotbarSprites[0] = ColdSnapSprite; //move this to fucntion setImagesToHotbar(): for(i < 9);
+    inv_spells[1] = 2;
+    hotbar_spells[0] = 1; //temp
 
     font.loadFromFile("../font/OceanSummer.ttf");
     text_cd_0.setColor(Color::White);
@@ -375,7 +376,8 @@ int main() {
             }
         }
 
-        #include "spells_set.h"
+        setImagesToSpellsInventory();
+        setImagesToHotbar();
         gui();
 
         window.draw(herosprite);

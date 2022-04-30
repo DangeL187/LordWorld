@@ -1,5 +1,33 @@
+void setImagesToHotbar() {
+    for (int i = 0; i < 9; i++) {
+        if (hotbar_spells[i] == 1) { //Cold Snap
+            SpellsHotbarSprites[i] = ColdSnapSprite;
+        }
+        else if (hotbar_spells[i] == 2) { //Cold Snap2
+            SpellsHotbarSprites[i] = ColdSnap2Sprite;
+        }
+        else {
+            SpellsHotbarSprites[i] = InventoryItemEmptySprite;
+        }
+    }
+}
+
+void setImagesToSpellsInventory() {
+    for (int i = 0; i < 27; i++) {
+        if (inv_spells[i] == 1) { //Cold Snap
+            SpellsInventoryPageSprite[i] = ColdSnapSprite;
+        }
+        else if (inv_spells[i] == 2) { //Cold Snap2
+            SpellsInventoryPageSprite[i] = ColdSnap2Sprite;
+        }
+        else {
+            SpellsInventoryPageSprite[i] = InventoryItemEmptySprite;
+        }
+    }
+}
+
 void spells(float get_time) {
-    if (spell_name == "ColdSnap" && cooldowns[spell_slot] == 0) {
+    if (spell_name == 1 && cooldowns[spell_slot] == 0) {
         int damage_from_spell = 2; //2 * lvl_ice_magic
         spellDamaged();
         for (int v = 0; v < damaged_numbers.size(); v++) {

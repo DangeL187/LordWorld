@@ -375,6 +375,41 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			}
 		}
 	}
+	if (is_spells_inventory_open) {
+		int vx = view.getCenter().x + 231 + 15;
+		int vy = view.getCenter().y - 373 + 30;
+		for (int i = 0; i < 6; i++) {
+			vx = view.getCenter().x + 231 + 15;
+			for (int j = 0; j < 4; j++) {
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					if (inv_spells[i * 4 + j] != 0) {
+						for (int k = 0; k < 9; k++) {
+			                if (hotbar_spells[k] == 0) {
+							    hotbar_spells[k] = inv_spells[i * 4 + j];
+								inv_spells[i * 4 + j] = 0;
+						    	break;
+						    }
+			            }
+					}
+				}
+				vx += 112;
+		    }
+			vy += 112;
+	    }
+		vy = view.getCenter().y + 384 + 15;
+		for (int i = 0; i < 9; i++) {
+			vx = view.getCenter().x - 536 + 15 + 112 * i;
+		    if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				for (int j = 0; j < 24; j++) {
+	                if (inv_spells[j] == 0) {
+						inv_spells[j] = hotbar_spells[i];
+						hotbar_spells[i] = 0;
+						break;
+					}
+				}
+			}
+		}
+	}
 	key_m2 = true;
 	aiming = false;
 } else { key_m2 = false; }

@@ -61,8 +61,11 @@ for (int i = 0; i < 9; i++) {
 }
 ////////////////////////////////////////////////////////////////////////////////
 ColdSnapImage.loadFromFile("../images/ColdSnap.png");
+ColdSnap2Image.loadFromFile("../images/ColdSnap2.png");
 ColdSnapTexture.loadFromImage(ColdSnapImage);
+ColdSnap2Texture.loadFromImage(ColdSnap2Image);
 ColdSnapSprite.setTexture(ColdSnapTexture);
+ColdSnap2Sprite.setTexture(ColdSnap2Texture);
 ////////////////////////////////////////////////////////////////////////////////
 MonsterRatImage.loadFromFile("../images/Rat.png");
 MonsterRatTexture.loadFromImage(MonsterRatImage);
