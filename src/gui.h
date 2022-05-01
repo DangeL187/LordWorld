@@ -7,12 +7,14 @@ void gui() {
     ss2>>p_hp;
     ss3<<player_mp;
     ss3>>p_mp;
-    player_stats_hp.setString(p_hp);
-    player_stats_mp.setString(p_mp);
+    std::string phr = std::to_string(hp_regen);
+    std::string pmr = std::to_string(mp_regen);
+    player_stats_hp.setString(p_hp + " +" + phr[0] + phr[1] + phr[2]);
+    player_stats_mp.setString(p_mp + " +" + pmr[0] + pmr[1] + pmr[2]);
     player_stats_lvl.setString(p_lvl);
-    player_stats_hp.setPosition(view.getCenter().x - 690, view.getCenter().y - 518);
-    player_stats_mp.setPosition(view.getCenter().x - 690, view.getCenter().y - 450);
-    player_stats_lvl.setPosition(view.getCenter().x - 690, view.getCenter().y - 382);
+    player_stats_hp.setPosition(view.getCenter().x - 690, view.getCenter().y - 511);
+    player_stats_mp.setPosition(view.getCenter().x - 690, view.getCenter().y - 443);
+    player_stats_lvl.setPosition(view.getCenter().x - 690, view.getCenter().y - 375);
     text.setPosition(view.getCenter().x + 700, view.getCenter().y - 500);
     if (cooldowns[0] != 0) {
         text_cd_0.setString(std::to_string(cooldowns[0]/1000));
@@ -140,4 +142,31 @@ void gui() {
     if (aiming && spell_slot == 0) {
         GuiPickedSpellSprite.setPosition(view.getCenter().x - 536, view.getCenter().y + 384);
     }
+    if (aiming && spell_slot == 1) {
+        GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112, view.getCenter().y + 384);
+    }
+    if (aiming && spell_slot == 2) {
+        GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 2, view.getCenter().y + 384);
+    }
+    if (aiming && spell_slot == 3) {
+        GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 3, view.getCenter().y + 384);
+    }
+    if (aiming && spell_slot == 4) {
+        GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 4, view.getCenter().y + 384);
+    }
+    if (aiming && spell_slot == 5) {
+        GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 5, view.getCenter().y + 384);
+    }
+    if (aiming && spell_slot == 6) {
+        GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 6, view.getCenter().y + 384);
+    }
+    if (aiming && spell_slot == 7) {
+        GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 7, view.getCenter().y + 384);
+    }
+    if (aiming && spell_slot == 8) {
+        GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 8, view.getCenter().y + 384);
+    }
+
+    AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 70, 64));
+    AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
 }

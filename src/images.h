@@ -92,3 +92,7 @@ IronChestplateSprite.setTexture(IronChestplateTexture);
 IronPantsSprite.setTexture(IronPantsTexture);
 IronBootsSprite.setTexture(IronBootsTexture);
 IronRingSprite.setTexture(IronRingTexture);
+////////////////////////////////////////////////////////////////////////////////
+AnimationWoodenSwordImage.loadFromFile("../images/AnimationWoodenSword.png");
+AnimationWoodenSwordTexture.loadFromImage(AnimationWoodenSwordImage);
+AnimationWoodenSwordSprite.setTexture(AnimationWoodenSwordTexture);

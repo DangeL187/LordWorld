@@ -17,19 +17,20 @@ public:
 	}
 
     void interactionWithMap() {
-	    for (int i = y / 64; i < (y + h) / 64; i++)
-	    for (int j = x / 64; j<(x + w) / 64; j++) {
-		if (TileMap[i][j] == '0') {
-			if (dy>0) y = i * 64 - h;
-			if (dy<0) y = i * 64 + 64;
-			if (dx>0) x = j * 64 - w;
-			if (dx<0) x = j * 64 + 64;
-		}
-		if (TileMap[i][j] == 's') {
-			x = 300; y = 300;
-			TileMap[i][j] = ' ';
-			//TODO: make createMonster() available to call from here
-		}
+	    for (int i = y / 64; i < (y + h) / 64; i++) {
+	        for (int j = x / 64; j < (x + w) / 64; j++) {
+		        if (TileMap[i][j] == 1 || TileMap[i][j] >= 3 && TileMap[i][j] <= 31) {
+			        if (dy>0) y = i * 64 - h;
+			        if (dy<0) y = i * 64 + 64;
+			        if (dx>0) x = j * 64 - w;
+			        if (dx<0) x = j * 64 + 64;
+		        }
+		        if (TileMap[i][j] == 2) {
+			        x = 300; y = 300;
+			        TileMap[i][j] = 0;
+			        //TODO: make createMonster() available to call from here
+		        }
+	        }
 	    }
     }
 
@@ -100,15 +101,15 @@ public:
 	void interactionWithMap() {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
-		        if (TileMap[i][j] == '0') {
+		        if (TileMap[i][j] == 1) {
 			        if (dy>0) y = i * 64 - h;
 			        if (dy<0) y = i * 64 + 64;
 			        if (dx>0) x = j * 64 - w;
 			        if (dx<0) x = j * 64 + 64;
 		        }
-		        if (TileMap[i][j] == 's') {
+		        if (TileMap[i][j] == 2) {
 			        x = 300; y = 300;
-			        TileMap[i][j] = ' ';
+			        TileMap[i][j] = 0;
 		        }
 	        }
 	    }

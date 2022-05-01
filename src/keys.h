@@ -2,7 +2,7 @@ bool key_a = false, key_d = false, key_w = false, key_s = false;
 bool key_e = false, key_g = false;
 bool key_m1 = false, key_m2 = false;
 bool key_1 = false, key_2 = false, key_3 = false, key_4 = false;
-bool key_i = false;
+bool key_5 = false, key_6 = false, key_7 = false, key_8 = false, key_9 = false;
 bool is_info = false;
 bool break4items = false;
 
@@ -130,9 +130,33 @@ if (Keyboard::isKeyPressed(Keyboard::Escape)) {
 	}
 }
 //
-if (Keyboard::isKeyPressed(Keyboard::Num1) && !key_2 && !key_3 && !key_4) {
+if (Keyboard::isKeyPressed(Keyboard::Num1) && !key_2 && !key_3 && !key_4 && !key_5 && !key_6 && !key_7 && !key_8 && !key_9) {
 	key_1 = true;
 } else { key_1 = false; }
+if (Keyboard::isKeyPressed(Keyboard::Num2) && !key_1 && !key_3 && !key_4 && !key_5 && !key_6 && !key_7 && !key_8 && !key_9) {
+	key_2 = true;
+} else { key_2 = false; }
+if (Keyboard::isKeyPressed(Keyboard::Num3) && !key_2 && !key_1 && !key_4 && !key_5 && !key_6 && !key_7 && !key_8 && !key_9) {
+	key_3 = true;
+} else { key_3 = false; }
+if (Keyboard::isKeyPressed(Keyboard::Num4) && !key_2 && !key_3 && !key_1 && !key_5 && !key_6 && !key_7 && !key_8 && !key_9) {
+	key_4 = true;
+} else { key_4 = false; }
+if (Keyboard::isKeyPressed(Keyboard::Num5) && !key_2 && !key_3 && !key_4 && !key_1 && !key_6 && !key_7 && !key_8 && !key_9) {
+	key_5 = true;
+} else { key_5 = false; }
+if (Keyboard::isKeyPressed(Keyboard::Num6) && !key_2 && !key_3 && !key_4 && !key_5 && !key_1 && !key_7 && !key_8 && !key_9) {
+	key_6 = true;
+} else { key_6 = false; }
+if (Keyboard::isKeyPressed(Keyboard::Num7) && !key_2 && !key_3 && !key_4 && !key_5 && !key_6 && !key_1 && !key_8 && !key_9) {
+	key_7 = true;
+} else { key_7 = false; }
+if (Keyboard::isKeyPressed(Keyboard::Num8) && !key_2 && !key_3 && !key_4 && !key_5 && !key_6 && !key_7 && !key_1 && !key_9) {
+	key_8 = true;
+} else { key_8 = false; }
+if (Keyboard::isKeyPressed(Keyboard::Num9) && !key_2 && !key_3 && !key_4 && !key_5 && !key_6 && !key_7 && !key_8 && !key_1) {
+	key_9 = true;
+} else { key_9 = false; }
 //
 if (Mouse::isButtonPressed(Mouse::Left)) {
 	key_m1 = true;
@@ -401,7 +425,7 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			vx = view.getCenter().x - 536 + 15 + 112 * i;
 		    if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 				for (int j = 0; j < 24; j++) {
-	                if (inv_spells[j] == 0) {
+	                if (inv_spells[j] == 0 && cooldowns[i] <= 0) {
 						inv_spells[j] = hotbar_spells[i];
 						hotbar_spells[i] = 0;
 						break;
@@ -410,6 +434,7 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			}
 		}
 	}
+	attack = 2; //second type of attack
 	key_m2 = true;
 	aiming = false;
 } else { key_m2 = false; }
@@ -418,13 +443,85 @@ if (!key_m1 && !key_m2) {
 	attack = 0;
 }
 if (key_1) {
-	aiming_kid = true;
+	aiming_kid1 = true;
 }
-if (!key_1 && aiming_kid) {
+if (key_2) {
+	aiming_kid2 = true;
+}
+if (key_3) {
+	aiming_kid3 = true;
+}
+if (key_4) {
+	aiming_kid4 = true;
+}
+if (key_5) {
+	aiming_kid5 = true;
+}
+if (key_6) {
+	aiming_kid6 = true;
+}
+if (key_7) {
+	aiming_kid7 = true;
+}
+if (key_8) {
+	aiming_kid8 = true;
+}
+if (key_9) {
+	aiming_kid9 = true;
+}
+if (!key_1 && aiming_kid1) {
 	spell_name = hotbar_spells[0];
 	spell_slot = 0;
 	aiming = true;
-	aiming_kid = false;
+	aiming_kid1 = false;
+}
+if (!key_2 && aiming_kid2) {
+	spell_name = hotbar_spells[1];
+	spell_slot = 1;
+	aiming = true;
+	aiming_kid2 = false;
+}
+if (!key_3 && aiming_kid3) {
+	spell_name = hotbar_spells[2];
+	spell_slot = 2;
+	aiming = true;
+	aiming_kid3 = false;
+}
+if (!key_4 && aiming_kid4) {
+	spell_name = hotbar_spells[3];
+	spell_slot = 3;
+	aiming = true;
+	aiming_kid4 = false;
+}
+if (!key_5 && aiming_kid5) {
+	spell_name = hotbar_spells[4];
+	spell_slot = 4;
+	aiming = true;
+	aiming_kid5 = false;
+}
+if (!key_6 && aiming_kid6) {
+	spell_name = hotbar_spells[5];
+	spell_slot = 5;
+	aiming = true;
+	aiming_kid6 = false;
+}
+if (!key_7 && aiming_kid7) {
+	spell_name = hotbar_spells[6];
+	spell_slot = 6;
+	aiming = true;
+	aiming_kid7 = false;
+}
+if (!key_8 && aiming_kid8) {
+	spell_name = hotbar_spells[7];
+	spell_slot = 7;
+	aiming = true;
+	aiming_kid8 = false;
+}
+if (!key_9 && aiming_kid9) {
+	spell_name = hotbar_spells[8];
+	spell_slot = 8;
+	aiming = true;
+	aiming_kid9 = false;
 }
 if (Keyboard::isKeyPressed(Keyboard::LControl) && key_m2) {
 	targeting();

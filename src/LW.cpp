@@ -89,9 +89,9 @@ Text text_melee_weapon("", font, 40);
 Text text_range_weapon("", font, 40);
 Text text_item_info("", font, 30);
 Text text("", font, 40);
-Text player_stats_hp("", font, 40);
-Text player_stats_mp("", font, 40);
-Text player_stats_lvl("", font, 40);
+Text player_stats_hp("", font, 30);
+Text player_stats_mp("", font, 30);
+Text player_stats_lvl("", font, 30);
 
 //stats:
 int strength = 1;
@@ -122,10 +122,12 @@ int armor_pants = 0;
 int armor_boots = 0;
 int sprite_counter = 0;
 int attack1_cd = 0;
+int attack2_cd = 0;
 int spell_slot = 0;
 int timer_ColdSnap;
 int timer_ColdSnap_tick;
-int player_hp = 10000, player_mp = 10000, player_lvl = 1;
+int timer_hp_regen = 10000, timer_mp_regen = 10000; //10000 is 0.1 per second
+int player_hp = 100, player_mp = 100, player_lvl = 1;
 int damage = 1; //TODO: rename to player_damage
 int attack_speed = 1000; //1 second
 int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
@@ -138,13 +140,22 @@ int inv_spells[300]; //spells inventory
 int hotbar_spells[9]; //spells hotbar
 int cooldowns[9] {0, 0, 0, 0, 0, 0, 0, 0, 0}; //cooldowns
 float attack1_cd_timer = 0;
+float attack2_cd_timer = 0;
 float current_frame = 0;
-bool aiming_kid = false;
+float hp_regen = 0.1, mp_regen = 0.1;
 bool aiming = false;
+bool aiming_kid1 = false;
+bool aiming_kid2 = false;
+bool aiming_kid3 = false;
+bool aiming_kid4 = false;
+bool aiming_kid5 = false;
+bool aiming_kid6 = false;
+bool aiming_kid7 = false;
+bool aiming_kid8 = false;
+bool aiming_kid9 = false;
 bool is_inventory_open = false;
 bool is_spells_inventory_open = false;
 bool is_stats_open = false;
-int spell_to_hotbar = -1;
 std::string weapon = ""; //todo: delete
 
 #include "init_images.h"
@@ -292,10 +303,27 @@ int main() {
             v_monsters[v0].update(time);
 		}
 
+        if (timer_hp_regen > 0) {
+            timer_hp_regen -= time;
+        } else {
+            timer_hp_regen = 1000 / hp_regen;
+            player_hp += 1;
+        }
+        if (timer_mp_regen > 0) {
+            timer_mp_regen -= time;
+        } else {
+            timer_mp_regen = 1000 / mp_regen;
+            player_mp += 1;
+        }
         if (attack1_cd > 0) {
             attack1_cd -= time;
         } else {
             attack1_cd = 0;
+        }
+        if (attack2_cd > 0) {
+            attack2_cd -= time;
+        } else {
+            attack2_cd = 0;
         }
         for (int i = 0; i <= 9; i++) {
             if (cooldowns[i] > 0) {
@@ -315,6 +343,17 @@ int main() {
                 }
             }
             attack1_cd = attack_speed;
+        }
+        if (attack == 2 && attack2_cd == 0) {
+            for (int v = 0; v < v_monsters.size(); v++) {
+                float mx = v_monsters[v].getMonsterCoordinateX();
+        		float my = v_monsters[v].getMonsterCoordinateY();
+                if (checkWeaponsRange(mx, my)) {
+                    v_monsters[v].hitMonster(damage * 2, time);
+                    attack = 0;
+                }
+            }
+            attack2_cd = attack_speed * 2;
         }
 
         for (int i = 0; i < v_monsters.size(); i++) {
@@ -380,10 +419,11 @@ int main() {
         setImagesToHotbar();
         gui();
 
-        window.draw(herosprite);
         for (int lol = 0; lol < other_sprites.size(); lol++) {
             window.draw(other_sprites[lol]);
         }
+        window.draw(herosprite);
+        window.draw(AnimationWoodenSwordSprite);
         window.draw(GuiSpellsHotbarSprite);
         for (int i = 0; i < 9; i++) {
             window.draw(SpellsHotbarSprites[i]);

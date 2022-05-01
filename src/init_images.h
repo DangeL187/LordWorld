@@ -37,3 +37,7 @@ Sprite ColdSnap2Sprite;
 Image MonsterRatImage;
 Texture MonsterRatTexture;
 Sprite MonsterRatSprite;
+//Animations:
+Image AnimationWoodenSwordImage;
+Texture AnimationWoodenSwordTexture;
+Sprite AnimationWoodenSwordSprite;
