@@ -1,15 +1,9 @@
 ----------------------------------------------------------------------------------------------------
 Lord World (LW) by DangeL
 ----------------------------------------------------------------------------------------------------
-Version 0.0.8 ChangeLog
+Version 0.1.3 ChangeLog
 ----------------------------------------------------------------------------------------------------
-Has been added function to pick up items
-Has been added function to drop items
-Drop function now works with first inventory slot only
-Added sprites for dropped items
-Fixed bug with sprites
-Connected drop function with other slots
-Added function to equip weapon and armor
-Added armor and shield
-Added rings and deleted equipment's background from inventory.png
+01.05.2022 - changed map type from string to int and added a house
+01.05.2022 - disabled changing spell in hotbar when it's on cooldown, added other spell keys
+01.05.2022 - added hp and mp regeneration, added second type of attack on MButton2
 ----------------------------------------------------------------------------------------------------
