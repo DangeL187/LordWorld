@@ -114,6 +114,7 @@ int range_weapon = 1;
 
 int player_x = 0, player_y = 0;
 int attack = 0;
+int attack_animation = 0;
 int range = 1; //*64
 int armor_shield = 0;
 int armor_helmet = 0;
@@ -128,6 +129,7 @@ int timer_ColdSnap;
 int timer_ColdSnap_tick;
 int timer_hp_regen = 10000, timer_mp_regen = 10000; //10000 is 0.1 per second
 int player_hp = 100, player_mp = 100, player_lvl = 1;
+int player_hp_max = 100, player_mp_max = 100;
 int damage = 1; //TODO: rename to player_damage
 int attack_speed = 1000; //1 second
 int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
@@ -141,6 +143,7 @@ int hotbar_spells[9]; //spells hotbar
 int cooldowns[9] {0, 0, 0, 0, 0, 0, 0, 0, 0}; //cooldowns
 float attack1_cd_timer = 0;
 float attack2_cd_timer = 0;
+float animation_timer = 0;
 float current_frame = 0;
 float hp_regen = 0.1, mp_regen = 0.1;
 bool aiming = false;
@@ -303,17 +306,61 @@ int main() {
             v_monsters[v0].update(time);
 		}
 
+        if (animation_timer > 0) {
+            animation_timer -= time;
+        } else {
+            animation_timer = 150;
+            if (attack_animation == 1) {
+                AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 70, 80));
+                AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+                herosprite.setTextureRect(IntRect(52 * 3, 0, 50, 62));
+                attack_animation++;
+            }
+            else if (attack_animation == 2) {
+                AnimationWoodenSwordSprite.setTextureRect(IntRect(70, 0, 70, 80));
+                AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+                herosprite.setTextureRect(IntRect(0, 0, 50, 62));
+                attack_animation++;
+            }
+            else if (attack_animation == 3) {
+                AnimationWoodenSwordSprite.setTextureRect(IntRect(142, 0, 70, 80));
+                AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+                herosprite.setTextureRect(IntRect(52 * 3, 64, 50, 62));
+                attack_animation++;
+            }
+            else if (attack_animation == 4) {
+                AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 70, 80));
+                AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+                if (player.dir == 0) {
+                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 128, 50, 62));
+                }
+                if (player.dir == 1) {
+                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 64, 50, 62));
+                }
+                if (player.dir == 2) {
+                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 192, 50, 62));
+                }
+                if (player.dir == 3) {
+                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 0, 50, 62));
+                }
+                attack_animation = 0;
+            }
+        }
         if (timer_hp_regen > 0) {
             timer_hp_regen -= time;
         } else {
             timer_hp_regen = 1000 / hp_regen;
-            player_hp += 1;
+            if (player_hp < player_hp_max) {
+                player_hp += 1;
+            }
         }
         if (timer_mp_regen > 0) {
             timer_mp_regen -= time;
         } else {
             timer_mp_regen = 1000 / mp_regen;
-            player_mp += 1;
+            if (player_mp < player_mp_max) {
+                player_mp += 1;
+            }
         }
         if (attack1_cd > 0) {
             attack1_cd -= time;
@@ -342,6 +389,9 @@ int main() {
                     attack = 0;
                 }
             }
+            AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 70, 80));
+            AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+            attack_animation = 1;
             attack1_cd = attack_speed;
         }
         if (attack == 2 && attack2_cd == 0) {
@@ -423,7 +473,9 @@ int main() {
             window.draw(other_sprites[lol]);
         }
         window.draw(herosprite);
-        window.draw(AnimationWoodenSwordSprite);
+        if (attack_animation != 0) {
+            window.draw(AnimationWoodenSwordSprite);
+        }
         window.draw(GuiSpellsHotbarSprite);
         for (int i = 0; i < 9; i++) {
             window.draw(SpellsHotbarSprites[i]);

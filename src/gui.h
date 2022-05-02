@@ -167,6 +167,4 @@ void gui() {
         GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 8, view.getCenter().y + 384);
     }
 
-    AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 70, 64));
-    AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
 }

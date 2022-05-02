@@ -6,7 +6,7 @@ bool key_5 = false, key_6 = false, key_7 = false, key_8 = false, key_9 = false;
 bool is_info = false;
 bool break4items = false;
 
-if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) {
+if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s && attack_animation == 0) {
 	key_d = true;
 	player.speed = 0.15;
 	player.dir = 0;
@@ -14,7 +14,7 @@ if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) {
 	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 	moveCurrentFrame(time);
 } else { key_d = false; }
-if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s) {
+if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s && attack_animation == 0) {
 	key_a = true;
 	player.speed = 0.15;
 	player.dir = 1;
@@ -22,7 +22,7 @@ if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s) {
 	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 	moveCurrentFrame(time);
 } else { key_a = false; }
-if (Keyboard::isKeyPressed(Keyboard::W) && !key_d && !key_a && !key_s) {
+if (Keyboard::isKeyPressed(Keyboard::W) && !key_d && !key_a && !key_s && attack_animation == 0) {
 	key_w = true;
 	player.speed = 0.15;
 	player.dir = 2;
@@ -30,7 +30,7 @@ if (Keyboard::isKeyPressed(Keyboard::W) && !key_d && !key_a && !key_s) {
 	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 	moveCurrentFrame(time);
 } else { key_w = false; }
-if (Keyboard::isKeyPressed(Keyboard::S) && !key_d && !key_w && !key_a) {
+if (Keyboard::isKeyPressed(Keyboard::S) && !key_d && !key_w && !key_a && attack_animation == 0) {
 	key_s = true;
 	player.speed = 0.15;
 	player.dir = 3;
@@ -167,6 +167,7 @@ if (Mouse::isButtonPressed(Mouse::Left)) {
 	attack = 1; //first type of attack
 } else { key_m1 = false; }
 if (Mouse::isButtonPressed(Mouse::Right)) {
+	attack = 2; //second type of attack
 	int out = player_x - (962 - Mouse::getPosition().x);
 	int outy = player_y - (544 - Mouse::getPosition().y);
 	int vx = view.getCenter().x + 261;
@@ -434,7 +435,6 @@ if (Mouse::isButtonPressed(Mouse::Right)) {
 			}
 		}
 	}
-	attack = 2; //second type of attack
 	key_m2 = true;
 	aiming = false;
 } else { key_m2 = false; }
@@ -525,6 +525,7 @@ if (!key_9 && aiming_kid9) {
 }
 if (Keyboard::isKeyPressed(Keyboard::LControl) && key_m2) {
 	targeting();
+	attack = 0;
 }
 
 if (is_inventory_open) {
