@@ -91,7 +91,6 @@ public:
 		w = W; h = H;
 		name = NAME;
 		#include "monsters.h"
-		std::cout << name << std::endl;
 		other_sprites.push_back(sprite);
 		x = X; y = Y;
 		other_sprites[static_sprite].setTextureRect(IntRect(0, 0, w, h));

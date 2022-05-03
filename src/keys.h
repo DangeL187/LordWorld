@@ -38,7 +38,7 @@ if (Keyboard::isKeyPressed(Keyboard::S) && !key_d && !key_w && !key_a && attack_
 	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 	moveCurrentFrame(time);
 } else { key_s = false; }
-if (Keyboard::isKeyPressed(Keyboard::LShift)) {
+if (Keyboard::isKeyPressed(Keyboard::LShift) && attack_animation == 0) {
 	player.speed = 0.3;
 	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 }

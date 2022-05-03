@@ -306,46 +306,6 @@ int main() {
             v_monsters[v0].update(time);
 		}
 
-        if (animation_timer > 0) {
-            animation_timer -= time;
-        } else {
-            animation_timer = 150;
-            if (attack_animation == 1) {
-                AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 70, 80));
-                AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
-                herosprite.setTextureRect(IntRect(52 * 3, 0, 50, 62));
-                attack_animation++;
-            }
-            else if (attack_animation == 2) {
-                AnimationWoodenSwordSprite.setTextureRect(IntRect(70, 0, 70, 80));
-                AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
-                herosprite.setTextureRect(IntRect(0, 0, 50, 62));
-                attack_animation++;
-            }
-            else if (attack_animation == 3) {
-                AnimationWoodenSwordSprite.setTextureRect(IntRect(142, 0, 70, 80));
-                AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
-                herosprite.setTextureRect(IntRect(52 * 3, 64, 50, 62));
-                attack_animation++;
-            }
-            else if (attack_animation == 4) {
-                AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 70, 80));
-                AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
-                if (player.dir == 0) {
-                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 128, 50, 62));
-                }
-                if (player.dir == 1) {
-                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 64, 50, 62));
-                }
-                if (player.dir == 2) {
-                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 192, 50, 62));
-                }
-                if (player.dir == 3) {
-                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 0, 50, 62));
-                }
-                attack_animation = 0;
-            }
-        }
         if (timer_hp_regen > 0) {
             timer_hp_regen -= time;
         } else {
@@ -389,9 +349,9 @@ int main() {
                     attack = 0;
                 }
             }
-            AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 70, 80));
-            AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
             attack_animation = 1;
+            AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 1, 1));
+            AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
             attack1_cd = attack_speed;
         }
         if (attack == 2 && attack2_cd == 0) {
@@ -403,7 +363,105 @@ int main() {
                     attack = 0;
                 }
             }
+            attack_animation = 1;
+            AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 1, 1));
+            AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
             attack2_cd = attack_speed * 2;
+        }
+
+        if (animation_timer > 0) {
+            animation_timer -= time;
+        } else {
+            animation_timer = 150;
+            if (attack_animation == 1) {
+                if (player.dir == 0) { //D
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(1, 131, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x, player_y);
+                    herosprite.setTextureRect(IntRect(52 * 2, 64 * 2, 50, 62));
+                }
+                if (player.dir == 1) { //A
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(1, 66, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+                    herosprite.setTextureRect(IntRect(52 * 2, 64, 50, 62));
+                }
+                if (player.dir == 2) { //W
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(1, 196, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x, player_y);
+                    herosprite.setTextureRect(IntRect(52 * 3, 64 * 3, 50, 62));
+                }
+                if (player.dir == 3) { //S
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(1, 1, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+                    herosprite.setTextureRect(IntRect(52 * 3, 0, 50, 62));
+                }
+                attack_animation++;
+            }
+            else if (attack_animation == 2) {
+                if (player.dir == 0) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(74, 131, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x, player_y);
+                    herosprite.setTextureRect(IntRect(52 * 3, 64 * 2, 50, 62));
+                }
+                if (player.dir == 1) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(74, 66, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+                    herosprite.setTextureRect(IntRect(52 * 3, 64, 50, 62));
+                }
+                if (player.dir == 2) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(74, 196, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x, player_y);
+                    herosprite.setTextureRect(IntRect(52, 64 * 3, 50, 62));
+                }
+                if (player.dir == 3) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(74, 1, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+                    herosprite.setTextureRect(IntRect(52, 0, 50, 62));
+                }
+                attack_animation++;
+            }
+            else if (attack_animation == 3) {
+                if (player.dir == 0) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(147, 131, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x, player_y + 20);
+                    herosprite.setTextureRect(IntRect(52 * 4, 64 * 2, 50, 62));
+                }
+                if (player.dir == 1) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(147, 66, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y + 20);
+                    herosprite.setTextureRect(IntRect(52 * 4, 64, 50, 62));
+                }
+                if (player.dir == 2) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(147, 196, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x, player_y + 20);
+                    herosprite.setTextureRect(IntRect(52 * 4, 64 * 3, 50, 62));
+                }
+                if (player.dir == 3) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(147, 1, 72, 64));
+                    AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y + 20);
+                    herosprite.setTextureRect(IntRect(52 * 4, 0, 50, 62));
+                }
+                attack_animation++;
+            }
+            else if (attack_animation == 4) {
+                if (player.dir == 0) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(1, 1, 72, 64));
+                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 128, 50, 62));
+                }
+                if (player.dir == 1) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(1, 66, 72, 64));
+                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 64, 50, 62));
+                }
+                if (player.dir == 2) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(1, 1, 72, 64));
+                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 192, 50, 62));
+                }
+                if (player.dir == 3) {
+                    AnimationWoodenSwordSprite.setTextureRect(IntRect(1, 1, 72, 64));
+                    herosprite.setTextureRect(IntRect(52 * int(current_frame), 0, 50, 62));
+                }
+                AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+                attack_animation = 0;
+            }
         }
 
         for (int i = 0; i < v_monsters.size(); i++) {
