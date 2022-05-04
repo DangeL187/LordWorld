@@ -28,7 +28,7 @@ void setImagesToSpellsInventory() {
 
 void spells(float get_time) {
     if (spell_name == 1 && cooldowns[spell_slot] == 0) {
-        int damage_from_spell = 2; //2 * lvl_ice_magic
+        int damage_from_spell = 2 * magic_ice;
         spellDamaged();
         for (int v = 0; v < damaged_numbers.size(); v++) {
             float mx = v_monsters[damaged_numbers[v]].getMonsterCoordinateX();
@@ -36,8 +36,8 @@ void spells(float get_time) {
             float condx = pow(pow((mx - player_x), 2), 0.5);
             float condy = pow(pow((my - player_y), 2), 0.5);
             if (condx <= 300 && condy <= 300) {
-                v_monsters[damaged_numbers[v]].hitMonster(damage_from_spell, get_time);
                 v_monsters[damaged_numbers[v]].giveBuff("ColdSnap", 5000);
+                v_monsters[damaged_numbers[v]].hitMonster(damage_from_spell, get_time);
                 timer_ColdSnap_tick = 1000;
                 cooldowns[spell_slot] = 15000;
         	}

@@ -130,7 +130,7 @@ int timer_ColdSnap_tick;
 int timer_hp_regen = 10000, timer_mp_regen = 10000; //10000 is 0.1 per second
 int player_hp = 100, player_mp = 100, player_lvl = 1;
 int player_hp_max = 100, player_mp_max = 100;
-int damage = 1; //TODO: rename to player_damage
+int player_damage = 1;
 int attack_speed = 1000; //1 second
 int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
 int spell_name = 0;
@@ -167,7 +167,7 @@ std::string weapon = ""; //todo: delete
 #include "drawmap.h"
 #include "weapon_types.h"
 #include "gui.h"
-#include "item_info.h"
+#include "info.h"
 
 std::vector<Monster> v_monsters; //whole monsters
 std::vector<Monster> target_m; //targeted monster
@@ -345,13 +345,13 @@ int main() {
                 float mx = v_monsters[v].getMonsterCoordinateX();
         		float my = v_monsters[v].getMonsterCoordinateY();
                 if (checkWeaponsRange(mx, my)) {
-                    v_monsters[v].hitMonster(damage, time);
+                    v_monsters[v].hitMonster(player_damage, time);
                     attack = 0;
                 }
             }
-            attack_animation = 1;
             AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 1, 1));
             AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+            attack_animation = 1;
             attack1_cd = attack_speed;
         }
         if (attack == 2 && attack2_cd == 0) {
@@ -359,13 +359,13 @@ int main() {
                 float mx = v_monsters[v].getMonsterCoordinateX();
         		float my = v_monsters[v].getMonsterCoordinateY();
                 if (checkWeaponsRange(mx, my)) {
-                    v_monsters[v].hitMonster(damage * 2, time);
+                    v_monsters[v].hitMonster(player_damage * 2, time);
                     attack = 0;
                 }
             }
-            attack_animation = 1;
             AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 1, 1));
             AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+            attack_animation = 1;
             attack2_cd = attack_speed * 2;
         }
 
@@ -382,7 +382,7 @@ int main() {
                 if (player.dir == 1) { //A
                     AnimationWoodenSwordSprite.setTextureRect(IntRect(1, 66, 72, 64));
                     AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
-                    herosprite.setTextureRect(IntRect(52 * 2, 64, 50, 62));
+                    herosprite.setTextureRect(IntRect(0, 64, 50, 62));
                 }
                 if (player.dir == 2) { //W
                     AnimationWoodenSwordSprite.setTextureRect(IntRect(1, 196, 72, 64));

@@ -93,6 +93,7 @@ IronPantsSprite.setTexture(IronPantsTexture);
 IronBootsSprite.setTexture(IronBootsTexture);
 IronRingSprite.setTexture(IronRingTexture);
 ////////////////////////////////////////////////////////////////////////////////
+//TODO: create AnimationWeaponSprite and place different weapon sprites in it
 AnimationWoodenSwordImage.loadFromFile("../images/AnimationWoodenSword.png");
 AnimationWoodenSwordTexture.loadFromImage(AnimationWoodenSwordImage);
 AnimationWoodenSwordSprite.setTexture(AnimationWoodenSwordTexture);

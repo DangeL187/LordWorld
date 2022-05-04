@@ -1,11 +1,11 @@
-void setWeaponStats() {
+void setWeaponStats() { //TODO: unite in one function
     if (inv_items[27] == 1) { //Wooden Sword
         weapon_type = 1;
-        damage = 2 * strength; //gives +2 attack damage
+        player_damage = 2 * strength; //gives +2 attack damage
     }
     else {
         weapon_type = 1;
-        damage = 1 * strength; //nothing gives +1 attack damage
+        player_damage = 1 * strength; //nothing gives +1 attack damage
     }
 }
 void setShieldStats() {

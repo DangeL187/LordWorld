@@ -548,13 +548,33 @@ if (is_inventory_open) {
     }
 }
 
+if (is_spells_inventory_open) {
+    int out = player_x - (962 - Mouse::getPosition().x);
+    int outy = player_y - (544 - Mouse::getPosition().y);
+	int vx = view.getCenter().x + 261;
+	int vy = view.getCenter().y - 343;
+    for (int i = 0; i < 6; i++) {
+    	vx = view.getCenter().x + 261;
+	    for (int j = 0; j < 4; j++) {
+			if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+				setSpellInfo(inv_spells[i * 4 + j]);
+				GuiInfoSprite.setPosition(out - 10, outy);
+				text_item_info.setPosition(out, outy + 15); //todo: rename to text_info
+				is_info = true;
+			}
+		    vx += 112;
+    	}
+	    vy += 112;
+    }
+}
+
 int out = player_x - (962 - Mouse::getPosition().x);
 int outy = player_y - (544 - Mouse::getPosition().y);
 int vx = view.getCenter().x - 940;
 int vy = view.getCenter().y - 480;
 if (vx/1 <= out && out <= vx/1 + 170 && vy/1 <= outy && outy <= vy/1 + 100) {
 	text_strength.setString("Strength: " + std::to_string(strength));
-	text_damage.setString("Damage: " + std::to_string(damage));
+	text_damage.setString("Damage: " + std::to_string(player_damage));
 	text_armor.setString("Armor: " + std::to_string(armor));
 	text_magic.setString("Magic: " + std::to_string(magic));
 	text_critical_chance.setString("Critical Chance: " + std::to_string(critical_chance) + "%");
