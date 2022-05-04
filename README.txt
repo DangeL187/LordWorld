@@ -23,7 +23,7 @@ or
 ./build_and_run.sh
 -----------------------------------------------------
 How to see the TODO list:
-Go to the bin folder and type:
+Go to the build folder and type:
 ./todo.sh
 -----------------------------------------------------
 How to clone this repository:
