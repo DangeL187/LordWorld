@@ -131,6 +131,37 @@ public:
 		checkBuff(time);
 	}
 
+	void moveMonster(float get_time) {
+		float condx = pow(pow((x - player_x), 2), 0.5);
+		float condy = pow(pow((y - player_y), 2), 0.5);
+		if (condx <= 300 && condy <= 300) {
+			if (y <= player_y) {
+				speed = 0.3; dir = 3;
+				update(get_time);
+			}
+			if (y >= player_y) {
+				speed = 0.3; dir = 2;
+				update(get_time);
+			}
+			if (x <= player_x) {
+				speed = 0.3; dir = 0;
+				update(get_time);
+			}
+			if (x >= player_x) {
+				speed = 0.3; dir = 1;
+				update(get_time);
+			}
+		}
+		else {
+			int r = rand() % 4;
+			switch (r) {
+			    case 0: speed = 3; dir = 0; update(get_time); break;
+			    case 1: speed = 3; dir = 1; update(get_time); break;
+			    case 2: speed = 3; dir = 2; update(get_time); break;
+			    case 3: speed = 3; dir = 3; update(get_time); break;
+			}
+		}
+	}
 	void checkBuff(float globaltime) {
 		for (int v = 0; v < buffs.size(); v++) {
 			#include "buffs.h"
