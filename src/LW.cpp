@@ -304,6 +304,7 @@ int main() {
 
         for (int v0 = 0; v0 < v_monsters.size(); v0++) {
             v_monsters[v0].update(time);
+            v_monsters[v0].moveMonster(time);
 		}
 
         if (timer_hp_regen > 0) {
@@ -372,9 +373,6 @@ int main() {
         if (animation_timer > 0) {
             animation_timer -= time;
         } else {
-            for (int i = 0; i < v_monsters.size(); i++) {
-                v_monsters[i].moveMonster(time);
-            }
             animation_timer = 150;
             if (attack_animation == 1) {
                 if (player.dir == 0) { //D

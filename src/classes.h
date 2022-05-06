@@ -112,6 +112,14 @@ public:
 		        }
 	        }
 	    }
+		float condx = pow(pow((x - player_x), 2), 0.5);
+		float condy = pow(pow((y - player_y), 2), 0.5);
+		if (condx <= 52 && condy <= 64) {
+			if (dx>0) x -= 1;
+			if (dx<0) x += 1;
+			if (dy>0) y -= 1;
+			if (dy<0) y += 1;
+		}
     }
 
     void update(float time) {
@@ -136,29 +144,29 @@ public:
 		float condy = pow(pow((y - player_y), 2), 0.5);
 		if (condx <= 300 && condy <= 300) {
 			if (y <= player_y) {
-				speed = 0.3; dir = 3;
+				speed = 0.1; dir = 3;
 				update(get_time);
 			}
 			if (y >= player_y) {
-				speed = 0.3; dir = 2;
+				speed = 0.1; dir = 2;
 				update(get_time);
 			}
 			if (x <= player_x) {
-				speed = 0.3; dir = 0;
+				speed = 0.1; dir = 0;
 				update(get_time);
 			}
 			if (x >= player_x) {
-				speed = 0.3; dir = 1;
+				speed = 0.1; dir = 1;
 				update(get_time);
 			}
 		}
-		else {
+		else { //todo: change this AI
 			int r = rand() % 4;
 			switch (r) {
-			    case 0: speed = 3; dir = 0; update(get_time); break;
-			    case 1: speed = 3; dir = 1; update(get_time); break;
-			    case 2: speed = 3; dir = 2; update(get_time); break;
-			    case 3: speed = 3; dir = 3; update(get_time); break;
+			    case 0: speed = 0.15; dir = 0; update(get_time); break;
+			    case 1: speed = 0.15; dir = 1; update(get_time); break;
+			    case 2: speed = 0.15; dir = 2; update(get_time); break;
+			    case 3: speed = 0.15; dir = 3; update(get_time); break;
 			}
 		}
 	}
