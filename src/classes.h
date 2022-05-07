@@ -59,7 +59,7 @@ public:
 		armor = armor_shield + armor_helmet + armor_chestplate + armor_pants + armor_boots;
 		setOtherStats();
 		if (armor_helmet == armor_chestplate && armor_chestplate == armor_pants && armor_pants == armor_boots && armor_boots != 0) {
-			armor += 1;
+			armor += armor_helmet;
 		}
 	}
 
@@ -76,7 +76,8 @@ public:
 	float x, y;
 	float w, h, dx, dy, speed;
 	int dir = 0;
-	int dmg, hp, mp, lvl;
+	int dmg, hp, mp, lvl, as;
+	float as_cd;
 	int static_sprite = sprite_counter;
 	std::string name;
 	std::vector<std::string> buffs;
@@ -91,13 +92,14 @@ public:
 		w = W; h = H;
 		name = NAME;
 		#include "monsters.h"
+		as_cd = as;
 		other_sprites.push_back(sprite);
 		x = X; y = Y;
 		other_sprites[static_sprite].setTextureRect(IntRect(0, 0, w, h));
 		sprite_counter++;
 	}
 
-	void interactionWithMap() {
+	void interactionWithMap(float get_time) {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
 		        if (TileMap[i][j] == 1) {
@@ -115,6 +117,16 @@ public:
 		float condx = pow(pow((x - player_x), 2), 0.5);
 		float condy = pow(pow((y - player_y), 2), 0.5);
 		if (condx <= 52 && condy <= 64) {
+			if (as_cd > 0) {
+	            as_cd -= get_time;
+	        } else {
+				float a = armor / 5;
+				int b = dmg - static_cast<int>(a);
+				if (b >= 0) {
+					player_hp -= b;
+				}
+	            as_cd = as;
+	        }
 			if (dx>0) x -= 1;
 			if (dx<0) x += 1;
 			if (dy>0) y -= 1;
@@ -134,7 +146,7 @@ public:
 		y += dy*time;
 
 		speed = 0;
-		interactionWithMap();
+		interactionWithMap(time);
 		other_sprites[static_sprite].setPosition(x, y);
 		checkBuff(time);
 	}
