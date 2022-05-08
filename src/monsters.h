@@ -1,6 +1,6 @@
 if (NAME == "Rat") {
     dmg = 1;
-    hp = 100;
+    hp = 10;
     mp = 10;
     lvl = 1;
     as = 1000;
