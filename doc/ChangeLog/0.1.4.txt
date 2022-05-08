@@ -7,4 +7,5 @@ Version 0.1.4 ChangeLog
 05.05.2022 - added basic monster AI
 06.05.2022 - fixed monster's speed, added collision with player
 07.05.2022 - added monster's attack
+08.05.2022 - improved attack animations
 ----------------------------------------------------------------------------------------------------
