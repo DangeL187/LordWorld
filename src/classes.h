@@ -36,15 +36,14 @@ public:
 
     void update(float time) {
 		switch (dir) {
-		case 0: dx = speed; dy = 0; break;
-		case 1: dx = -speed; dy = 0; break;
-		case 2: dx = 0; dy = -speed; break;
-		case 3: dx = 0; dy = speed; break;
+			case 0: dx = speed; dy = 0; break;
+			case 1: dx = -speed; dy = 0; break;
+			case 2: dx = 0; dy = -speed; break;
+			case 3: dx = 0; dy = speed; break;
 		}
 
 		x += dx*time;
 		y += dy*time;
-
 		speed = 0;
 		interactionWithMap();
 		player_x = x/1;
@@ -62,7 +61,28 @@ public:
 			armor += armor_helmet;
 		}
 	}
-
+	void addPlayerX(bool get_operation) {
+		if (get_operation) {
+			x++;
+		}
+		else {
+			x--;
+		}
+	}
+	void addPlayerY(bool get_operation) {
+		if (get_operation) {
+			y++;
+		}
+		else {
+			y--;
+		}
+	}
+	float getPlayerDX() {
+        return dx;
+    }
+	float getPlayerDY() {
+        return dy;
+    }
     float getPlayerCoordinateX() {
         return x;
     }
@@ -76,6 +96,7 @@ public:
 	float x, y;
 	float w, h, dx, dy, speed;
 	int dir = 0;
+	int random_generated_dir = 0;
 	int dmg, hp, mp, lvl, as;
 	float as_cd;
 	int static_sprite = sprite_counter;
@@ -114,10 +135,10 @@ public:
 		        }
 	        }
 	    }
-		float condx = pow(pow((x - player_x), 2), 0.5);
-		float condy = pow(pow((y - player_y), 2), 0.5);
-		if (condx <= 52 && condy <= 64) {
-			if (as_cd > 0) {
+		//float condx = pow(pow((x - player_x), 2), 0.5);
+		//float condy = pow(pow((y - player_y), 2), 0.5);
+		//if (condx <= 52 && condy <= 64) { //collision with player
+			/*if (as_cd > 0) {
 	            as_cd -= get_time;
 	        } else {
 				float a = armor / 5;
@@ -126,12 +147,12 @@ public:
 					player_hp -= b;
 				}
 	            as_cd = as;
-	        }
-			if (dx>0) x -= 1;
-			if (dx<0) x += 1;
-			if (dy>0) y -= 1;
-			if (dy<0) y += 1;
-		}
+	        }*/
+			//if (dx>0) x -= 1;
+			//if (dx<0) x += 1;
+			//if (dy>0) y -= 1;
+			//if (dy<0) y += 1;
+		//}
     }
 
     void update(float time) {
@@ -152,33 +173,42 @@ public:
 	}
 
 	void moveMonster(float get_time) {
+		if (move_monster_timer > 0) {
+            move_monster_timer -= get_time;
+        } else {
+            random_generated_dir = rand() % 5;
+            move_monster_timer = 1000;
+        }
 		float condx = pow(pow((x - player_x), 2), 0.5);
 		float condy = pow(pow((y - player_y), 2), 0.5);
 		if (condx <= 300 && condy <= 300) {
-			if (y <= player_y) {
-				speed = 0.1; dir = 3;
-				update(get_time);
+			if (condx <= 52 && condy <= 64) { //collision with player
 			}
-			if (y >= player_y) {
-				speed = 0.1; dir = 2;
-				update(get_time);
-			}
-			if (x <= player_x) {
-				speed = 0.1; dir = 0;
-				update(get_time);
-			}
-			if (x >= player_x) {
-				speed = 0.1; dir = 1;
-				update(get_time);
+			else {
+				if (y <= player_y) {
+					speed = 0.1; dir = 3;
+					update(get_time);
+				}
+				if (y >= player_y) {
+					speed = 0.1; dir = 2;
+					update(get_time);
+				}
+				if (x <= player_x) {
+					speed = 0.1; dir = 0;
+					update(get_time);
+				}
+				if (x >= player_x) {
+					speed = 0.1; dir = 1;
+					update(get_time);
+				}
 			}
 		}
-		else { //todo: change this AI
-			int r = rand() % 4;
-			switch (r) {
-			    case 0: speed = 0.15; dir = 0; update(get_time); break;
-			    case 1: speed = 0.15; dir = 1; update(get_time); break;
-			    case 2: speed = 0.15; dir = 2; update(get_time); break;
-			    case 3: speed = 0.15; dir = 3; update(get_time); break;
+		else {
+			switch (random_generated_dir) {
+			    case 0: speed = 0.1; dir = 0; update(get_time); break;
+			    case 1: speed = 0.1; dir = 1; update(get_time); break;
+			    case 2: speed = 0.1; dir = 2; update(get_time); break;
+			    case 3: speed = 0.1; dir = 3; update(get_time); break;
 			}
 		}
 	}
@@ -205,9 +235,31 @@ public:
 	void reduceMonsterSprite() {
 		static_sprite--;
 	}
+	void addMonsterX(bool get_operation) {
+		if (get_operation) {
+			x++;
+		}
+		else {
+			x--;
+		}
+	}
+	void addMonsterY(bool get_operation) {
+		if (get_operation) {
+			y++;
+		}
+		else {
+			y--;
+		}
+	}
 	int getMonsterSprite() {
 		return static_sprite;
 	}
+	float getMonsterDX() {
+        return dx;
+    }
+	float getMonsterDY() {
+        return dy;
+    }
 	float getMonsterCoordinateX() {
         return x;
     }
