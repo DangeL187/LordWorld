@@ -129,7 +129,6 @@ if (Keyboard::isKeyPressed(Keyboard::Escape)) {
 		is_spells_inventory_open = false;
 	}
 }
-//
 if (Keyboard::isKeyPressed(Keyboard::Num1) && !key_2 && !key_3 && !key_4 && !key_5 && !key_6 && !key_7 && !key_8 && !key_9) {
 	key_1 = true;
 } else { key_1 = false; }
@@ -157,7 +156,7 @@ if (Keyboard::isKeyPressed(Keyboard::Num8) && !key_2 && !key_3 && !key_4 && !key
 if (Keyboard::isKeyPressed(Keyboard::Num9) && !key_2 && !key_3 && !key_4 && !key_5 && !key_6 && !key_7 && !key_8 && !key_1) {
 	key_9 = true;
 } else { key_9 = false; }
-//
+
 if (Mouse::isButtonPressed(Mouse::Left)) {
 	key_m1 = true;
 	if (aiming) {
