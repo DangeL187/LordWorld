@@ -10,4 +10,5 @@ Version 0.1.4 ChangeLog
 08.05.2022 - improved attack animations
 09.05.2022 - created some monsters' images
 10.05.2022 - fixed monster AI, added monsters' collision
+12.05.2022 - added basic monster walking animation
 ----------------------------------------------------------------------------------------------------
