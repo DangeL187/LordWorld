@@ -61,28 +61,6 @@ public:
 			armor += armor_helmet;
 		}
 	}
-	void addPlayerX(bool get_operation) {
-		if (get_operation) {
-			x++;
-		}
-		else {
-			x--;
-		}
-	}
-	void addPlayerY(bool get_operation) {
-		if (get_operation) {
-			y++;
-		}
-		else {
-			y--;
-		}
-	}
-	float getPlayerDX() {
-        return dx;
-    }
-	float getPlayerDY() {
-        return dy;
-    }
     float getPlayerCoordinateX() {
         return x;
     }
@@ -99,6 +77,7 @@ public:
 	int random_generated_dir = 0;
 	int dmg, hp, mp, lvl, as;
 	float as_cd;
+	float monster_frame;
 	int static_sprite = sprite_counter;
 	std::string name;
 	std::vector<std::string> buffs;
@@ -135,10 +114,10 @@ public:
 		        }
 	        }
 	    }
-		//float condx = pow(pow((x - player_x), 2), 0.5);
-		//float condy = pow(pow((y - player_y), 2), 0.5);
-		//if (condx <= 52 && condy <= 64) { //collision with player
-			/*if (as_cd > 0) {
+		float condx0 = pow(pow((x - player_x), 2), 0.5);
+		float condy0 = pow(pow((y - player_y), 2), 0.5);
+		if (condx0 <= 52 && condy0 <= 64) { //collision with player
+			if (as_cd > 0) {
 	            as_cd -= get_time;
 	        } else {
 				float a = armor / 5;
@@ -147,12 +126,8 @@ public:
 					player_hp -= b;
 				}
 	            as_cd = as;
-	        }*/
-			//if (dx>0) x -= 1;
-			//if (dx<0) x += 1;
-			//if (dy>0) y -= 1;
-			//if (dy<0) y += 1;
-		//}
+	        }
+		} else { as_cd = as; }
     }
 
     void update(float time) {
@@ -187,18 +162,38 @@ public:
 			else {
 				if (y <= player_y) {
 					speed = 0.1; dir = 3;
+					other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 0, w, h));
+					monster_frame += 0.005 * get_time;
+					if (monster_frame > 3) {
+				        monster_frame -= 3;
+				    }
 					update(get_time);
 				}
 				if (y >= player_y) {
 					speed = 0.1; dir = 2;
+					other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 192, w, h));
+					monster_frame += 0.005 * get_time;
+					if (monster_frame > 3) {
+				        monster_frame -= 3;
+				    }
 					update(get_time);
 				}
 				if (x <= player_x) {
 					speed = 0.1; dir = 0;
+					other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 128, w, h));
+					monster_frame += 0.005 * get_time;
+					if (monster_frame > 3) {
+				        monster_frame -= 3;
+				    }
 					update(get_time);
 				}
 				if (x >= player_x) {
 					speed = 0.1; dir = 1;
+					other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 64, w, h));
+					monster_frame += 0.005 * get_time;
+					if (monster_frame > 3) {
+				        monster_frame -= 3;
+				    }
 					update(get_time);
 				}
 			}
