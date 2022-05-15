@@ -119,11 +119,25 @@ public:
 		if (condx0 <= 52 && condy0 <= 64) { //collision with player
 			if (as_cd > 0) {
 	            as_cd -= get_time;
+				if (as_cd <= (as - 300)) {
+					switch (dir) {
+					    case 0: other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 128, w, h)); break;
+					    case 1: other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 64, w, h)); break;
+					    case 2: other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 192, w, h)); break;
+					    case 3: other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 0, w, h)); break;
+					}
+				}
 	        } else {
 				float a = armor / 5;
 				int b = dmg - static_cast<int>(a);
 				if (b >= 0) {
 					player_hp -= b;
+					switch (dir) {
+					    case 0: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 128, w, h)); break;
+					    case 1: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 64, w, h)); break;
+					    case 2: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 192, w, h)); break;
+					    case 3: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 0, w, h)); break;
+					}
 				}
 	            as_cd = as;
 	        }
@@ -157,8 +171,7 @@ public:
 		float condx = pow(pow((x - player_x), 2), 0.5);
 		float condy = pow(pow((y - player_y), 2), 0.5);
 		if (condx <= 300 && condy <= 300) {
-			if (condx <= 52 && condy <= 64) { //collision with player
-			}
+			if (condx <= 52 && condy <= 64) {} //collision with player
 			else {
 				if (y <= player_y) {
 					speed = 0.1; dir = 3;

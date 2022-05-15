@@ -3,6 +3,7 @@ bool key_e = false, key_g = false;
 bool key_m1 = false, key_m2 = false;
 bool key_1 = false, key_2 = false, key_3 = false, key_4 = false;
 bool key_5 = false, key_6 = false, key_7 = false, key_8 = false, key_9 = false;
+bool key_shift = false, key_space = false;
 bool is_info = false;
 bool break4items = false;
 
@@ -42,6 +43,15 @@ if (Keyboard::isKeyPressed(Keyboard::LShift) && attack_animation == 0) {
 	player.speed = 0.3;
 	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 }
+if (Keyboard::isKeyPressed(Keyboard::LShift) && attack_animation == 0) {
+	key_shift = true;
+	player.speed = 0.3;
+	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
+} else { key_shift = false; }
+if (Keyboard::isKeyPressed(Keyboard::Space) && attack_animation == 0) {
+	key_space = true;
+	space_timer = 1000;
+} else { key_space = false; }
 
 if (Keyboard::isKeyPressed(Keyboard::E) && items_dropped_id.size() != 0 && !key_g) {
 	key_e = true;

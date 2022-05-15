@@ -145,8 +145,10 @@ float attack1_cd_timer = 0;
 float attack2_cd_timer = 0;
 float animation_timer = 0;
 float move_monster_timer = 0;
+float space_timer = 0;
 float current_frame = 0;
 float hp_regen = 0.1, mp_regen = 0.1;
+bool space_hit = false;
 bool aiming = false;
 bool aiming_kid1 = false;
 bool aiming_kid2 = false;
@@ -331,6 +333,16 @@ int main() {
             }
 		}
 
+        if (space_timer > 0) {
+            space_timer -= time;
+            if (500 >= space_timer && space_timer >= 0) {
+                space_hit = true;
+            } else {
+                space_hit = false;
+            }
+        } else {
+            space_timer = 0;
+        }
         if (timer_hp_regen > 0) {
             timer_hp_regen -= time;
         } else {
@@ -370,21 +382,31 @@ int main() {
                 float mx = v_monsters[v].getMonsterCoordinateX();
         		float my = v_monsters[v].getMonsterCoordinateY();
                 if (checkWeaponsRange(mx, my)) {
-                    v_monsters[v].hitMonster(player_damage, time);
+                    if (space_hit) {
+                        v_monsters[v].hitMonster(player_damage * 3, time);
+                        attack1_cd = attack_speed * 3;
+                    } else {
+                        v_monsters[v].hitMonster(player_damage, time);
+                        attack1_cd = attack_speed;
+                    }
                     attack = 0;
                 }
             }
             AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 1, 1));
             AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
             attack_animation = 1;
-            attack1_cd = attack_speed;
         }
         if (attack == 2 && attack2_cd == 0) {
             for (int v = 0; v < v_monsters.size(); v++) {
                 float mx = v_monsters[v].getMonsterCoordinateX();
         		float my = v_monsters[v].getMonsterCoordinateY();
                 if (checkWeaponsRange(mx, my)) {
-                    v_monsters[v].hitMonster(player_damage * 2, time);
+                    if (space_hit) {
+                        v_monsters[v].hitMonster(player_damage * 2, time);
+                        //stun
+                    } else {
+                        v_monsters[v].hitMonster(player_damage * 2, time);
+                    }
                     attack = 0;
                 }
             }
