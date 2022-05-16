@@ -1,5 +1,5 @@
 if (NAME == "Rat") {
-    dmg = 1;
+    dmg = 2;
     hp = 10;
     mp = 10;
     lvl = 1;
@@ -7,7 +7,7 @@ if (NAME == "Rat") {
     sprite = MonsterRatSprite;
 }
 else if (NAME == "Rat2") {
-    dmg = 1;
+    dmg = 2;
     hp = 10;
     mp = 10;
     lvl = 1;

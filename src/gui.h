@@ -167,4 +167,12 @@ void gui() {
         GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 8, view.getCenter().y + 384);
     }
 
+    EquipedShieldSprite = InventoryItemShieldSprite; //todo: replace with setTextureRect
+    EquipedShieldSprite.setScale(0.5, 0.5);
+    switch (player_dir) {
+        case 0: EquipedShieldSprite.setPosition(player_x + 28, player_y + 28); break;
+        case 1: EquipedShieldSprite.setPosition(player_x + 28, player_y + 28); break;
+        case 2: EquipedShieldSprite.setPosition(player_x + 28, player_y + 28); break;
+        case 3: EquipedShieldSprite.setPosition(player_x + 28, player_y + 28); break;
+    }
 }

@@ -24,6 +24,10 @@ GuiStatsSprite.setTexture(GuiStatsTexture);
 GuiPickedSpellSprite.setTexture(GuiPickedSpellTexture);
 GuiSpellsInventorySprite.setTexture(GuiSpellsInventoryTexture);
 
+EquipedShieldImage.loadFromFile("../images/GuiEmptyItem.png");
+EquipedShieldTexture.loadFromImage(EquipedShieldImage);
+EquipedShieldSprite.setTexture(EquipedShieldTexture);
+
 InventoryItemEmptyImage.loadFromFile("../images/GuiEmptyItem.png");
 InventoryItemWeaponImage.loadFromFile("../images/GuiSlotWeapon.png");
 InventoryItemShieldImage.loadFromFile("../images/GuiSlotShield.png");

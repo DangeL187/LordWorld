@@ -48,6 +48,7 @@ public:
 		interactionWithMap();
 		player_x = x/1;
 		player_y = y/1;
+		player_dir = dir;
 		herosprite.setPosition(x, y);
 		setWeaponStats();
 		setShieldStats();
@@ -129,15 +130,21 @@ public:
 				}
 	        } else {
 				float a = armor / 5;
-				int b = dmg - static_cast<int>(a);
+				float aa = dmg - (dmg * (physical_resistance / 100));
+				int b = static_cast<int>(aa) - static_cast<int>(a);
 				if (b >= 0) {
-					player_hp -= b;
-					switch (dir) {
-					    case 0: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 128, w, h)); break;
-					    case 1: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 64, w, h)); break;
-					    case 2: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 192, w, h)); break;
-					    case 3: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 0, w, h)); break;
+					if (defence && defence_counter < 2) {
+						defence_counter++;
 					}
+					else {
+					    player_hp -= b;
+				    }
+				}
+				switch (dir) {
+					case 0: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 128, w, h)); break;
+					case 1: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 64, w, h)); break;
+					case 2: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 192, w, h)); break;
+					case 3: other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 0, w, h)); break;
 				}
 	            as_cd = as;
 	        }

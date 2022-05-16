@@ -56,6 +56,10 @@ Image SpellsHotbarImages[9];
 Texture SpellsHotbarTextures[9];
 Sprite SpellsHotbarSprites[9];
 
+Image EquipedShieldImage;
+Texture EquipedShieldTexture;
+Sprite EquipedShieldSprite;
+
 Image map_image;
 Texture map_texture;
 Sprite map_sprite;
@@ -97,10 +101,10 @@ Text player_stats_lvl("", font, 30);
 int strength = 1;
 int armor = 0;
 int magic = 1;
-int critical_chance = 1; //%
+float critical_chance = 1; //%
 //resists:
-int magic_resistance = 1; //%
-int physical_resistance = 1; //%
+float magic_resistance = 1; //%
+float physical_resistance = 1; //%
 //magic:
 int magic_ice = 1;
 int magic_fire = 1;
@@ -113,6 +117,7 @@ int melee_weapon = 1;
 int range_weapon = 1;
 
 int player_x = 0, player_y = 0;
+int player_dir = 0;
 int attack = 0;
 int attack_animation = 0;
 int range = 1; //*64
@@ -128,9 +133,10 @@ int spell_slot = 0;
 int timer_ColdSnap;
 int timer_ColdSnap_tick;
 int timer_hp_regen = 10000, timer_mp_regen = 10000; //10000 is 0.1 per second
-int player_hp = 100, player_mp = 100, player_lvl = 1;
-int player_hp_max = 100, player_mp_max = 100;
+int player_hp = 10, player_mp = 10, player_lvl = 1;
+int player_hp_max = 10, player_mp_max = 10;
 int player_damage = 1;
+int defence_counter = 0;
 int attack_speed = 1000; //1 second
 int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
 int spell_name = 0;
@@ -148,6 +154,7 @@ float move_monster_timer = 0;
 float space_timer = 0;
 float current_frame = 0;
 float hp_regen = 0.1, mp_regen = 0.1;
+bool defence = false;
 bool space_hit = false;
 bool aiming = false;
 bool aiming_kid1 = false;
@@ -335,7 +342,7 @@ int main() {
 
         if (space_timer > 0) {
             space_timer -= time;
-            if (500 >= space_timer && space_timer >= 0) {
+            if (750 >= space_timer && space_timer >= 500) {
                 space_hit = true;
             } else {
                 space_hit = false;
@@ -382,11 +389,17 @@ int main() {
                 float mx = v_monsters[v].getMonsterCoordinateX();
         		float my = v_monsters[v].getMonsterCoordinateY();
                 if (checkWeaponsRange(mx, my)) {
+                    int random_crit = rand() % 100;
+                    int ch = 0;
+                    random_crit++;
+                    if (random_crit <= critical_chance) {
+                        ch = player_damage;
+                    }
                     if (space_hit) {
-                        v_monsters[v].hitMonster(player_damage * 3, time);
+                        v_monsters[v].hitMonster(player_damage * 3 + ch, time);
                         attack1_cd = attack_speed * 3;
                     } else {
-                        v_monsters[v].hitMonster(player_damage, time);
+                        v_monsters[v].hitMonster(player_damage + ch, time);
                         attack1_cd = attack_speed;
                     }
                     attack = 0;
@@ -395,17 +408,26 @@ int main() {
             AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 1, 1));
             AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
             attack_animation = 1;
+            defence_counter = 0;
         }
         if (attack == 2 && attack2_cd == 0) {
             for (int v = 0; v < v_monsters.size(); v++) {
                 float mx = v_monsters[v].getMonsterCoordinateX();
         		float my = v_monsters[v].getMonsterCoordinateY();
                 if (checkWeaponsRange(mx, my)) {
+                    int random_crit = rand() % 100;
+                    int ch = 0;
+                    random_crit++;
+                    if (random_crit <= critical_chance) {
+                        ch = player_damage;
+                    }
                     if (space_hit) {
-                        v_monsters[v].hitMonster(player_damage * 2, time);
+                        v_monsters[v].hitMonster(player_damage * 2 + ch, time);
+                        attack2_cd = attack_speed * 3;
                         //stun
                     } else {
-                        v_monsters[v].hitMonster(player_damage * 2, time);
+                        v_monsters[v].hitMonster(player_damage * 2 + ch, time);
+                        attack2_cd = attack_speed * 2;
                     }
                     attack = 0;
                 }
@@ -413,7 +435,7 @@ int main() {
             AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 1, 1));
             AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
             attack_animation = 1;
-            attack2_cd = attack_speed * 2;
+            defence_counter = 0;
         }
 
         if (animation_timer > 0) {
@@ -598,6 +620,9 @@ int main() {
         window.draw(herosprite);
         if (attack_animation != 0) {
             window.draw(AnimationWoodenSwordSprite);
+        }
+        if (defence && inv_items[28] != 0) {
+            window.draw(EquipedShieldSprite);
         }
         window.draw(GuiSpellsHotbarSprite);
         for (int i = 0; i < 9; i++) {

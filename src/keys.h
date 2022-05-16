@@ -40,14 +40,10 @@ if (Keyboard::isKeyPressed(Keyboard::S) && !key_d && !key_w && !key_a && attack_
 	moveCurrentFrame(time);
 } else { key_s = false; }
 if (Keyboard::isKeyPressed(Keyboard::LShift) && attack_animation == 0) {
-	player.speed = 0.3;
-	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
-}
-if (Keyboard::isKeyPressed(Keyboard::LShift) && attack_animation == 0) {
 	key_shift = true;
-	player.speed = 0.3;
-	getPlayerCoordinateForView(player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
-} else { key_shift = false; }
+	player.speed *= 0.5;
+	defence = true;
+} else { key_shift = false; defence = false; }
 if (Keyboard::isKeyPressed(Keyboard::Space) && attack_animation == 0) {
 	key_space = true;
 	space_timer = 1000;
