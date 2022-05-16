@@ -12,5 +12,7 @@ Version 0.1.4 ChangeLog
 10.05.2022 - fixed monster AI, added monsters' collision
 12.05.2022 - added basic monster walking animation
 13.05.2022 - edited rat.png(added 2 directions)
-15.05.2022 - added space+lm and space+rm attacks, added monster attack animation
+15.05.2022 - added space+lm and space+rm (powerful) attacks, added monster attack animation
+16.05.2022 - added critical hits, fixed powerful attacks timing, added physical resist
+16.05.2022 - added shield
 ----------------------------------------------------------------------------------------------------
