@@ -10,9 +10,12 @@ void setWeaponStats() { //TODO: unite in one function
 }
 void setShieldStats() {
     if (inv_items[28] == 3) { //Iron Shield
+        EquipedShieldSprite = AnimationIronShieldSprite;
         armor_shield = 1; //gives +1 armor
     }
     else {
+        EquipedShieldSprite = InventoryItemEmptySprite;
+        EquipedShieldSprite.setTextureRect(IntRect(0, 0, 1, 1));
         armor_shield = 0; //nothing gives +1 armor
     }
 }

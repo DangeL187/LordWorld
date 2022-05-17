@@ -24,10 +24,6 @@ GuiStatsSprite.setTexture(GuiStatsTexture);
 GuiPickedSpellSprite.setTexture(GuiPickedSpellTexture);
 GuiSpellsInventorySprite.setTexture(GuiSpellsInventoryTexture);
 
-EquipedShieldImage.loadFromFile("../images/GuiEmptyItem.png");
-EquipedShieldTexture.loadFromImage(EquipedShieldImage);
-EquipedShieldSprite.setTexture(EquipedShieldTexture);
-
 InventoryItemEmptyImage.loadFromFile("../images/GuiEmptyItem.png");
 InventoryItemWeaponImage.loadFromFile("../images/GuiSlotWeapon.png");
 InventoryItemShieldImage.loadFromFile("../images/GuiSlotShield.png");
@@ -97,6 +93,9 @@ IronPantsSprite.setTexture(IronPantsTexture);
 IronBootsSprite.setTexture(IronBootsTexture);
 IronRingSprite.setTexture(IronRingTexture);
 ////////////////////////////////////////////////////////////////////////////////
+AnimationIronShieldImage.loadFromFile("../images/AnimationIronShield.png");
+AnimationIronShieldTexture.loadFromImage(AnimationIronShieldImage);
+AnimationIronShieldSprite.setTexture(AnimationIronShieldTexture);
 //TODO: create AnimationWeaponSprite and place different weapon sprites in it
 AnimationWoodenSwordImage.loadFromFile("../images/AnimationWoodenSword.png");
 AnimationWoodenSwordTexture.loadFromImage(AnimationWoodenSwordImage);

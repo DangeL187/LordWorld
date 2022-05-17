@@ -41,3 +41,7 @@ Sprite MonsterRatSprite;
 Image AnimationWoodenSwordImage;
 Texture AnimationWoodenSwordTexture;
 Sprite AnimationWoodenSwordSprite;
+//Shields Animations
+Image AnimationIronShieldImage;
+Texture AnimationIronShieldTexture;
+Sprite AnimationIronShieldSprite;

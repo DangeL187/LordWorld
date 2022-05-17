@@ -240,6 +240,7 @@ int createItem(int ID, int get_x, int get_y) {
     #include "item_types.h"
 
     other_sprites[sprite_counter].setTextureRect(IntRect(0, 0, 56, 56));
+    other_sprites[sprite_counter].setScale(0.75, 0.75);
     other_sprites[sprite_counter].setPosition(get_x, get_y);
     sprite_counter++;
 }
