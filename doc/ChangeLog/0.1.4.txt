@@ -15,4 +15,5 @@ Version 0.1.4 ChangeLog
 15.05.2022 - added space+lm and space+rm (powerful) attacks, added monster attack animation
 16.05.2022 - added critical hits, fixed powerful attacks timing, added physical resist
 16.05.2022 - added shield
+17.05.2022 - added shield animation, resized items on the floor
 ----------------------------------------------------------------------------------------------------
