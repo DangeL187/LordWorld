@@ -7,3 +7,6 @@ if (buffs[v] == "ColdSnap") {
         timer_ColdSnap_tick = 0;
     }
 }
+if (buffs[v] == "AttackStun") {
+    stun = true;
+}

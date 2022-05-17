@@ -424,8 +424,8 @@ int main() {
                     }
                     if (space_hit) {
                         v_monsters[v].hitMonster(player_damage * 2 + ch, time);
+                        v_monsters[v].giveBuff("AttackStun", 500);
                         attack2_cd = attack_speed * 3;
-                        //stun
                     } else {
                         v_monsters[v].hitMonster(player_damage * 2 + ch, time);
                         attack2_cd = attack_speed * 2;

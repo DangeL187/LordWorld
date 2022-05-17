@@ -87,6 +87,7 @@ public:
 	Texture texture;
 	Sprite sprite;
 	bool dealt = false;
+	bool stun = false;
 
 	Monster(float X, float Y, float W, float H, std::string NAME) {
 		dx=0;dy=0;speed=0;
@@ -117,7 +118,7 @@ public:
 	    }
 		float condx0 = pow(pow((x - player_x), 2), 0.5);
 		float condy0 = pow(pow((y - player_y), 2), 0.5);
-		if (condx0 <= 52 && condy0 <= 64) { //collision with player
+		if (condx0 <= 52 && condy0 <= 64 && !stun) { //collision with player
 			if (as_cd > 0) {
 	            as_cd -= get_time;
 				if (as_cd <= (as - 300)) {
@@ -177,7 +178,7 @@ public:
         }
 		float condx = pow(pow((x - player_x), 2), 0.5);
 		float condy = pow(pow((y - player_y), 2), 0.5);
-		if (condx <= 300 && condy <= 300) {
+		if (condx <= 300 && condy <= 300 && !stun) {
 			if (condx <= 52 && condy <= 64) {} //collision with player
 			else {
 				if (y <= player_y) {
@@ -219,15 +220,18 @@ public:
 			}
 		}
 		else {
-			switch (random_generated_dir) {
-			    case 0: speed = 0.1; dir = 0; update(get_time); break;
-			    case 1: speed = 0.1; dir = 1; update(get_time); break;
-			    case 2: speed = 0.1; dir = 2; update(get_time); break;
-			    case 3: speed = 0.1; dir = 3; update(get_time); break;
+			if (!stun) {
+				switch (random_generated_dir) {
+				    case 0: speed = 0.1; dir = 0; update(get_time); break;
+				    case 1: speed = 0.1; dir = 1; update(get_time); break;
+				    case 2: speed = 0.1; dir = 2; update(get_time); break;
+				    case 3: speed = 0.1; dir = 3; update(get_time); break;
+				}
 			}
 		}
 	}
 	void checkBuff(float globaltime) {
+		stun = false;
 		for (int v = 0; v < buffs.size(); v++) {
 			#include "buffs.h"
 			#include "timers.h"

@@ -582,9 +582,9 @@ if (vx/1 <= out && out <= vx/1 + 170 && vy/1 <= outy && outy <= vy/1 + 100) {
 	text_damage.setString("Damage: " + std::to_string(player_damage));
 	text_armor.setString("Armor: " + std::to_string(armor));
 	text_magic.setString("Magic: " + std::to_string(magic));
-	text_critical_chance.setString("Critical Chance: " + std::to_string(critical_chance) + "%");
-	text_magic_resistance.setString("Magic Resistance: " + std::to_string(magic_resistance) + "%");
-	text_physical_resistance.setString("Physical Resistance: " + std::to_string(physical_resistance) + "%");
+	text_critical_chance.setString("Critical Chance: " + std::to_string(static_cast<int>(critical_chance)) + "%");
+	text_magic_resistance.setString("Magic Resistance: " + std::to_string(static_cast<int>(magic_resistance)) + "%");
+	text_physical_resistance.setString("Physical Resistance: " + std::to_string(static_cast<int>(physical_resistance)) + "%");
 	text_magic_ice.setString("Magic Ice: " + std::to_string(magic_ice));
 	text_magic_fire.setString("Magic Fire: " + std::to_string(magic_fire));
 	text_magic_earth.setString("Magic Earth: " + std::to_string(magic_earth));
