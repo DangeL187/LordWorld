@@ -5,4 +5,6 @@ todo: add 2 more directions of moving for monsters //later
 todo: fix shield blocking direction //later
 todo: unite all images in one .png //later
 
+todo: add mana cost for spells
+todo: add spell info for hotbar
 todo: add animations for all types of attack
