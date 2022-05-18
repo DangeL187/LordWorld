@@ -41,6 +41,12 @@ void setItemInfo(int get_id) {
         std::string lore = "\n Ring forged from\n high-quality iron";
         text_item_info.setString(name + stats + lore);
     }
+    else if (get_id == 8) {
+        std::string name = "         Rat Tail\n";
+        std::string stats = " Stinking rat tail\n";
+        std::string lore = "\n Can be used for some\n potions";
+        text_item_info.setString(name + stats + lore);
+    }
 }
 
 void setSpellInfo(int get_id) {

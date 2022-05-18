@@ -93,6 +93,10 @@ IronPantsSprite.setTexture(IronPantsTexture);
 IronBootsSprite.setTexture(IronBootsTexture);
 IronRingSprite.setTexture(IronRingTexture);
 ////////////////////////////////////////////////////////////////////////////////
+RatTailImage.loadFromFile("../images/Rat Tail.png");
+RatTailTexture.loadFromImage(RatTailImage);
+RatTailSprite.setTexture(RatTailTexture);
+////////////////////////////////////////////////////////////////////////////////
 AnimationIronShieldImage.loadFromFile("../images/AnimationIronShield.png");
 AnimationIronShieldTexture.loadFromImage(AnimationIronShieldImage);
 AnimationIronShieldSprite.setTexture(AnimationIronShieldTexture);

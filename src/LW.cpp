@@ -134,7 +134,7 @@ int timer_ColdSnap;
 int timer_ColdSnap_tick;
 int timer_hp_regen = 10000, timer_mp_regen = 10000; //10000 is 0.1 per second
 int player_hp = 10, player_mp = 10, player_lvl = 1;
-int player_hp_max = 10, player_mp_max = 10;
+int player_hp_max = 10, player_mp_max = 10 , player_xp = 0;
 int player_damage = 1;
 int defence_counter = 0;
 int attack_speed = 1000; //1 second
@@ -169,10 +169,30 @@ bool aiming_kid9 = false;
 bool is_inventory_open = false;
 bool is_spells_inventory_open = false;
 bool is_stats_open = false;
+std::vector<int> items_dropped_id;
+std::vector<int> items_dropped_x;
+std::vector<int> items_dropped_y;
+std::vector<int> items_dropped_sprites; //rename to sprite
+std::vector<int> items_dropped_type; //0 - nothing, 1 - weapon, 2 - shield
+//3 - helmet, 4 - chestplate, 5 - pants, 6 - boots, 7 - ring, 8.. - item
 std::string weapon = ""; //todo: delete
 
 #include "init_images.h"
 #include "equipment.h"
+
+int createItem(int ID, int get_x, int get_y) {
+    items_dropped_id.push_back(ID);
+    items_dropped_x.push_back(get_x);
+    items_dropped_y.push_back(get_y);
+    items_dropped_sprites.push_back(sprite_counter);
+    #include "item_types.h"
+
+    other_sprites[sprite_counter].setTextureRect(IntRect(0, 0, 56, 56));
+    other_sprites[sprite_counter].setScale(0.75, 0.75);
+    other_sprites[sprite_counter].setPosition(get_x, get_y);
+    sprite_counter++;
+}
+
 #include "classes.h"
 #include "drawmap.h"
 #include "weapon_types.h"
@@ -182,12 +202,6 @@ std::string weapon = ""; //todo: delete
 std::vector<Monster> v_monsters; //whole monsters
 std::vector<Monster> target_m; //targeted monster
 std::vector<int> damaged_numbers; //monsters under attack
-std::vector<int> items_dropped_id;
-std::vector<int> items_dropped_x;
-std::vector<int> items_dropped_y;
-std::vector<int> items_dropped_sprites; //rename to sprite
-std::vector<int> items_dropped_type; //0 - nothing, 1 - weapon, 2 - shield
-//3 - helmet, 4 - chestplate, 5 - pants, 6 - boots, 7 - ring, 8.. - item
 
 void targeting() {
     int out = player_x - (962 - Mouse::getPosition().x); //960
@@ -230,19 +244,6 @@ void moveCurrentFrame(float get_time) {
 	if (current_frame > 3) {
         current_frame -= 3;
     }
-}
-
-int createItem(int ID, int get_x, int get_y) {
-    items_dropped_id.push_back(ID);
-    items_dropped_x.push_back(get_x);
-    items_dropped_y.push_back(get_y);
-    items_dropped_sprites.push_back(sprite_counter);
-    #include "item_types.h"
-
-    other_sprites[sprite_counter].setTextureRect(IntRect(0, 0, 56, 56));
-    other_sprites[sprite_counter].setScale(0.75, 0.75);
-    other_sprites[sprite_counter].setPosition(get_x, get_y);
-    sprite_counter++;
 }
 
 void createMonster(float x, float y, float w, float h, std::string name) {
@@ -551,6 +552,10 @@ int main() {
                 attack_animation = 0;
             }
         }
+        if (player_xp >= player_lvl * 100) {
+            player_xp -= player_lvl * 100;
+            player_lvl++;
+        }
 
         for (int i = 0; i < v_monsters.size(); i++) {
             if (v_monsters[i].getMonsterHP() <= 0) {
@@ -571,6 +576,8 @@ int main() {
                         items_dropped_sprites[j] = items_dropped_sprites[j] - 1;
                     }
                 }
+                player_xp += v_monsters[i].getMonsterXP();
+                v_monsters[i].dropMonster();
                 v_monsters.erase(v_monsters.begin() + i);
             }
         }
@@ -597,6 +604,8 @@ int main() {
             ss2>>t_hp;
             t_name = target_m[0].getMonsterName();
             text.setString("TARGET: " + t_name + "\nLVL: " + t_lvl + "\nHP: " + t_hp);
+        } else {
+            text.setString("");
         }
 
         player.update(time);

@@ -76,12 +76,14 @@ public:
 	float w, h, dx, dy, speed;
 	int dir = 0;
 	int random_generated_dir = 0;
-	int dmg, hp, mp, lvl, as;
+	int dmg, hp, mp, lvl, as, xp;
 	float as_cd;
 	float monster_frame;
 	int static_sprite = sprite_counter;
 	std::string name;
 	std::vector<std::string> buffs;
+	std::vector<int> drop;
+	std::vector<int> drop_chance;
 	std::vector<int> timers; //spells timers
 	Image image;
 	Texture texture;
@@ -247,6 +249,15 @@ public:
 		checkBuff(hittime);
 		dealt = false;
 	}
+	void dropMonster() {
+		for (int r = 0; r < drop_chance.size(); r++) {
+			int random_drop = rand() % 100;
+			random_drop++;
+			if (random_drop <= drop_chance[r]) {
+				createItem(drop[r], x, y);
+			}
+		}
+	}
 	void giveBuff(std::string somebuff, int sometime) {
 		timers.push_back(sometime);
 		buffs.push_back(somebuff);
@@ -272,6 +283,9 @@ public:
 	}
 	int getMonsterSprite() {
 		return static_sprite;
+	}
+	int getMonsterXP() {
+		return xp;
 	}
 	float getMonsterDX() {
         return dx;

@@ -1,17 +1,20 @@
 void gui() {
     std::stringstream ss; std::stringstream ss2; std::stringstream ss3;
-    std::string p_lvl; std::string p_hp; std::string p_mp;
+    std::stringstream ss4;
+    std::string p_lvl; std::string p_hp; std::string p_mp; std::string p_xp;
     ss<<player_lvl;
     ss>>p_lvl;
     ss2<<player_hp;
     ss2>>p_hp;
     ss3<<player_mp;
     ss3>>p_mp;
-    std::string phr = std::to_string(hp_regen);
+    ss4<<player_xp;
+    ss4>>p_xp;
+    std::string phr = std::to_string(hp_regen); //todo: replace code above with sth like that
     std::string pmr = std::to_string(mp_regen);
     player_stats_hp.setString(p_hp + " +" + phr[0] + phr[1] + phr[2]);
     player_stats_mp.setString(p_mp + " +" + pmr[0] + pmr[1] + pmr[2]);
-    player_stats_lvl.setString(p_lvl);
+    player_stats_lvl.setString(p_lvl + " (" + p_xp + "/" + p_lvl + "00)");
     player_stats_hp.setPosition(view.getCenter().x - 690, view.getCenter().y - 511);
     player_stats_mp.setPosition(view.getCenter().x - 690, view.getCenter().y - 443);
     player_stats_lvl.setPosition(view.getCenter().x - 690, view.getCenter().y - 375);

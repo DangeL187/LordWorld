@@ -26,3 +26,7 @@ else if (ID == 7) { //Iron Ring
     other_sprites.push_back(IronRingSprite);
     items_dropped_type.push_back(7); //other
 }
+else if (ID == 8) { //Rat Tail
+    other_sprites.push_back(RatTailSprite);
+    items_dropped_type.push_back(8); //item
+}
