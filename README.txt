@@ -28,4 +28,4 @@ Go to the build folder and type:
 -----------------------------------------------------
 How to clone this repository:
 git clone https://github.com/DangeL187/LordWorld LWgit
-------------------------------------------------------
+-----------------------------------------------------
