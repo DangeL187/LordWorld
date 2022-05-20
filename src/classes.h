@@ -19,7 +19,7 @@ public:
     void interactionWithMap() {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
-		        if (TileMap[i][j] == 1 || TileMap[i][j] >= 3 && TileMap[i][j] <= 31) {
+		        if (TileMap[i][j] == 1 || TileMap[i][j] >= 3 && TileMap[i][j] <= 32) {
 			        if (dy>0) y = i * 64 - h;
 			        if (dy<0) y = i * 64 + 64;
 			        if (dx>0) x = j * 64 - w;
@@ -309,6 +309,75 @@ public:
 		return lvl;
 	}
 	std::string getMonsterName() {
+		return name;
+	}
+};
+
+class NPC {
+public:
+	float x, y;
+	float w, h, dx, dy, speed;
+	int dir = 0;
+	int static_sprite = sprite_counter;
+	std::string name;
+	Image image;
+	Texture texture;
+	Sprite sprite;
+
+	NPC(float X, float Y, float W, float H, std::string NAME) {
+		dx=0;dy=0;speed=0;
+		w = W; h = H;
+		name = NAME;
+		#include "NPC.h"
+		other_sprites.push_back(sprite);
+		x = X; y = Y;
+		other_sprites[static_sprite].setTextureRect(IntRect(0, 0, w, h));
+		sprite_counter++;
+	}
+
+	void interactionWithMap(float get_time) {
+	    for (int i = y / 64; i < (y + h) / 64; i++) {
+	        for (int j = x / 64; j < (x + w) / 64; j++) {
+		        if (TileMap[i][j] == 1) {
+			        if (dy>0) y = i * 64 - h;
+			        if (dy<0) y = i * 64 + 64;
+			        if (dx>0) x = j * 64 - w;
+			        if (dx<0) x = j * 64 + 64;
+		        }
+		        if (TileMap[i][j] == 2) {
+			        x = 300; y = 300;
+			        TileMap[i][j] = 0;
+		        }
+	        }
+		}
+    }
+
+    void update(float time) {
+		switch (dir) {
+		    case 0: dx = speed; dy = 0; break;
+		    case 1: dx = -speed; dy = 0; break;
+		    case 2: dx = 0; dy = -speed; break;
+		    case 3: dx = 0; dy = speed; break;
+		}
+
+		x += dx*time;
+		y += dy*time;
+
+		speed = 0;
+		interactionWithMap(time);
+		other_sprites[static_sprite].setPosition(x, y);
+	}
+
+	int getNPCSprite() {
+		return static_sprite;
+	}
+	float getNPCCoordinateX() {
+        return x;
+    }
+    float getNPCCoordinateY() {
+	    return y;
+    }
+	std::string getNPCName() {
 		return name;
 	}
 };

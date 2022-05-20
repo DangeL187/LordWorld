@@ -199,8 +199,9 @@ int createItem(int ID, int get_x, int get_y) {
 #include "gui.h"
 #include "info.h"
 
-std::vector<Monster> v_monsters; //whole monsters
+std::vector<Monster> v_monsters; //all monsters
 std::vector<Monster> target_m; //targeted monster
+std::vector<NPC> v_NPC; //all NPCs
 std::vector<int> damaged_numbers; //monsters under attack
 
 void targeting() {
@@ -250,6 +251,10 @@ void createMonster(float x, float y, float w, float h, std::string name) {
     Monster m(x, y, w, h, name);
     v_monsters.push_back(m);
 }
+void createNPC(float x, float y, float w, float h, std::string name) {
+    NPC m(x, y, w, h, name);
+    v_NPC.push_back(m);
+}
 
 #include "spells.h"
 
@@ -289,6 +294,7 @@ int main() {
 
     Player player(500, 500, 50.0, 62.0);
 
+    createNPC(392, 386, 50.0, 62.0, "Trader");
     createMonster(300, 300, 50.0, 62.0, "Rat");
     createMonster(400, 400, 50.0, 62.0, "Rat");
 
@@ -341,6 +347,9 @@ int main() {
         		}
             }
 		}
+        for (int v0 = 0; v0 < v_NPC.size(); v0++) {
+            v_NPC[v0].update(time);
+        }
 
         if (space_timer > 0) {
             space_timer -= time;
@@ -404,11 +413,12 @@ int main() {
                         v_monsters[v].hitMonster(player_damage + ch, time);
                         attack1_cd = attack_speed;
                     }
-                    attack = 0;
                 }
             }
             AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 1, 1));
             AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+            attack1_cd = attack_speed;
+            attack = 0;
             attack_animation = 1;
             defence_counter = 0;
         }
@@ -431,11 +441,12 @@ int main() {
                         v_monsters[v].hitMonster(player_damage * 2 + ch, time);
                         attack2_cd = attack_speed * 2;
                     }
-                    attack = 0;
                 }
             }
             AnimationWoodenSwordSprite.setTextureRect(IntRect(0, 0, 1, 1));
             AnimationWoodenSwordSprite.setPosition(player_x - 20, player_y);
+            attack2_cd = attack_speed * 2;
+            attack = 0;
             attack_animation = 1;
             defence_counter = 0;
         }

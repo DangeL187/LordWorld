@@ -49,3 +49,7 @@ Sprite AnimationWoodenSwordSprite;
 Image AnimationIronShieldImage;
 Texture AnimationIronShieldTexture;
 Sprite AnimationIronShieldSprite;
+//NPCs:
+Image NPCTraderImage;
+Texture NPCTraderTexture;
+Sprite NPCTraderSprite;

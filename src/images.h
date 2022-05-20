@@ -97,6 +97,10 @@ RatTailImage.loadFromFile("../images/Rat Tail.png");
 RatTailTexture.loadFromImage(RatTailImage);
 RatTailSprite.setTexture(RatTailTexture);
 ////////////////////////////////////////////////////////////////////////////////
+NPCTraderImage.loadFromFile("../images/NPC.png");
+NPCTraderTexture.loadFromImage(NPCTraderImage);
+NPCTraderSprite.setTexture(NPCTraderTexture);
+////////////////////////////////////////////////////////////////////////////////
 AnimationIronShieldImage.loadFromFile("../images/AnimationIronShield.png");
 AnimationIronShieldTexture.loadFromImage(AnimationIronShieldImage);
 AnimationIronShieldSprite.setTexture(AnimationIronShieldTexture);

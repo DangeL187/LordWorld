@@ -95,4 +95,7 @@ void defineTile(int it, int jt) {
     if (TileMap[it][jt] == 31) {
         map_sprite.setTextureRect(IntRect(1984, 0, 64, 64));
     }
+    if (TileMap[it][jt] == 32) {
+        map_sprite.setTextureRect(IntRect(0, 0, 64, 64));
+    }
 }
