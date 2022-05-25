@@ -4,5 +4,5 @@ Lord World (LW) by DangeL
 Version 0.1.6 ChangeLog
 ----------------------------------------------------------------------------------------------------
 20.05.2022 - added first NPC, fixed bug with attack
-22.05.2022 - created background for title
+25.05.2022 - added collision with NPC
 ----------------------------------------------------------------------------------------------------
