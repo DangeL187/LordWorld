@@ -16,10 +16,22 @@ public:
 		herosprite.setTextureRect(IntRect(0, 0, w, h));
 	}
 
-    void interactionWithMap() {
+    void interactionWithMap(auto get_v2) {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
-		        if (TileMap[i][j] == 1 || TileMap[i][j] >= 3 && TileMap[i][j] <= 32) {
+				for (int l = 0; l < get_v2.size(); l++) {
+					if (x < get_v2[l].getX() + 54 &&
+					    x + 50 > get_v2[l].getX() &&
+					    y < get_v2[l].getY() + 62 &&
+					    y + 62 > get_v2[l].getY())
+					{
+						if (dy>0) y = i * 64 + 4;
+				        if (dy<0) y = i * 64 + 64;
+				        if (dx>0) x = j * 64 + 22;
+				        if (dx<0) x = j * 64 + 15;
+					}
+				}
+		        if (TileMap[i][j] == 1 || TileMap[i][j] >= 3 && TileMap[i][j] <= 31) { //change back to 32
 			        if (dy>0) y = i * 64 - h;
 			        if (dy<0) y = i * 64 + 64;
 			        if (dx>0) x = j * 64 - w;
@@ -34,7 +46,7 @@ public:
 	    }
     }
 
-    void update(float time) {
+    void update(float time, auto get_v) {
 		switch (dir) {
 			case 0: dx = speed; dy = 0; break;
 			case 1: dx = -speed; dy = 0; break;
@@ -45,7 +57,7 @@ public:
 		x += dx*time;
 		y += dy*time;
 		speed = 0;
-		interactionWithMap();
+		interactionWithMap(get_v);
 		player_x = x/1;
 		player_y = y/1;
 		player_dir = dir;
@@ -371,10 +383,10 @@ public:
 	int getNPCSprite() {
 		return static_sprite;
 	}
-	float getNPCCoordinateX() {
+	float getX() {
         return x;
     }
-    float getNPCCoordinateY() {
+    float getY() {
 	    return y;
     }
 	std::string getNPCName() {

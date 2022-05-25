@@ -619,7 +619,7 @@ int main() {
             text.setString("");
         }
 
-        player.update(time);
+        player.update(time, v_NPC);
         window.setView(view);
         window.clear();
 
