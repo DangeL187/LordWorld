@@ -330,6 +330,7 @@ public:
 	float x, y;
 	float w, h, dx, dy, speed;
 	int dir = 0;
+	int dialog_phase = 0;
 	int static_sprite = sprite_counter;
 	std::vector<std::string> dialog;
 	std::string name;
