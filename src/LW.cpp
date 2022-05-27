@@ -16,13 +16,13 @@ using namespace sf;
 
 Image GuiBarImage, GuiInventoryImage, GuiSpellsHotbarImage;
 Image GuiInfoImage, GuiStatsImage, GuiPickedSpellImage;
-Image GuiSpellsInventoryImage;
+Image GuiSpellsInventoryImage, NPCTalkImage;
 Texture GuiBarTexture, GuiInventoryTexture, GuiSpellsHotbarTexture;
 Texture GuiInfoTexture, GuiStatsTexture, GuiPickedSpellTexture;
-Texture GuiSpellsInventoryTexture;
+Texture GuiSpellsInventoryTexture, NPCTalkTexture;
 Sprite GuiBarSprite, GuiInventorySprite, GuiSpellsHotbarSprite;
 Sprite GuiInfoSprite, GuiStatsSprite, GuiPickedSpellSprite;
-Sprite GuiSpellsInventorySprite;
+Sprite GuiSpellsInventorySprite, NPCTalkSprite;
 
 Image SpellsInventoryPageImage[27];
 Image InventoryItemsImage[27];
@@ -169,6 +169,7 @@ bool aiming_kid9 = false;
 bool is_inventory_open = false;
 bool is_spells_inventory_open = false;
 bool is_stats_open = false;
+bool is_dialog = false;
 std::vector<int> items_dropped_id;
 std::vector<int> items_dropped_x;
 std::vector<int> items_dropped_y;
@@ -648,6 +649,9 @@ int main() {
         window.draw(GuiSpellsHotbarSprite);
         for (int i = 0; i < 9; i++) {
             window.draw(SpellsHotbarSprites[i]);
+        }
+        if (is_dialog) {
+            window.draw(NPCTalkSprite);
         }
         if (aiming) {
             window.draw(GuiPickedSpellSprite);

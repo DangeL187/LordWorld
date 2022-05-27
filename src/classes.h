@@ -331,6 +331,7 @@ public:
 	float w, h, dx, dy, speed;
 	int dir = 0;
 	int static_sprite = sprite_counter;
+	std::vector<std::string> dialog;
 	std::string name;
 	Image image;
 	Texture texture;
@@ -380,6 +381,9 @@ public:
 		other_sprites[static_sprite].setPosition(x, y);
 	}
 
+    void startDialog() {
+		std::cout << dialog[dialog_phase] << std::endl;
+	}
 	int getNPCSprite() {
 		return static_sprite;
 	}

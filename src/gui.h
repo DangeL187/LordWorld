@@ -95,6 +95,7 @@ void gui() {
     GuiSpellsInventorySprite.setPosition(view.getCenter().x - 300, view.getCenter().y - 496);
     GuiSpellsHotbarSprite.setPosition(view.getCenter().x - 540, view.getCenter().y + 380);
     GuiStatsSprite.setPosition(view.getCenter().x - 920, view.getCenter().y - 310);
+    NPCTalkSprite.setPosition(view.getCenter().x - 540, view.getCenter().y + 80);
 
     if (inv_items[27] != 0) {
         InventoryItemWeaponSprite.setPosition(view.getCenter().x - 231 - 15, view.getCenter().y - 227 - 15);

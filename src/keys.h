@@ -51,6 +51,16 @@ if (Keyboard::isKeyPressed(Keyboard::Space) && attack_animation == 0) {
 
 if (Keyboard::isKeyPressed(Keyboard::E) && items_dropped_id.size() != 0 && !key_g) {
 	key_e = true;
+	for (int l = 0; l < v_NPC.size(); l++) {
+		if (player_x < v_NPC[l].getX() + 64 &&
+			player_x + 64 > v_NPC[l].getX() &&
+			player_y < v_NPC[l].getY() + 64 &&
+			player_y + 64 > v_NPC[l].getY())
+		{
+			v_NPC[l].startDialog();
+			is_dialog = true;
+		}
+	}
 	for (int i = 0; i < items_dropped_id.size(); i++) {
 	    float condx_m = items_dropped_x[i]/1 - range*64;
 	    float condx_p = items_dropped_x[i]/1 + range*64;
