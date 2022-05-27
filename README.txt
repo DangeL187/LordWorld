@@ -14,7 +14,7 @@ versions - LW's previous versions
 ------------------------------------------------------------
 Source files:
 LW.cpp - main application
-For more info about source files read headers.h
+For more info about source files read headers.txt
 ------------------------------------------------------------
 Compilation:
 Go to the bin folder and type:
