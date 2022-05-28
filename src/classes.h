@@ -31,7 +31,7 @@ public:
 				        if (dx<0) x = j * 64 + 15;
 					}
 				}
-		        if (TileMap[i][j] == 1 || TileMap[i][j] >= 3 && TileMap[i][j] <= 31) { //change back to 32
+		        if (TileMap[i][j] == 1 || TileMap[i][j] >= 3 && TileMap[i][j] <= 31) {
 			        if (dy>0) y = i * 64 - h;
 			        if (dy<0) y = i * 64 + 64;
 			        if (dx>0) x = j * 64 - w;

@@ -564,6 +564,7 @@ int main() {
                 attack_animation = 0;
             }
         }
+        
         if (player_xp >= player_lvl * 100) {
             player_xp -= player_lvl * 100;
             player_lvl++;
