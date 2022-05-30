@@ -1,0 +1,51 @@
+Image GuiBarImage, GuiInventoryImage, GuiSpellsHotbarImage;
+Image GuiInfoImage, GuiStatsImage, GuiPickedSpellImage;
+Image GuiSpellsInventoryImage, NPCTalkImage;
+Texture GuiBarTexture, GuiInventoryTexture, GuiSpellsHotbarTexture;
+Texture GuiInfoTexture, GuiStatsTexture, GuiPickedSpellTexture;
+Texture GuiSpellsInventoryTexture, NPCTalkTexture;
+Sprite GuiBarSprite, GuiInventorySprite, GuiSpellsHotbarSprite;
+Sprite GuiInfoSprite, GuiStatsSprite, GuiPickedSpellSprite;
+Sprite GuiSpellsInventorySprite, NPCTalkSprite;
+
+Image SpellsInventoryPageImage[27];
+Image InventoryItemsImage[27];
+Image InventoryItemEmptyImage;
+Image InventoryItemHelmImage;
+Image InventoryItemChestImage;
+Image InventoryItemPantsImage;
+Image InventoryItemBootsImage;
+Image InventoryItemWeaponImage;
+Image InventoryItemShieldImage;
+Texture SpellsInventoryPageTexture[27];
+Texture InventoryItemsTexture[27];
+Texture InventoryItemEmptyTexture;
+Texture InventoryItemHelmTexture;
+Texture InventoryItemChestTexture;
+Texture InventoryItemPantsTexture;
+Texture InventoryItemBootsTexture;
+Texture InventoryItemWeaponTexture;
+Texture InventoryItemShieldTexture;
+Sprite SpellsInventoryPageSprite[27];
+Sprite InventoryItemsSprite[27];
+Sprite InventoryItemEmptySprite;
+Sprite InventoryItemHelmSprite;
+Sprite InventoryItemChestSprite;
+Sprite InventoryItemPantsSprite;
+Sprite InventoryItemBootsSprite;
+Sprite InventoryItemWeaponSprite;
+Sprite InventoryItemShieldSprite;
+
+Image SpellsHotbarImages[9];
+Texture SpellsHotbarTextures[9];
+Sprite SpellsHotbarSprites[9];
+
+Image EquipedShieldImage;
+Texture EquipedShieldTexture;
+Sprite EquipedShieldSprite;
+
+Image map_image;
+Texture map_texture;
+Sprite map_sprite;
+Sprite herosprite;
+std::vector<Sprite> other_sprites;

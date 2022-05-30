@@ -1,0 +1,19 @@
+void setText() {
+    font.loadFromFile("../font/OceanSummer.ttf");
+    text_cd_0.setColor(Color::White);
+    text_cd_1.setColor(Color::White);
+    text_cd_2.setColor(Color::White);
+    text_cd_3.setColor(Color::White);
+    text_cd_4.setColor(Color::White);
+    text_cd_5.setColor(Color::White);
+    text_cd_6.setColor(Color::White);
+    text_cd_7.setColor(Color::White);
+    text_cd_8.setColor(Color::White);
+    text.setColor(Color::White);
+    player_stats_hp.setColor(Color::White);
+    player_stats_hp.setStyle(sf::Text::Bold);
+    player_stats_mp.setColor(Color::White);
+    player_stats_mp.setStyle(sf::Text::Bold);
+    player_stats_lvl.setColor(Color::White);
+    player_stats_lvl.setStyle(sf::Text::Bold);
+}
