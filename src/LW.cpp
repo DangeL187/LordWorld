@@ -11,26 +11,23 @@
 #include "map.h"
 #include "view.h"
 #include "split.h"
-
 using namespace sf;
-
 #include "game_vars.h"
 #include "init_gui.h"
 #include "init_text.h"
 #include "init_images.h"
-#include "equipment.h" //set equipment
+#include "equipment.h" // setEquipmentStats()
 #include "createItem.h"
+#include "Player.h"
 #include "classes.h"
 #include "drawmap.h" //-> defineTile()
 #include "weapon_types.h"
 #include "gui.h"
 #include "info.h"
-
 std::vector<Monster> v_monsters; //all monsters
 std::vector<Monster> target_m; //targeted monster
 std::vector<NPC> v_NPC; //all NPCs
 std::vector<int> damaged_numbers; //monsters under attack
-
 #include "game_functions.h"
 #include "spells.h"
 #include "text.h"
@@ -103,7 +100,7 @@ int main() {
             }
         }
 
-        #include "keys.h"
+        player.keys(time, v_monsters, v_NPC);
 
         guiTarget();
 
@@ -111,8 +108,8 @@ int main() {
         window.setView(view);
         window.clear();
 
-        setImagesToSpellsInventory();
-        setImagesToHotbar();
+        setImagesToSpellsInventory(); //spells.h
+        setImagesToHotbar(); //spells.h
         gui();
         draw_sprites(window);
     }
