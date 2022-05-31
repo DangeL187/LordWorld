@@ -1,4 +1,5 @@
 Font font; //шрифт
+
 Text text_cd_0("", font, 60);
 Text text_cd_1("", font, 60);
 Text text_cd_2("", font, 60);

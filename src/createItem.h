@@ -1,4 +1,4 @@
-int createItem(int ID, int get_x, int get_y) {
+int createItem(int ID, float get_x, float get_y) {
     items_dropped_id.push_back(ID);
     items_dropped_x.push_back(get_x);
     items_dropped_y.push_back(get_y);
@@ -9,4 +9,6 @@ int createItem(int ID, int get_x, int get_y) {
     other_sprites[sprite_counter].setScale(0.75, 0.75);
     other_sprites[sprite_counter].setPosition(get_x, get_y);
     sprite_counter++;
+
+    return ID;
 }

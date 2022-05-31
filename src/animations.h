@@ -1,4 +1,4 @@
-void animations(auto p, auto time1) {
+void animations(Player& p, float time1) {
     if (animation_timer > 0) {
         animation_timer -= time1;
     } else {

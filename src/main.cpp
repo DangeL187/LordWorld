@@ -1,10 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <cstdlib>
 #include <string>
 #include <sstream>
 #include <cmath>
@@ -56,7 +52,7 @@ int main() {
         inv_items[i] = 0;
     }
 
-    std::cout << "I tink its k\n";
+    std::cout << "I think its k\n";
 
     RenderWindow window(VideoMode(1920, 1080), "Lord World", sf::Style::Fullscreen);
     view.reset(FloatRect(0, 0, 1920, 1080));
@@ -116,6 +112,5 @@ int main() {
         gui();
         draw_sprites(window);
     }
-    while(true){}
 	return 0;
 }

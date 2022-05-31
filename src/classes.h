@@ -62,24 +62,15 @@ public:
 		player_y = y/1;
 		player_dir = dir;
 		herosprite.setPosition(x, y);
-		setWeaponStats();
-		setShieldStats();
-		setHelmetStats();
-		setChestplateStats();
-		setPantsStats();
-		setBootsStats();
-		armor = armor_shield + armor_helmet + armor_chestplate + armor_pants + armor_boots;
-		setOtherStats();
+		setArmorStats();
+        armor = armor_shield + armor_helmet + armor_chestplate + armor_pants + armor_boots;
+        setOtherStats();
 		if (armor_helmet == armor_chestplate && armor_chestplate == armor_pants && armor_pants == armor_boots && armor_boots != 0) {
 			armor += armor_helmet;
 		}
 	}
-    float getPlayerCoordinateX() {
-        return x;
-    }
-    float getPlayerCoordinateY() {
-	    return y;
-    }
+    float getPlayerCoordinateX() const { return x; }
+    float getPlayerCoordinateY() const { return y; }
 };
 
 class Monster {
@@ -293,36 +284,16 @@ public:
 			y--;
 		}
 	}
-	int getMonsterSprite() {
-		return static_sprite;
-	}
-	int getMonsterXP() {
-		return xp;
-	}
-	float getMonsterDX() {
-        return dx;
-    }
-	float getMonsterDY() {
-        return dy;
-    }
-	float getMonsterCoordinateX() {
-        return x;
-    }
-    float getMonsterCoordinateY() {
-	    return y;
-    }
-	int getMonsterHP() {
-        return hp;
-    }
-	int getMonsterMP() {
-		return mp;
-	}
-	int getMonsterLVL() {
-		return lvl;
-	}
-	std::string getMonsterName() {
-		return name;
-	}
+	int getMonsterSprite() const { return static_sprite; }
+	int getMonsterXP() const { return xp; }
+	float getMonsterDX() const { return dx; }
+	float getMonsterDY() const { return dy; }
+	float getMonsterCoordinateX() const { return x; }
+    float getMonsterCoordinateY() const { return y; }
+	int getMonsterHP() const { return hp; }
+	int getMonsterMP() const { return mp; }
+	int getMonsterLVL() const { return lvl; }
+	std::string getMonsterName() const { return name; }
 };
 
 class NPC {
@@ -339,7 +310,7 @@ public:
 	Sprite sprite;
 
 	NPC(float X, float Y, float W, float H, std::string NAME) {
-		dx=0;dy=0;speed=0;
+		dx=0; dy=0; speed=0;
 		w = W; h = H;
 		name = NAME;
 		#include "NPC.h"
@@ -385,16 +356,8 @@ public:
     void startDialog() {
 		std::cout << dialog[dialog_phase] << std::endl;
 	}
-	int getNPCSprite() {
-		return static_sprite;
-	}
-	float getX() {
-        return x;
-    }
-    float getY() {
-	    return y;
-    }
-	std::string getNPCName() {
-		return name;
-	}
+	int getNPCSprite() const { return static_sprite; }
+	float getX() const { return x; }
+    float getY() const { return y; }
+	std::string getNPCName() const { return name; }
 };

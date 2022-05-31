@@ -1,4 +1,4 @@
-void global_timers(auto time1) {
+void global_timers(float time1) {
     if (space_timer > 0) {
         space_timer -= time1;
         if (750 >= space_timer && space_timer >= 500) {
@@ -35,11 +35,12 @@ void global_timers(auto time1) {
     } else {
         attack2_cd = 0;
     }
-    for (int i = 0; i <= 9; i++) {
-        if (cooldowns[i] > 0) {
-            cooldowns[i] -= time1;
+    for (auto& cooldown : cooldowns)
+    {
+        if (cooldown > 0) {
+            cooldown -= time1;
         } else {
-            cooldowns[i] = 0;
+            cooldown = 0;
         }
     }
 }
