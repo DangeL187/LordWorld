@@ -41,7 +41,7 @@ void moveCurrentFrame(float get_time) {
     }
 }
 
-void createMonster(float x, float y, float w, float h, std::string name) {
+static void createMonster(float x, float y, float w, float h, std::string name) {
     Monster m(x, y, w, h, name);
     v_monsters.push_back(m);
 }

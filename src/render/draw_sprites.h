@@ -52,7 +52,7 @@ void draw_sprites(RenderWindow& window) {
     }
     window.draw(GuiBarSprite);
     if (is_stats_open) { window.draw(GuiStatsSprite); }
-    if (text_item_info.getString() != "") { window.draw(GuiInfoSprite); }
+    if (!text_item_info.getString().isEmpty()) { window.draw(GuiInfoSprite); }
 
     window.draw(text_cd_0);
     window.draw(text_cd_1);

@@ -40,6 +40,7 @@ public:
 		        if (TileMap[i][j] == 2) {
 			        x = 300; y = 300;
 			        TileMap[i][j] = 0;
+
 			        //TODO: make createMonster() available to call from here
 		        }
 	        }
@@ -98,7 +99,7 @@ public:
 		dx=0;dy=0;speed=0;
 		w = W; h = H;
 		name = NAME;
-		#include "monsters.h"
+		#include "monsters/monsters.h"
 		as_cd = as;
 		other_sprites.push_back(sprite);
 		x = X; y = Y;
@@ -238,8 +239,8 @@ public:
 	void checkBuff(float globaltime) {
 		stun = false;
 		for (int v = 0; v < buffs.size(); v++) {
-			#include "buffs.h"
-			#include "timers.h"
+			#include "configs/buffs.h"
+			#include "timers/timers.h"
 			if (timers[v] <= 0) {
 				buffs.erase(buffs.begin() + v);
 		        timers.erase(timers.begin() + v);
@@ -313,7 +314,7 @@ public:
 		dx=0; dy=0; speed=0;
 		w = W; h = H;
 		name = NAME;
-		#include "NPC.h"
+		#include "configs/NPC.h"
 		other_sprites.push_back(sprite);
 		x = X; y = Y;
 		other_sprites[static_sprite].setTextureRect(IntRect(0, 0, w, h));

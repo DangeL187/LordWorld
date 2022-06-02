@@ -4,23 +4,23 @@
 #include <string>
 #include <sstream>
 #include <cmath>
-#include "map.h"
+#include "configs/map.h"
 #include "view.h"
 #include "split.h"
 
 using namespace sf;
 
-#include "game_vars.h"
-#include "init_gui.h"
-#include "init_text.h"
-#include "init_images.h"
+#include "configs/game_vars.h"
+#include "gui/init_gui.h"
+#include "gui/init_text.h"
+#include "render/init_images.h"
 #include "equipment.h" //set equipment
 #include "createItem.h"
 #include "classes.h"
-#include "drawmap.h" //-> defineTile()
-#include "weapon_types.h"
-#include "gui.h"
-#include "info.h"
+#include "render/drawmap.h" //-> defineTile()
+#include "configs/weapon_types.h"
+#include "gui/gui.h"
+#include "gui/info.h"
 
 std::vector<Monster> v_monsters; //all monsters
 std::vector<Monster> target_m; //targeted monster
@@ -29,18 +29,18 @@ std::vector<int> damaged_numbers; //monsters under attack
 
 #include "game_functions.h"
 #include "spells.h"
-#include "text.h"
+#include "gui/text.h"
 #include "updates.h"
-#include "global_timers.h"
+#include "timers/global_timers.h"
 #include "attacks.h"
-#include "animations.h"
+#include "render/animations.h"
 #include "gainLVL.h"
-#include "monsterDeath.h"
-#include "guiTarget.h"
-#include "draw_sprites.h"
+#include "monsters/monsterDeath.h"
+#include "gui/guiTarget.h"
+#include "render/draw_sprites.h"
 
 int main() {
-    #include "images.h" //load images
+    #include "render/images.h" //load images
 
     inv_spells[0] = 1;
     inv_spells[1] = 2;
