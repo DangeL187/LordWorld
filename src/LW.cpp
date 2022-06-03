@@ -31,18 +31,26 @@ public:
 };
 
 class Game {
-private:
+protected:
     View view;
     unsigned int window_w = 1920;
     unsigned int window_h = 1080;
-protected:
+    std::shared_ptr<RenderWindow> window;
     Clock clock;
     float time;
     float player_x = 300;
     float player_y = 300;
-    std::shared_ptr<RenderWindow> window;
 public:
     //Game() { }
+};
+
+class Renderer: public Game {
+public:
+    std::vector<Sprite> v_sprites;
+
+    Renderer() {
+
+    }
 
     void createWindow() {
         window = std::make_shared<RenderWindow>(VideoMode(window_w, window_h), "Lord World");
@@ -70,19 +78,10 @@ public:
     bool windowIsOpen() {
         return window->isOpen();
     }
-};
-
-class Renderer: public Game {
-public:
-    std::vector<Sprite> v_sprites;
-
-    Renderer() {
-
-    }
 
     void createSprite(std::string name) {
-        NewSprite new_sprite;
-        v_sprites.push_back(new_sprite.getSprite());
+        NewSprite *new_sprite = new NewSprite();
+        v_sprites.push_back(new_sprite->getSprite());
     }
     void drawSprites() {
         for (auto& i_sprite : v_sprites) {
@@ -92,6 +91,7 @@ public:
 };
 
 int main() {
+    Game game;
     Renderer renderer;
 
     renderer.createWindow();
