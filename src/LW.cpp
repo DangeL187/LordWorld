@@ -36,7 +36,7 @@ public:
     bool windowIsOpen() {
         return window->isOpen();
     }
-    void windowEventClosed() {
+    void windowHandleEvents() {
         Event event;
         while (window->pollEvent(event)) {
             if (event.type == Event::Closed) {
@@ -56,8 +56,27 @@ public:
 };
 
 class Renderer: public Game {
+public:
+    std::vector<Sprite> v_sprites;
+
     Renderer() {
 
+    }
+
+    void createSprite(std::string name) {
+        Image image;
+        Texture texture;
+        Sprite sprite;
+        image.loadFromFile("../images/map.png");
+        texture.loadFromImage(image);
+        sprite.setTexture(texture);
+        sprite.setPosition(300, 300);
+        v_sprites.push_back(sprite);
+    }
+    void drawSprites() {
+        for (auto& i_sprite : v_sprites) {
+            window->draw(i_sprite);
+        }
     }
 };
 
@@ -65,9 +84,10 @@ int main() {
     Game game;
 
     while(game.windowIsOpen()) {
-        game.windowEventClosed();
+        game.windowHandleEvents();
         game.windowSetView();
         game.windowClear();
+        //Renderer.createSprite("map.png"); // ???
         game.windowDisplay();
     }
 
