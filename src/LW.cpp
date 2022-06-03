@@ -13,6 +13,23 @@
 #include "map.h"
 using namespace sf;
 
+class NewSprite {
+public:
+    Image image;
+    Texture texture;
+    Sprite sprite;
+
+    NewSprite() {
+        image.loadFromFile("../images/map.png");
+        texture.loadFromImage(image);
+        sprite.setTexture(texture);
+        sprite.setPosition(300, 300);
+    }
+    Sprite getSprite() {
+        return sprite;
+    }
+};
+
 class Game {
 private:
     View view;
@@ -25,16 +42,13 @@ protected:
     float player_y = 300;
     std::shared_ptr<RenderWindow> window;
 public:
-    Game() {
-        window = std::make_shared<RenderWindow>(VideoMode(window_w, window_h), "Lord World");
-        viewReset();
-    }
+    //Game() { }
 
+    void createWindow() {
+        window = std::make_shared<RenderWindow>(VideoMode(window_w, window_h), "Lord World");
+    }
     void viewReset() {
         view.reset(FloatRect(0, 0, window_w, window_h));
-    }
-    bool windowIsOpen() {
-        return window->isOpen();
     }
     void windowHandleEvents() {
         Event event;
@@ -53,6 +67,9 @@ public:
     void windowDisplay() {
         window->display();
     }
+    bool windowIsOpen() {
+        return window->isOpen();
+    }
 };
 
 class Renderer: public Game {
@@ -64,14 +81,8 @@ public:
     }
 
     void createSprite(std::string name) {
-        Image image;
-        Texture texture;
-        Sprite sprite;
-        image.loadFromFile("../images/map.png");
-        texture.loadFromImage(image);
-        sprite.setTexture(texture);
-        sprite.setPosition(300, 300);
-        v_sprites.push_back(sprite);
+        NewSprite new_sprite;
+        v_sprites.push_back(new_sprite.getSprite());
     }
     void drawSprites() {
         for (auto& i_sprite : v_sprites) {
@@ -81,14 +92,19 @@ public:
 };
 
 int main() {
-    Game game;
+    Renderer renderer;
 
-    while(game.windowIsOpen()) {
-        game.windowHandleEvents();
-        game.windowSetView();
-        game.windowClear();
-        //Renderer.createSprite("map.png"); // ???
-        game.windowDisplay();
+    renderer.createWindow();
+    renderer.viewReset();
+
+    renderer.createSprite("map.png");
+
+    while(renderer.windowIsOpen()) {
+        renderer.windowHandleEvents();
+        renderer.windowSetView();
+        renderer.windowClear();
+        renderer.drawSprites();
+        renderer.windowDisplay();
     }
 
     return 0;
