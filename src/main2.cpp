@@ -10,21 +10,21 @@
 #include <cmath>
 #include <memory>
 #include "split.h"
-#include "map.h"
+// #include "map.h"
+
 using namespace sf;
 
 class NewSprite {
 public:
-    Image image;
     Texture texture;
     Sprite sprite;
 
     NewSprite() {
-        image.loadFromFile("../images/map.png");
-        texture.loadFromImage(image);
+        texture.loadFromFile("../images/map.png");
         sprite.setTexture(texture);
         sprite.setPosition(300, 300);
     }
+
     Sprite getSprite() {
         return sprite;
     }
@@ -38,19 +38,18 @@ protected:
     std::shared_ptr<RenderWindow> window;
     Clock clock;
     float time;
+    std::pair<float, float> playerPosition{300.f, 300.f};
     float player_x = 300;
     float player_y = 300;
 public:
-    //Game() { }
+
 };
 
 class Renderer: public Game {
 public:
     std::vector<Sprite> v_sprites;
 
-    Renderer() {
-
-    }
+    Renderer() = default;
 
     void createWindow() {
         window = std::make_shared<RenderWindow>(VideoMode(window_w, window_h), "Lord World");
@@ -58,6 +57,7 @@ public:
     void viewReset() {
         view.reset(FloatRect(0, 0, window_w, window_h));
     }
+
     void windowHandleEvents() {
         Event event;
         while (window->pollEvent(event)) {
@@ -90,8 +90,8 @@ public:
     }
 };
 
-int main() {
-    Game game;
+int main()
+{
     Renderer renderer;
 
     renderer.createWindow();
