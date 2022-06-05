@@ -11,34 +11,32 @@
 #include <memory>
 #include "split.h"
 using namespace sf;
-#include "Map/Map.h"
 #include "Graphics/NewSprite.h"
-#include "Game/Game.h"
+#include "Map/Map.h"
 #include "Map/DefineTile.h"
 #include "Game/WindowManager.h"
 #include "Game/Renderer.h"
+#include "Game/Game.h"
 
 int main() {
     Game game;
-    Renderer renderer;
 
-    renderer.createWindow();
-    renderer.viewReset();
+    game.createWindow();
+    game.viewReset();
 
-    //renderer.createSprite("map.png");
-    renderer.createMapSprite("map.png");
+    game.initResources();
 
-    while(renderer.windowIsOpen()) {
-        renderer.windowHandleEvents();
-        renderer.windowSetView();
-        renderer.windowClear();
+    while(game.windowIsOpen()) {
+        game.windowHandleEvents();
+        game.windowSetView();
+        game.windowClear();
 
         //temp:
-        renderer.viewSetCenter();
+        game.viewSetCenter();
         //
 
-        renderer.drawSprites();
-        renderer.windowDisplay();
+        game.drawSprites();
+        game.windowDisplay();
     }
 
     return 0;

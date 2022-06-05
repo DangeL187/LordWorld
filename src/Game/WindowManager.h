@@ -1,8 +1,9 @@
-class WindowManager: public Game {
+class WindowManager {
 protected:
     std::shared_ptr<RenderWindow> window;
     unsigned int window_w = 1920;
     unsigned int window_h = 1080;
+    View view;
 public:
     void createWindow() {
         window = std::make_shared<RenderWindow>(VideoMode(window_w, window_h), "Lord World");
