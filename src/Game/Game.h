@@ -1,18 +1,21 @@
+#include "WindowManager.h"
+#include "Renderer.h"
+#include "Player.h"
+
 class Game: public Renderer {
 public:
-    Clock clock;
     float time;
-    std::pair<float, float> playerPosition{300.f, 300.f};
-    float player_x = 300;
-    float player_y = 300;
+    Clock clock;
+    std::shared_ptr<Player> player;
 
     Game() = default;
 
-    void viewSetCenter() {
-        view.setCenter(player_x, player_y); //temp
-    }
     void initResources() {
         createMapSprite("map.png");
+        //createGuiSprites()...
+    }
+    void viewSetCenter() {
+        view.setCenter(player->getX(), player->getY());
     }
     void drawSprites() {
         for (int i = 0; i < HEIGHT_MAP; i++) {
@@ -22,8 +25,19 @@ public:
                 window->draw(map_sprite);
             }
         }
-        for (auto& i_sprite : gui_sprites) {
+        for (auto& i_sprite: gui_sprites) {
             window->draw(i_sprite);
         }
+        window->draw(player->getSprite());
+    }
+    void createPlayer() {
+        player = std::make_shared<Player>(500, 500, 50.0, 62.0);
+    }
+    void updates() {
+        time = clock.getElapsedTime().asMicroseconds();
+        clock.restart();
+        time = time/800;
+        player->update(time);
+        viewSetCenter();
     }
 };

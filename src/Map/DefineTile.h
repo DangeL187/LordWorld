@@ -1,3 +1,5 @@
+#include "Map.h"
+
 class DefineTile: public Map {
 protected:
     void defineTile(int it, int jt) {

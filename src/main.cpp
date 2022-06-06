@@ -12,10 +12,7 @@
 #include "split.h"
 using namespace sf;
 #include "Graphics/NewSprite.h"
-#include "Map/Map.h"
 #include "Map/DefineTile.h"
-#include "Game/WindowManager.h"
-#include "Game/Renderer.h"
 #include "Game/Game.h"
 
 int main() {
@@ -23,17 +20,15 @@ int main() {
 
     game.createWindow();
     game.viewReset();
-
     game.initResources();
+    game.createPlayer();
 
     while(game.windowIsOpen()) {
         game.windowHandleEvents();
         game.windowSetView();
         game.windowClear();
 
-        //temp:
-        game.viewSetCenter();
-        //
+        game.updates();
 
         game.drawSprites();
         game.windowDisplay();

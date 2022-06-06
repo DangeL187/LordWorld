@@ -1,7 +1,7 @@
 class Renderer: public DefineTile, public WindowManager {
 protected:
     std::vector<Sprite> gui_sprites;
-
+    
     void createSprite(std::string name) {
         NewSprite *new_sprite = new NewSprite(name);
         gui_sprites.push_back(new_sprite->getSprite());
