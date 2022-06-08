@@ -12,15 +12,16 @@
 #include "split.h"
 using namespace sf;
 #include "Graphics/NewSprite.h"
-#include "Map/DefineTile.h"
+#include "Map/MapManager.h"
 #include "Game/Game.h"
 
 int main() {
+    MapManager map_manager;
     Game game;
 
     game.createWindow();
     game.viewReset();
-    game.initResources();
+    game.initResources(map_manager);
     game.createPlayer();
 
     while(game.windowIsOpen()) {
@@ -28,9 +29,9 @@ int main() {
         game.windowSetView();
         game.windowClear();
 
-        game.updates();
+        game.updates(map_manager);
 
-        game.drawSprites();
+        game.drawSprites(map_manager);
         game.windowDisplay();
     }
 

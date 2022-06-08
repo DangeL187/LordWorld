@@ -1,9 +1,8 @@
 class Map {
-protected:
+private:
 	static const int HEIGHT_MAP = 25;
 	static const int WIDTH_MAP = 40;
-	Sprite map_sprite;
-
+protected:
 	int TileMap[HEIGHT_MAP][WIDTH_MAP] = {
 		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -56,4 +55,11 @@ protected:
 		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 	};
+public:
+	int getMapHeight() {
+		return HEIGHT_MAP;
+	}
+	int getMapWidth() {
+		return WIDTH_MAP;
+	}
 };

@@ -1,7 +1,27 @@
 #include "Map.h"
 
-class DefineTile: public Map {
-protected:
+class MapManager: public Map {
+public:
+    Sprite map_sprite;
+
+    MapManager() = default;
+
+    void setSprite(auto new_sprite) {
+        map_sprite = new_sprite;
+    }
+    void setSpritePosition(int i, int j) {
+        map_sprite.setPosition(i, j);
+    }
+    Sprite getSprite() {
+        return map_sprite;
+    }
+    void setTileMapID(int i, int j, int id) {
+        TileMap[i][j] = id;
+    }
+    int getTileMapID(int i, int j) {
+        return TileMap[i][j];
+    }
+
     void defineTile(int it, int jt) {
         if (TileMap[it][jt] == 0) {
             map_sprite.setTextureRect(IntRect(0, 0, 64, 64));
