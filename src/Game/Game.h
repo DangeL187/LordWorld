@@ -1,7 +1,7 @@
 #include "WindowManager.h"
 #include "Renderer.h"
-#include "Player.h"
-#include "NPC.h"
+#include "Player/Player.h"
+#include "NPC/NPC.h"
 
 class Game: public Renderer {
 public:
