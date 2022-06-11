@@ -9,6 +9,11 @@ public:
     Clock clock;
     std::shared_ptr<Player> player;
     std::vector<NPC> v_NPC;
+    std::vector<int> items_dropped_id;
+    std::vector<int> items_dropped_x;
+    std::vector<int> items_dropped_y;
+    std::vector<int> items_dropped_sprite;
+    std::vector<int> items_dropped_type; //replace with one vector
 
     Game() = default;
 
@@ -39,7 +44,7 @@ public:
         time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
         time = time/800;
-        player->update(time, map_manager, v_NPC);
+        player->update(time, map_manager, v_NPC, items_dropped_id);
         viewSetCenter();
     }
 };

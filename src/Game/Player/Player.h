@@ -1,15 +1,14 @@
-#include "Equipment.h"
+#include "PlayerVars.h"
 #include "Keys.h"
+#include "Equipment.h"
 
-class Player: public Equipment, public Keys {
+class Player: public Keys, public Equipment {
 private:
+    Sprite sprite;
 	std::pair<float, float> p_pos{300, 300};
-    float w, h, dx, dy, speed;
-    int attack_animation = 0;
-    int dir = 0;
+    float w, h, dx, dy;
 	int inv_items[33]; //items inventory
 	int inv_types[24]; //item types invenory
-    Sprite sprite;
 public:
     Player(float X, float Y, float W, float H) {
 		dx=0; dy=0; speed=0;
@@ -53,7 +52,7 @@ public:
 	    }
     }
 
-    void update(float time, auto &map_manager, auto &v_NPC) {
+    void update(float time, auto &map_manager, auto &v_NPC, auto &items_dropped_id) {
 		switch (dir) {
 			case 0: dx = speed; dy = 0; break;
 			case 1: dx = -speed; dy = 0; break;
@@ -67,7 +66,7 @@ public:
 		interactionWithMap(map_manager, v_NPC);
 		sprite.setPosition(p_pos.first, p_pos.second);
 		setEquipmentStats(inv_items);
-        keys(time, attack_animation, speed, dir, sprite);
+        keys(time, sprite, v_NPC, v_NPC, items_dropped_id); //replace third argument with v_monsters
 	}
 
     Sprite getSprite() {
