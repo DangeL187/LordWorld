@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include <array>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -22,14 +23,14 @@ int main() {
     game.createWindow();
     game.viewReset();
     game.initResources(map_manager);
-    game.createPlayer();
+    game.createPlayer(500, 500, 50.0, 62.0);
 
     while(game.windowIsOpen()) {
         game.windowHandleEvents();
         game.windowSetView();
         game.windowClear();
 
-        game.updates(map_manager);
+        game.updates(map_manager, game);
 
         game.drawSprites(map_manager);
         game.windowDisplay();

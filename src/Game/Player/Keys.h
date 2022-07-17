@@ -9,17 +9,17 @@ private:
 	bool is_info = false;
 	bool break4items = false;
 protected:
-	void keys(auto &time, auto &sprite, auto &v_monsters, auto &v_NPC, auto &items_dropped_id) {
-		keysMove(time, sprite);
+	void keys(auto& time, auto& v_monsters, auto& v_NPC, auto& game) {
+		keysMove(time);
 		keyShift();
 		keySpace();
-		keyE(v_monsters, v_NPC, items_dropped_id);
-		keyG();
+		keyE(v_monsters, v_NPC, game);
+		keyG(game);
 		keyI();
 		keyO();
 		keyEscape();
 	}
-	void keysMove(auto &time, auto &sprite) {
+	void keysMove(auto& time) {
 		if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s && attack_animation == 0) {
 			key_d = true;
 			speed = 0.15;
@@ -59,17 +59,17 @@ protected:
 			space_timer = 1000;
 		} else { key_space = false; }
 	}
-	void keyE(auto &v_monsters, auto &v_NPC, auto &items_dropped_id) {
-		if (Keyboard::isKeyPressed(Keyboard::E) && items_dropped_id.size() != 0 && !key_g) {
+	void keyE(auto& v_monsters, auto& v_NPC, auto& game) {
+		if (Keyboard::isKeyPressed(Keyboard::E) && game.items_dropped.size() != 0 && !key_g) {
 			key_e = true;
 			//eventNPCDialog(v_NPC);
-			eventPickItem(v_monsters);
+			eventPickItem(v_monsters, game);
 		} else { key_e = false; }
 	}
-	void keyG() {
+	void keyG(auto& game) {
 		if (Keyboard::isKeyPressed(Keyboard::G) && !key_e) {
 			key_g = true;
-			eventDropItem();
+			eventDropItem(game);
 		} else { key_g = false; }
 	}
 	void keyI() {
@@ -96,7 +96,7 @@ protected:
 			}
 		}
 	}
-	void eventNPCDialog(auto &v_NPC) {
+	void eventNPCDialog(auto& v_NPC) {
 		/*for (int l = 0; l < v_NPC.size(); l++) {
 			if (x < v_NPC[l].getX() + 64 &&
 				x + 64 > v_NPC[l].getX() &&
@@ -108,37 +108,36 @@ protected:
 			}
 		}*/
 	}
-	void eventPickItem(auto &v_monsters) { //todo: complete
-		/*for (int i = 0; i < items_dropped_id.size(); i++) {
-			float condx_m = items_dropped_x[i]/1 - range*64;
-			float condx_p = items_dropped_x[i]/1 + range*64;
-			float condy_m = items_dropped_y[i]/1 - range*64;
-			float condy_p = items_dropped_y[i]/1 + range*64;
-			if (condx_m <= x && x <= condx_p && condy_m <= y && y <= condy_p) {
+	void eventPickItem(auto& v_monsters, auto& game) { //todo: complete
+		for (int i = 0; i < game.items_dropped[0].size(); i++) {
+			float x_m = game.items_dropped[1][i]/1 - range*64;
+			float x_p = game.items_dropped[1][i]/1 + range*64;
+			float y_m = game.items_dropped[2][i]/1 - range*64;
+			float y_p = game.items_dropped[2][i]/1 + range*64;
+			if (x_m <= p_cords[0] && p_cords[0] <= x_p &&
+				y_m <= p_cords[1] && p_cords[1] <= y_p) {
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
-						inv_items[j] = items_dropped_id[i];
-						inv_types[j] = items_dropped_type[i];
-						InventoryItemsSprite[j] = other_sprites[items_dropped_sprites[i]];
-						InventoryItemsSprite[j].setTextureRect(IntRect(0, 0, 56, 56));
-						InventoryItemsSprite[j].setScale(1.5, 1.5);
-						items_dropped_id.erase(items_dropped_id.begin() + i);
-						items_dropped_x.erase(items_dropped_x.begin() + i);
-						items_dropped_y.erase(items_dropped_y.begin() + i);
-						items_dropped_type.erase(items_dropped_type.begin() + i);
-						for (int k = 0; k < items_dropped_sprites.size(); k++) {
+						inv_items[j] = game.items_dropped[0][i];
+						inv_types[j] = game.items_dropped[4][i];
+						game.InventoryItemsSprite[j] = game.other_sprites[game.items_dropped[3][i]];
+						game.InventoryItemsSprite[j].setTextureRect(IntRect(0, 0, 56, 56));
+						game.InventoryItemsSprite[j].setScale(1.5, 1.5);
+						for (int k = 0; k < game.items_dropped[3].size(); k++) {
 							if (k > i) {
-								items_dropped_sprites[k] = items_dropped_sprites[k] - 1;
+								game.items_dropped[3][k] = game.items_dropped[3][k] - 1;
 							}
 						}
-						for (int k = 0; k < v_monsters.size(); k++) {
+						/*for (int k = 0; k < v_monsters.size(); k++) {
 							if (v_monsters[k].getMonsterSprite() > items_dropped_sprites[i]) {
 								v_monsters[k].reduceMonsterSprite();
 							}
+						}*/
+						game.other_sprites.erase(game.other_sprites.begin() + game.items_dropped[3][i]);
+						for (auto& e: game.items_dropped) {
+							e.erase(e.begin() + i);
 						}
-						other_sprites.erase(other_sprites.begin() + items_dropped_sprites[i]);
-						items_dropped_sprites.erase(items_dropped_sprites.begin() + i);
-						sprite_counter--;
+						game.sprite_counter--;
 						break4items = true;
 						break;
 					}
@@ -148,22 +147,22 @@ protected:
 				break4items = false;
 				break;
 			}
-		}*/
+		}
 	}
-	void eventDropItem() { //todo: complete
-		/*text_item_info.setString("");
-		int out = x - (962 - Mouse::getPosition().x);
-		int outy = y - (544 - Mouse::getPosition().y);
-		int vx = view.getCenter().x + 261;
-		int vy = view.getCenter().y - 343;
+	void eventDropItem(auto& game) {
+		game.text_item_info.get()->setString("");
+		int out = p_cords[0] - (962 - Mouse::getPosition().x);
+		int outy = p_cords[1] - (544 - Mouse::getPosition().y);
+		int vx = game.viewGetCenterX() + 261;
+		int vy = game.viewGetCenterY() - 343;
 		if (is_inventory_open) {
 			for (int i = 0; i < 6; i++) {
-				vx = view.getCenter().x + 261;
+				vx = game.viewGetCenterX() + 261;
 				for (int j = 0; j < 4; j++) {
 					if (inv_items[i * 4 + j] != 0) {
 						if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-							InventoryItemsSprite[i * 4 + j] = InventoryItemEmptySprite;
-							createItem(inv_items[i * 4 + j], x, y);
+							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							game.createItem(inv_items[i * 4 + j], p_cords[0], p_cords[1]);
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
@@ -172,9 +171,9 @@ protected:
 				}
 				vy += 112;
 			}
-		}*/
+		}
 	}
-	void moveCurrentFrame(auto &time) {
+	void moveCurrentFrame(auto& time) {
         current_frame += 0.005 * time;
         if (current_frame > 3) {
             current_frame -= 3;

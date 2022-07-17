@@ -9,8 +9,10 @@ protected:
 	int damage = 1;
 	int strength = 1;
 	int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-front-back line;
+	int physical_resistance = 1;
+	int magic_ice = 1;
 
-	void setEquipmentStats(auto &inv_items) {
+	void setEquipmentStats(auto& inv_items) {
 		setWeaponStats(inv_items);
 		setArmorStats(inv_items);
 		armor = armor_shield + armor_helmet + armor_chestplate + armor_pants + armor_boots;
@@ -22,7 +24,7 @@ protected:
 			armor += armor_helmet;
 		}
 	}
-	void setWeaponStats(auto &inv_items) {
+	void setWeaponStats(auto& inv_items) {
 		switch (inv_items[27]) { //Weapon stats
             case 1:
                 weapon_type = 1;
@@ -33,7 +35,7 @@ protected:
                 damage = 1 * strength;
         }
 	}
-	void setArmorStats(auto &inv_items) {
+	void setArmorStats(auto& inv_items) {
         switch (inv_items[28]) { //Shield stats
             case 3:
                 //EquipedShieldSprite = AnimationIronShieldSprite;
@@ -78,7 +80,7 @@ protected:
         }
     }
 
-	void setOtherStats(auto &inv_items) {
+	void setOtherStats(auto& inv_items) {
 		switch (inv_items[24]) { //Other1
             case 7: //Iron Ring
                 armor += 1;

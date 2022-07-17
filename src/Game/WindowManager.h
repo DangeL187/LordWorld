@@ -8,6 +8,12 @@ public:
     void createWindow() {
         window = std::make_shared<RenderWindow>(VideoMode(window_w, window_h), "Lord World");
     }
+    float viewGetCenterX() {
+        return view.getCenter().x;
+    }
+    float viewGetCenterY() {
+        return view.getCenter().y;
+    }
     void viewReset() {
         view.reset(FloatRect(0, 0, window_w, window_h));
     }

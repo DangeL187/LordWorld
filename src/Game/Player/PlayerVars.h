@@ -1,7 +1,17 @@
 class PlayerVars {
 protected:
+    Sprite sprite;
     int attack_animation = 0;
 	int dir = 0;
+    int range = 1; //*64
+	int inv_items[33]; //items inventory
+	int inv_types[24]; //item types invenory
+    int hp = 10, mp = 10, lvl = 1;
+    int hp_max = 10, mp_max = 10, xp = 0;
+    int damage = 1;
+    int defence_counter = 0;
+    float p_cords[2] {300, 300};
+    float w, h, dx, dy;
     float current_frame = 0;
     float speed = 0;
     float space_timer = 0;
