@@ -1,7 +1,0 @@
-if(player1.x < player2.x + player2.width &&
-    player1.x + player1.width > player2.x &&
-    player1.y < player2.y + player2.height &&
-    player1.y + player1.height > player2.y)
-{
-    System.out.println("Collision Detected");
-}
