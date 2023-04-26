@@ -25,5 +25,6 @@ Lord World (LW) by DangeL
 0.1.3  - basic combat update, mp and hp regeneration, basic animations
 0.1.4  - final combat update, monsters AI and spells info, shield
 0.1.5  - monsters' drop, xp gaining
-0.1.6  - first NPC [current]
+0.1.6  - beta first NPC
+0.1.7  - code was rewritten using OOP
 ----------------------------------------------------------------------------------------------------
