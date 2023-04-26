@@ -1,0 +1,35 @@
+ 1) anims +
+ 2) attacks +
+ 3) buffs +
+ 4) cooldowns
+ 5) inventory +
+ 6) gain lvl +
+ 7) drop and pick up items +
+ 8) everything related to inv +
+ 9) GUI +
+10) timers +
+11) spells +
+12) targeting +
+13) monster's death +
+14) shield +
+
+0) disable attack when cast
+
+15) FINAL CHECK
+
+1) Armor custom
+2) Settings for font color [later]
+3) Don't stop moves while playing attack animation
+4) Better animations
+
+todo: create hero armor and weapon preview window //not really nessesary
+
+todo: add functional for arrows in spells inventory //later
+todo: add shield blocking direction //later
+todo: unite all images in one .png //later
+
+todo: add mana cost for spells
+todo: add spell info for hotbar
+todo: add animations for all types of attack
+
+todo: fix A direction in collision with NPC
