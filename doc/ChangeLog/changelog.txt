@@ -1,9 +1,6 @@
 ----------------------------------------------------------------------------------------------------
 Lord World (LW) by DangeL
 ----------------------------------------------------------------------------------------------------
-                              WARNING!
-Versions in folder 'versions' might not work properly with current files, so DO NOT compile it!
-----------------------------------------------------------------------------------------------------
 0.0.1  - first working version where you can move
 0.0.2a - better code
 0.0.2  - solved all problems with server-client communication, working connect-disconnect system
