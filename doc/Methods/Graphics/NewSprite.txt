@@ -1,0 +1,14 @@
+------------------------------------------------------------
+Lord World (LW) by DangeL
+------------------------------------------------------------
+Graphics/NewSprite.h
+------------------------------------------------------------
+NewSprite(std::string name)
+Creates a new sprite.
+
+getSprite()
+Returns created sprite.
+
+createSprite(std::string name) //global function
+Creates and returns a new sprite using NewSprite class.
+------------------------------------------------------------

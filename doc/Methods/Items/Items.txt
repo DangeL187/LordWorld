@@ -1,0 +1,8 @@
+------------------------------------------------------------
+Lord World (LW) by DangeL
+------------------------------------------------------------
+Items/Items.h
+------------------------------------------------------------
+defineItemType(int id, auto& current_item_sprites, auto& item_sprites, auto& items_dropped) //global function
+Defines item's type depending on it's ID.
+------------------------------------------------------------

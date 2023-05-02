@@ -1,0 +1,47 @@
+------------------------------------------------------------
+Lord World (LW) by DangeL
+------------------------------------------------------------
+Game/Game.h <-- Renderer
+------------------------------------------------------------
+Game()
+Default constructor.
+
+initResources(auto& map_manager, auto& game)
+Initialises text, images and sprites.
+
+viewSetCenter()
+Sets view's center.
+
+createItem(int id, int x, int y)
+Creates an item lying on the ground.
+
+createPlayer(float x, float y, float w, float h)
+Creates player.
+
+createMonster(float x, float y, float w, float h, std::string name)
+Creates monster.
+
+createNPC(float x, float y, float w, float h, std::string name)
+Creates NPC.
+
+drawSprites(auto& map_manager)
+Draws sprites and text.
+
+updates(auto& map_manager, auto& game)
+Starts handling timers, lvl, monsters' deaths, target system;
+Updates images, text, GUI, player, monsters, NPC;
+
+timers(auto& time, auto& game)
+Timers handler.
+
+targeting(auto& game)
+Targeting handler.
+
+gainLVL(auto& game)
+Level gaining.
+
+monsterDeath(auto& game)
+Monsters' deaths handler.
+
+spellDamaged(auto& game)
+Define who is damaged with the spell.

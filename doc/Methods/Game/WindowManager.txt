@@ -1,0 +1,32 @@
+------------------------------------------------------------
+Lord World (LW) by DangeL
+------------------------------------------------------------
+Game/WindowManager.h
+------------------------------------------------------------
+createWindow()
+Creates new window.
+
+viewGetCenterX()
+Returns view's center X.
+
+viewGetCenterY()
+Returns view's center Y.
+
+viewReset()
+Resets view.
+
+windowHandleEvents()
+Starts event handler.
+
+windowSetView()
+Sets window's view.
+
+windowClear()
+Clears window.
+
+windowDisplay()
+Displays window.
+
+windowIsOpen()
+Returns whether the window is open.
+------------------------------------------------------------

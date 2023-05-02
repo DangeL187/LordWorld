@@ -1,0 +1,20 @@
+------------------------------------------------------------
+Lord World (LW) by DangeL
+------------------------------------------------------------
+Player/Equipment.h
+------------------------------------------------------------
+setEquipmentStats(auto& game, auto& inv_items)
+Sets equipment stats.
+
+setWeaponStats(auto& game, auto& inv_items)
+Sets weapon stats.
+
+setArmorStats(auto& game, auto& inv_items)
+Sets armor stats.
+
+setOtherStats(auto& inv_items)
+Sets other stats.
+
+checkWeaponsRange(auto& game, float get_x, float get_y)
+Returns whether attack is possible depending on the weapon.
+------------------------------------------------------------
