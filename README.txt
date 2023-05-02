@@ -11,8 +11,8 @@ lib - libraries that you will need to build LW
 src - LW's source code
 test - LW's files used for tests
 ------------------------------------------------------------
-Source files:
-src/main.cpp - main application
+Documentation:
+For additional information check folder doc/Methods
 ------------------------------------------------------------
 Compilation:
 ./build/build.sh
