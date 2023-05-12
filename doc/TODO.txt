@@ -22,6 +22,8 @@
 3) Don't stop moves while playing attack animation
 4) Better animations
 
+TODO: replace regular pointers with smart pointers
+
 todo: create hero armor and weapon preview window //not really nessesary
 
 todo: add functional for arrows in spells inventory //later
