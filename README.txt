@@ -11,13 +11,13 @@ lib - libraries that you will need to build LW
 src - LW's source code
 test - LW's files used for tests
 ------------------------------------------------------------
-Documentation:
-For additional information check folder doc/Methods
-------------------------------------------------------------
 Compilation:
 ./build/build.sh
 or
 ./build/build_and_run.sh
+------------------------------------------------------------
+How to get the documentation (using Doxygen):
+./doc/auto_doc/auto_doc.sh
 ------------------------------------------------------------
 How to see the TODO list:
 ./build/todo.sh
