@@ -17,7 +17,9 @@ or
 ./build/build_and_run.sh
 ------------------------------------------------------------
 How to get the documentation (using Doxygen):
-./doc/auto_doc/auto_doc.sh
+cd doc/auto_doc
+./auto_doc.sh
+firefox doc_out/html/index.html
 ------------------------------------------------------------
 How to see the TODO list:
 ./build/todo.sh
