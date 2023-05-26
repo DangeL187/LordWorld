@@ -4,4 +4,6 @@ Lord World (LW) by DangeL
 Version 0.1.7 ChangeLog
 ----------------------------------------------------------------------------------------------------
 2022/2023  - migration to OOP
+25.05.2023 - added basic documentation
+26.05.2023 - fixed folders with documentation, added guide to readme.txt
 ----------------------------------------------------------------------------------------------------
