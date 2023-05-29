@@ -1,7 +1,7 @@
  1) anims +
  2) attacks +
  3) buffs +
- 4) cooldowns
+ 4) cooldowns +
  5) inventory +
  6) gain lvl +
  7) drop and pick up items +
@@ -13,16 +13,14 @@
 13) monster's death +
 14) shield +
 
-0) disable attack when cast
+0) disable attack when cast +
 
 15) FINAL CHECK
 
-1) Armor custom
+1) Armor custom? [later]
 2) Settings for font color [later]
-3) Don't stop moves while playing attack animation
+3) Don't stop moves while playing attack animation +
 4) Better animations
-
-TODO: replace regular pointers with smart pointers
 
 todo: create hero armor and weapon preview window //not really nessesary
 
