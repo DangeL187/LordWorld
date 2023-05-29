@@ -2,7 +2,7 @@ class Keys: public PlayerBase, public Equipment {
 private:
 	bool key_a = false, key_d = false, key_w = false, key_s = false;
 	bool key_e = false, key_g = false;
-	bool key_m1 = false, key_m2 = false;
+	bool key_m1 = true, key_m2 = false;
 	bool key_1 = false, key_2 = false, key_3 = false, key_4 = false;
 	bool key_5 = false, key_6 = false, key_7 = false, key_8 = false, key_9 = false;
 	bool aiming_kid1 = false, aiming_kid2 = false, aiming_kid3 = false;
@@ -24,31 +24,33 @@ protected:
 		keyEscape();
 		keysAiming();
 		keysTargeting(game);
+		spellAiming();
 		mouseLeft(time, game);
 		mouseRight(game);
-		spellAiming();
 		ifs(game);
 	}
 	void keysMove(auto& time) {
-		if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s && attack_animation == 0) {
+		if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) { // && attack_animation == 0
 			key_d = true;
 			speed = 0.15;
 			dir = 0;
-			sprite.setTextureRect(IntRect(52 * int(current_frame), 128, 50, 62));
+			if (attack_animation == 0) {
+				sprite.setTextureRect(IntRect(52 * int(current_frame), 128, 50, 62));
+			}
 		} else { key_d = false; }
-		if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s && attack_animation == 0) {
+		if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s) {
 			key_a = true;
 			speed = 0.15;
 			dir = 1;
 			sprite.setTextureRect(IntRect(52 * int(current_frame), 64, 50, 62));
 		} else { key_a = false; }
-		if (Keyboard::isKeyPressed(Keyboard::W) && !key_d && !key_a && !key_s && attack_animation == 0) {
+		if (Keyboard::isKeyPressed(Keyboard::W) && !key_d && !key_a && !key_s) {
 			key_w = true;
 			speed = 0.15;
 			dir = 2;
 			sprite.setTextureRect(IntRect(52 * int(current_frame), 192, 50, 62));
 		} else { key_w = false; }
-		if (Keyboard::isKeyPressed(Keyboard::S) && !key_d && !key_w && !key_a && attack_animation == 0) {
+		if (Keyboard::isKeyPressed(Keyboard::S) && !key_d && !key_w && !key_a) {
 			key_s = true;
 			speed = 0.15;
 			dir = 3;
@@ -57,7 +59,7 @@ protected:
         moveCurrentFrame(time);
 	}
 	void keyShift() {
-		if (Keyboard::isKeyPressed(Keyboard::LShift) && attack_animation == 0) {
+		if (Keyboard::isKeyPressed(Keyboard::LShift) && attack_animation == 0 && attack == 0) {
 			key_shift = true;
 			speed *= 0.5;
 			defence = true;
@@ -142,16 +144,22 @@ protected:
 		}
 	}
 	void mouseLeft(auto& time, auto& game) {
-		if (Mouse::isButtonPressed(Mouse::Left)) {
-			key_m1 = true;
+		if (Mouse::isButtonPressed(Mouse::Left) && key_m1) {
 			if (!is_inventory_open && !is_spells_inventory_open && !aiming) {
 				attack = 1; //first type of attack
+			} else {
+				attack = 0;
 			}
 			if (aiming) {
 				aiming = false;
+				key_m1 = false;
 				spells(time, game);
 			}
-		} else { key_m1 = false; }
+		}
+		if (!Mouse::isButtonPressed(Mouse::Left)) {
+			key_m1 = true;
+			attack = 0;
+		}
 	}
 	void mouseRight(auto& game) {
 		if (Mouse::isButtonPressed(Mouse::Right)) {
@@ -161,6 +169,8 @@ protected:
 			int vy = game.view.getCenter().y - 343;
 			if (!is_inventory_open && !is_spells_inventory_open && !Keyboard::isKeyPressed(Keyboard::LControl)) {
 				attack = 2; //second type of attack
+			} else {
+				attack = 0;
 			}
 			if (is_inventory_open) {
 				game.text_info.setString("");
@@ -444,7 +454,7 @@ protected:
 			}
 		}*/
 	}
-	void eventPickItem(auto& game) { //todo: complete
+	void eventPickItem(auto& game) {
 		for (int i = 0; i < game.items_dropped[0].size(); i++) {
 			float x_m = game.items_dropped[1][i]/1 - range*64;
 			float x_p = game.items_dropped[1][i]/1 + range*64;
@@ -464,11 +474,6 @@ protected:
 								game.items_dropped[3][k] = game.items_dropped[3][k] - 1;
 							}
 						}
-						/*for (int k = 0; k < game.v_monsters.size(); k++) {
-							if (game.v_monsters[k].getSprite() > game.items_dropped[3][k]) {
-								game.v_monsters[k].reduceSprite();
-							}
-						}*/
 						game.current_item_sprites.erase(game.current_item_sprites.begin() + game.items_dropped[3][i]);
 						for (auto& e: game.items_dropped) {
 							e.erase(e.begin() + i);
@@ -594,7 +599,7 @@ protected:
 	}
 	void ifs(auto& game) { //split into several methods
 		if (!key_m1 && !key_m2) {
-			attack = 0;
+			//attack = 0;
 		}
 
 		if (is_inventory_open) {

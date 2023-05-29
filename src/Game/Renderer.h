@@ -25,6 +25,15 @@ public:
     int item_sprite_counter = 0;
     int other_sprite_counter = 0;
     Font font;
+    Text text_cd_0;
+    Text text_cd_1;
+    Text text_cd_2;
+    Text text_cd_3;
+    Text text_cd_4;
+    Text text_cd_5;
+    Text text_cd_6;
+    Text text_cd_7;
+    Text text_cd_8;
     Text player_stats_hp;
     Text player_stats_mp;
     Text player_stats_lvl;
@@ -74,6 +83,15 @@ protected:
     }
     void initText(auto& player) {
         font.loadFromFile("../font/OceanSummer.ttf");
+        setText(text_cd_0, font, 60);
+        setText(text_cd_1, font, 60);
+        setText(text_cd_2, font, 60);
+        setText(text_cd_3, font, 60);
+        setText(text_cd_4, font, 60);
+        setText(text_cd_5, font, 60);
+        setText(text_cd_6, font, 60);
+        setText(text_cd_7, font, 60);
+        setText(text_cd_8, font, 60);
         setText(player_stats_hp, font, 30);
         setText(player_stats_mp, font, 30);
         setText(player_stats_lvl, font, 30);
@@ -197,40 +215,34 @@ protected:
         InventoryItemsSprite[24].setPosition(view.getCenter().x - 203 - 15, view.getCenter().y + 185 - 15);
         InventoryItemsSprite[25].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y + 185 - 15);
         InventoryItemsSprite[26].setPosition(view.getCenter().x + 61 - 15, view.getCenter().y + 185 - 15);
-
-        switch (player->dir) {
-            case 0:
-                AnimationShieldSprite.setTextureRect(IntRect(27, 1, 25, 25));
-                AnimationShieldSprite.setPosition(player->p_cords[0] + 20, player->p_cords[1] + 28); break;
-            case 1:
-                AnimationShieldSprite.setTextureRect(IntRect(1, 1, 25, 25));
-                AnimationShieldSprite.setPosition(player->p_cords[0] + 22, player->p_cords[1] + 34); break;
-            case 2:
-                AnimationShieldSprite.setTextureRect(IntRect(53, 1, 25, 25));
-                AnimationShieldSprite.setPosition(player->p_cords[0] - 2, player->p_cords[1] + 30); break;
-            case 3:
-                AnimationShieldSprite.setTextureRect(IntRect(1, 1, 25, 25));
-                AnimationShieldSprite.setPosition(player->p_cords[0] + 30, player->p_cords[1] + 30); break;
-        }
     }
     void updateText(auto& player) {
-        //text_cd_0.setColor(Color::White);
-        //text_cd_1.setColor(Color::White);
-        //text_cd_2.setColor(Color::White);
-        //text_cd_3.setColor(Color::White);
-        //text_cd_4.setColor(Color::White);
-        //text_cd_5.setColor(Color::White);
-        //text_cd_6.setColor(Color::White);
-        //text_cd_7.setColor(Color::White);
-        //text_cd_8.setColor(Color::White);
+        text_cd_0.setColor(Color::White);
+        text_cd_1.setColor(Color::White);
+        text_cd_2.setColor(Color::White);
+        text_cd_3.setColor(Color::White);
+        text_cd_4.setColor(Color::White);
+        text_cd_5.setColor(Color::White);
+        text_cd_6.setColor(Color::White);
+        text_cd_7.setColor(Color::White);
+        text_cd_8.setColor(Color::White);
         text_target.setColor(Color::White);
-        text_target.setStyle(sf::Text::Bold);
         player_stats_hp.setColor(Color::White);
-        player_stats_hp.setStyle(sf::Text::Bold);
         player_stats_mp.setColor(Color::White);
-        player_stats_mp.setStyle(sf::Text::Bold);
         player_stats_lvl.setColor(Color::White);
-        player_stats_lvl.setStyle(sf::Text::Bold);
+        text_cd_0.setStyle(Text::Bold);
+        text_cd_1.setStyle(Text::Bold);
+        text_cd_2.setStyle(Text::Bold);
+        text_cd_3.setStyle(Text::Bold);
+        text_cd_4.setStyle(Text::Bold);
+        text_cd_5.setStyle(Text::Bold);
+        text_cd_6.setStyle(Text::Bold);
+        text_cd_7.setStyle(Text::Bold);
+        text_cd_8.setStyle(Text::Bold);
+        text_target.setStyle(Text::Bold);
+        player_stats_hp.setStyle(Text::Bold);
+        player_stats_mp.setStyle(Text::Bold);
+        player_stats_lvl.setStyle(Text::Bold);
         std::string p_lvl = std::to_string(player->lvl);
         std::string p_hp = std::to_string(player->hp);
         std::string p_mp = std::to_string(player->mp);
@@ -240,6 +252,60 @@ protected:
         player_stats_hp.setString(p_hp + " +" + p_hr[0] + p_hr[1] + p_hr[2]);
         player_stats_mp.setString(p_mp + " +" + p_mr[0] + p_mr[1] + p_mr[2]);
         player_stats_lvl.setString(p_lvl + " (" + p_xp + "/" + p_lvl + "00)");
+        if (player->cooldowns[0] != 0) {
+            text_cd_0.setString(std::to_string(player->cooldowns[0]/1000));
+        } else {
+            text_cd_0.setString("");
+        }
+        if (player->cooldowns[1] != 0) {
+            text_cd_1.setString(std::to_string(player->cooldowns[1]/1000));
+        } else {
+            text_cd_1.setString("");
+        }
+        if (player->cooldowns[2] != 0) {
+            text_cd_2.setString(std::to_string(player->cooldowns[2]/1000));
+        } else {
+            text_cd_2.setString("");
+        }
+        if (player->cooldowns[3] != 0) {
+            text_cd_3.setString(std::to_string(player->cooldowns[3]/1000));
+        } else {
+            text_cd_3.setString("");
+        }
+        if (player->cooldowns[4] != 0) {
+            text_cd_4.setString(std::to_string(player->cooldowns[4]/1000));
+        } else {
+            text_cd_4.setString("");
+        }
+        if (player->cooldowns[5] != 0) {
+            text_cd_5.setString(std::to_string(player->cooldowns[5]/1000));
+        } else {
+            text_cd_5.setString("");
+        }
+        if (player->cooldowns[6] != 0) {
+            text_cd_6.setString(std::to_string(player->cooldowns[6]/1000));
+        } else {
+            text_cd_6.setString("");
+        }
+        if (player->cooldowns[7] != 0) {
+            text_cd_7.setString(std::to_string(player->cooldowns[7]/1000));
+        } else {
+            text_cd_7.setString("");
+        }
+        if (player->cooldowns[8] != 0) {
+            text_cd_8.setString(std::to_string(player->cooldowns[8]/1000));
+        } else {
+            text_cd_8.setString("");
+        }
+        text_cd_0.setPosition(view.getCenter().x - 490, view.getCenter().y + 404);
+        text_cd_1.setPosition(view.getCenter().x - 380, view.getCenter().y + 404);
+        text_cd_2.setPosition(view.getCenter().x - 265, view.getCenter().y + 404);
+        text_cd_3.setPosition(view.getCenter().x - 155, view.getCenter().y + 404);
+        text_cd_4.setPosition(view.getCenter().x - 45, view.getCenter().y + 404);
+        text_cd_5.setPosition(view.getCenter().x + 70, view.getCenter().y + 404);
+        text_cd_6.setPosition(view.getCenter().x + 180, view.getCenter().y + 404);
+        text_cd_7.setPosition(view.getCenter().x + 295, view.getCenter().y + 404);
+        text_cd_8.setPosition(view.getCenter().x + 405, view.getCenter().y + 404);
         player_stats_hp.setPosition(view.getCenter().x - 690, view.getCenter().y - 511);
         player_stats_mp.setPosition(view.getCenter().x - 690, view.getCenter().y - 443);
         player_stats_lvl.setPosition(view.getCenter().x - 690, view.getCenter().y - 375);

@@ -25,10 +25,28 @@ public:
     void initResources(auto& map_manager, auto& game) {
         initText(game.player);
         initImages();
+        initMap(map_manager);
         createMapSprite(map_manager);
         createItemSprites();
         createMonsterSprites();
         createGuiSprites();
+    }
+    void initMap(auto& map_manager) {
+        std::string line;
+        int index = 0;
+        std::ifstream file;
+        file.open("map.txt");
+        if (file.is_open()) {
+            while (file) {
+                std::getline(file, line);
+                std::vector<std::string> smap = split(line, ' ');
+                for (int i = 0; i < smap.size()-1; i++) {
+                    map_manager.setTileMapID(index, i, std::stoi(smap[i]));
+                }
+                index++;
+            }
+        }
+        file.close();
     }
     void viewSetCenter() {
         view.setCenter(player->getX(), player->getY());
@@ -120,15 +138,15 @@ public:
         window->draw(player_stats_hp);
         window->draw(player_stats_mp);
         window->draw(player_stats_lvl);
-        //window->draw(text_cd_0);
-        //window->draw(text_cd_1);
-        //window->draw(text_cd_2);
-        //window->draw(text_cd_3);
-        //window->draw(text_cd_4);
-        //window->draw(text_cd_5);
-        //window->draw(text_cd_6);
-        //window->draw(text_cd_7);
-        //window->draw(text_cd_8);
+        window->draw(text_cd_0);
+        window->draw(text_cd_1);
+        window->draw(text_cd_2);
+        window->draw(text_cd_3);
+        window->draw(text_cd_4);
+        window->draw(text_cd_5);
+        window->draw(text_cd_6);
+        window->draw(text_cd_7);
+        window->draw(text_cd_8);
         window->draw(text_target);
         window->draw(text_strength);
         window->draw(text_damage);
@@ -156,6 +174,7 @@ public:
         setImages(game, 27, player->inv_spells, SpellsInventorySprite);
         setImages(game, 9, player->hotbar_spells, SpellsHotbarSprites);
         player->update(time, map_manager, game);
+        //v_monsters[2].hitMonster(300, time, player); //stress test
         updateGuiSprites(player);
         updateText(player);
         guiTarget(game);

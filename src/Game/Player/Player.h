@@ -36,16 +36,14 @@ public:
 				        if (dx<0) p_cords[0] = j * 64 + 15;
 					}
 				}
-		        if (map_manager.getTileMapID(i, j) == 1 ||
-					(map_manager.getTileMapID(i, j) >= 3 &&
-					map_manager.getTileMapID(i, j) <= 31))
-				{
+                auto t = map_manager.getTileMapID(i, j);
+		        if (t == 4) {
 			        if (dy>0) p_cords[1] = i * 64 - h;
 			        if (dy<0) p_cords[1] = i * 64 + 64;
 			        if (dx>0) p_cords[0] = j * 64 - w;
 			        if (dx<0) p_cords[0] = j * 64 + 64;
 		        }
-		        if (map_manager.getTileMapID(i, j) == 2) {
+		        if (t == 5) {
 			        p_cords[0] = 300; p_cords[1] = 300;
 					map_manager.setTileMapID(i, j, 0);
 		        }

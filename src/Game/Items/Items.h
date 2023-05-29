@@ -1,4 +1,4 @@
-void defineItemType(int id, auto& current_item_sprites, auto& item_sprites, auto& items_dropped) { //TODO: make code shorter
+void defineItemType(int id, auto& current_item_sprites, auto& item_sprites, auto& items_dropped) {
     switch (id) {
         case 1:
             current_item_sprites.push_back(item_sprites[0]); //Wooden Sword

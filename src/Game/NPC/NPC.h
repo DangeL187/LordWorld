@@ -28,15 +28,16 @@ public:
 	void interactionWithMap(auto& map_manager) {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
-		        if (map_manager.TileMap[i][j] == 1) {
+				auto t = map_manager.getTileMapID(i, j);
+		        if (t == 4) {
 			        if (dy>0) y = i * 64 - h;
 			        if (dy<0) y = i * 64 + 64;
 			        if (dx>0) x = j * 64 - w;
 			        if (dx<0) x = j * 64 + 64;
 		        }
-		        if (map_manager.TileMap[i][j] == 2) {
+		        if (t == 5) {
 			        x = 300; y = 300;
-			        map_manager.TileMap[i][j] = 0;
+					map_manager.setTileMapID(i, j, 0);
 		        }
 	        }
 		}

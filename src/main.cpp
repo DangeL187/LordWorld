@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <fstream>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -32,12 +33,12 @@ int main() {
     game.AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
 
     while(game.windowIsOpen()) {
+        //game.createMonster(400, 400, 50.0, 62.0, "Rat"); //stress test
         game.windowHandleEvents();
         game.windowSetView();
         game.windowClear();
 
         game.updates(map_manager, game);
-        std::cout << game.player->aiming << std::endl;
         game.drawSprites(map_manager);
         game.windowDisplay();
     }
