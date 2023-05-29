@@ -6,4 +6,9 @@ Version 0.1.7 ChangeLog
 2022/2023  - migration to OOP
 25.05.2023 - added basic documentation
 26.05.2023 - fixed folders with documentation, added guide to readme.txt
+29.05.2023 - added Map loading and changed tile definition system
+29.05.2023 - changed interactionWithMap in all classes
+29.05.2023 - fixed bug: character attacked when tried to cast a spell
+29.05.2023 - added cooldowns
+29.05.2023 - fixed animations, now player can move during animation
 ----------------------------------------------------------------------------------------------------
