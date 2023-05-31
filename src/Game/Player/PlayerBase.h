@@ -105,101 +105,32 @@ protected:
                 attack_animation = 0;
             }
         }
-        if (attack_animation == 1) {
-            switch (dir) {
-                case 0: //D
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(1, 131, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0], p_cords[1]);
-                    sprite.setTextureRect(IntRect(52 * 2, 64 * 2, 50, 62)); break;
-                case 1: //A
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(1, 66, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0] - 20, p_cords[1]);
-                    sprite.setTextureRect(IntRect(0, 64, 50, 62)); break;
-                case 2: //W
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(1, 196, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0] - 10, p_cords[1] - 4);
-                    sprite.setTextureRect(IntRect(52 * 3, 64 * 3, 50, 62)); break;
-                case 3: //S
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(1, 1, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0] - 20, p_cords[1]);
-                    sprite.setTextureRect(IntRect(52 * 3, 0, 50, 62)); break;
-            }
-        }
-        else if (attack_animation == 2) {
-            switch (dir) {
-                case 0: //D
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(74, 131, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0], p_cords[1]);
-                    sprite.setTextureRect(IntRect(52 * 3, 64 * 2, 50, 62)); break;
-                case 1: //A
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(74, 66, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0] - 20, p_cords[1]);
-                    sprite.setTextureRect(IntRect(52 * 3, 64, 50, 62)); break;
-                case 2: //W
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(74, 196, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0], p_cords[1] - 5);
-                    sprite.setTextureRect(IntRect(52, 64 * 3, 50, 62)); break;
-                case 3: //S
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(74, 1, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0] - 20, p_cords[1] + 20);
-                    sprite.setTextureRect(IntRect(52 * 4, 0, 50, 62)); break;
-            }
-        }
-        else if (attack_animation == 3) {
-            switch (dir) {
-                case 0: //D
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(147, 131, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0], p_cords[1] + 30);
-                    sprite.setTextureRect(IntRect(52 * 4, 64 * 2, 50, 62)); break;
-                case 1: //A
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(147, 66, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0] - 20, p_cords[1] + 30);
-                    sprite.setTextureRect(IntRect(52 * 4, 64, 50, 62)); break;
-                case 2: //W
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(147, 196, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0] - 6, p_cords[1] + 2);
-                    sprite.setTextureRect(IntRect(52 * 4, 64 * 3, 50, 62)); break;
-                case 3: //S
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(147, 1, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0], p_cords[1] + 20);
-                    sprite.setTextureRect(IntRect(52 * 3, 0, 50, 62)); break;
-            }
-        }
-        else if (attack_animation == 4) {
-            switch (dir) {
-                case 0: //D
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(220, 131, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0] - 10, p_cords[1] + 27);
-                    sprite.setTextureRect(IntRect(0, 128, 50, 62)); break;
-                case 1: //A
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(220, 66, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0] - 10, p_cords[1] + 27);
-                    sprite.setTextureRect(IntRect(0, 64, 50, 62)); break;
-                case 2: //W
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(220, 196, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0] - 6, p_cords[1] + 2);
-                    sprite.setTextureRect(IntRect(52 * 4, 64 * 3, 50, 62)); break;
-                case 3: //S
-                    game.AnimationWeaponSprite.setTextureRect(IntRect(220, 1, 72, 64));
-                    game.AnimationWeaponSprite.setPosition(p_cords[0], p_cords[1]);
-                    sprite.setTextureRect(IntRect(52 * 4, 0, 50, 62)); break;
-            }
-        }
-        else if (attack_animation == 5) {
-            switch (dir) {
-                case 0: //D
-                    sprite.setTextureRect(IntRect(52 * int(current_frame), 128, 50, 62)); break;
-                case 1: //A
-                    sprite.setTextureRect(IntRect(52 * int(current_frame), 64, 50, 62)); break;
-                case 2: //W
-                    sprite.setTextureRect(IntRect(52 * int(current_frame), 192, 50, 62)); break;
-                case 3: //S
-                    sprite.setTextureRect(IntRect(52 * int(current_frame), 0, 50, 62)); break;
-            }
+        if (attack_animation == 5) {
+            auto cf = int(current_frame); if (cf == 3) { cf = 1; }
+			sprite.setTextureRect(IntRect(22 * cf + cf + 1, 32 * dir + dir + 1, 22, 32)); //22, 32 - width, height
+			sprite.setScale(2.0, 2.0);
+
             game.AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
             game.AnimationWeaponSprite.setPosition(p_cords[0] - 20, p_cords[1]);
             attack_animation = 0;
+        } else {
+            if (attack_animation == 1) {
+                sprite.setTextureRect(IntRect(22 * 3 + 4, 32 * dir + dir + 1, 22, 32));
+                sprite.setScale(2.0, 2.0);
+            } else if (attack_animation == 2) {
+                sprite.setTextureRect(IntRect(22 * 4 + 5, 32 * dir + dir + 1, 22, 32));
+                sprite.setScale(2.0, 2.0);
+            } else if (attack_animation == 3) {
+                sprite.setTextureRect(IntRect(22 * 3 + 4, 32 * dir + dir + 1, 22, 32));
+                sprite.setScale(2.0, 2.0);
+            } else if (attack_animation == 4) {
+                sprite.setTextureRect(IntRect(22 * 4 + 5, 32 * dir + dir + 1, 22, 32));
+                sprite.setScale(2.0, 2.0);
+            }
+            game.AnimationWeaponSprite.setTextureRect(IntRect(80 * (attack_animation - 1) + attack_animation, 76 * dir + dir + 1, 80, 76)); //80, 76 - width, height
+            game.AnimationWeaponSprite.setPosition(p_cords[0] - 16, p_cords[1] - 4);
         }
+
         switch (dir) {
             case 0: //D
                 game.AnimationShieldSprite.setTextureRect(IntRect(27, 1, 25, 25));

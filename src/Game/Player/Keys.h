@@ -32,30 +32,40 @@ protected:
 	void keysMove(auto& time) {
 		if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) { // && attack_animation == 0
 			key_d = true;
-			speed = 0.15;
 			dir = 0;
-			if (attack_animation == 0) {
-				sprite.setTextureRect(IntRect(52 * int(current_frame), 128, 50, 62));
-			}
 		} else { key_d = false; }
 		if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s) {
 			key_a = true;
-			speed = 0.15;
 			dir = 1;
-			sprite.setTextureRect(IntRect(52 * int(current_frame), 64, 50, 62));
+			/*if (attack_animation == 0) {
+				sprite.setTextureRect(IntRect(22 * cf + cf + 1, 32 + 2, 22, 32)); //22, 32 - width, height
+				sprite.setScale(2.0, 2.0);
+			}*/
 		} else { key_a = false; }
 		if (Keyboard::isKeyPressed(Keyboard::W) && !key_d && !key_a && !key_s) {
 			key_w = true;
-			speed = 0.15;
 			dir = 2;
-			sprite.setTextureRect(IntRect(52 * int(current_frame), 192, 50, 62));
+			/*auto cf = int(current_frame); if (cf == 3) { cf = 1; }
+			if (attack_animation == 0) {
+				sprite.setTextureRect(IntRect(22 * cf + cf + 1, 32 * 3 + 4, 22, 32)); //22, 32 - width, height
+				sprite.setScale(2.0, 2.0);
+			}*/
 		} else { key_w = false; }
 		if (Keyboard::isKeyPressed(Keyboard::S) && !key_d && !key_w && !key_a) {
 			key_s = true;
-			speed = 0.15;
 			dir = 3;
-			sprite.setTextureRect(IntRect(52 * int(current_frame), 0, 50, 62));
+			//auto cf = int(current_frame); if (cf == 3) { cf = 1; }
+			//if (attack_animation == 0) {
+			//	sprite.setTextureRect(IntRect(22 * cf + cf + 1, 1, 22, 32)); //22, 32 - width, height
+			//	sprite.setScale(2.0, 2.0);
+			//}
 		} else { key_s = false; }
+		if (key_d || key_a || key_w || key_s) {
+			speed = 0.15;
+			auto cf = int(current_frame); if (cf == 3) { cf = 1; }
+			sprite.setTextureRect(IntRect(22 * cf + cf + 1, 32 * dir + dir + 1, 22, 32)); //22, 32 - width, height
+			sprite.setScale(2.0, 2.0);
+		}
         moveCurrentFrame(time);
 	}
 	void keyShift() {
@@ -85,27 +95,22 @@ protected:
 		} else { key_g = false; }
 	}
 	void keyI() {
-		if (Keyboard::isKeyPressed(Keyboard::I)) {
-			if (!is_inventory_open && !is_spells_inventory_open) {
+		if (Keyboard::isKeyPressed(Keyboard::Tab)) {
+			if (!is_spells_inventory_open) {
 				is_inventory_open = true;
 			}
-		}
+		} else { is_inventory_open = false; }
 	}
 	void keyO() {
-		if (Keyboard::isKeyPressed(Keyboard::O)) {
-			if (!is_inventory_open && !is_spells_inventory_open) {
+		if (Keyboard::isKeyPressed(Keyboard::Tilde)) {
+			if (!is_inventory_open) {
 				is_spells_inventory_open = true;
 			}
-		}
+		} else { is_spells_inventory_open = false; }
 	}
 	void keyEscape() {
 		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-			if (is_inventory_open) {
-				is_inventory_open = false;
-			}
-			if (is_spells_inventory_open) {
-				is_spells_inventory_open = false;
-			}
+			//
 		}
 	}
 	void keysAiming() {
@@ -598,10 +603,6 @@ protected:
 		}
 	}
 	void ifs(auto& game) { //split into several methods
-		if (!key_m1 && !key_m2) {
-			//attack = 0;
-		}
-
 		if (is_inventory_open) {
 			int out = game.player->getX() - (962 - Mouse::getPosition().x);
 			int outy = game.player->getY() - (544 - Mouse::getPosition().y);
@@ -686,8 +687,8 @@ protected:
 	}
 	void moveCurrentFrame(auto& time) {
         current_frame += 0.005 * time;
-        if (current_frame > 3) {
-            current_frame -= 3;
+        if (current_frame > 4) {
+            current_frame -= 4;
         }
     }
 };
