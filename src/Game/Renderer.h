@@ -22,6 +22,7 @@ public:
     Sprite InventoryItemEmptySprite;
     Sprite AnimationWeaponSprite;
     Sprite AnimationShieldSprite;
+    Sprite AnimationDashSprite;
     int item_sprite_counter = 0;
     int other_sprite_counter = 0;
     Font font;
@@ -115,6 +116,7 @@ protected:
     void initImages() {
         ColdSnapSprite = createSprite("ColdSnap.png");
         ColdSnap2Sprite = createSprite("ColdSnap2.png");
+        AnimationDashSprite = createSprite("AnimationDash.png");
         AnimationWoodenSwordSprite = createSprite("AnimationWoodenSword.png");
         AnimationIronShieldSprite = createSprite("AnimationIronShield.png");
 

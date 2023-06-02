@@ -14,9 +14,11 @@ private:
 protected:
 	void keys(auto& time, auto& game) {
 		is_info = false;
+		//TODO: rename ALL!
 		keysMove(time);
 		keyShift();
 		keySpace();
+		dash(time);
 		keyE(game);
 		keyG(game);
 		keyI();
@@ -30,41 +32,26 @@ protected:
 		ifs(game);
 	}
 	void keysMove(auto& time) {
-		if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) { // && attack_animation == 0
+		if (Keyboard::isKeyPressed(Keyboard::D) && !key_a && !key_w && !key_s) {
 			key_d = true;
 			dir = 0;
 		} else { key_d = false; }
 		if (Keyboard::isKeyPressed(Keyboard::A) && !key_d && !key_w && !key_s) {
 			key_a = true;
 			dir = 1;
-			/*if (attack_animation == 0) {
-				sprite.setTextureRect(IntRect(22 * cf + cf + 1, 32 + 2, 22, 32)); //22, 32 - width, height
-				sprite.setScale(2.0, 2.0);
-			}*/
 		} else { key_a = false; }
 		if (Keyboard::isKeyPressed(Keyboard::W) && !key_d && !key_a && !key_s) {
 			key_w = true;
 			dir = 2;
-			/*auto cf = int(current_frame); if (cf == 3) { cf = 1; }
-			if (attack_animation == 0) {
-				sprite.setTextureRect(IntRect(22 * cf + cf + 1, 32 * 3 + 4, 22, 32)); //22, 32 - width, height
-				sprite.setScale(2.0, 2.0);
-			}*/
 		} else { key_w = false; }
 		if (Keyboard::isKeyPressed(Keyboard::S) && !key_d && !key_w && !key_a) {
 			key_s = true;
 			dir = 3;
-			//auto cf = int(current_frame); if (cf == 3) { cf = 1; }
-			//if (attack_animation == 0) {
-			//	sprite.setTextureRect(IntRect(22 * cf + cf + 1, 1, 22, 32)); //22, 32 - width, height
-			//	sprite.setScale(2.0, 2.0);
-			//}
 		} else { key_s = false; }
 		if (key_d || key_a || key_w || key_s) {
 			speed = 0.15;
 			auto cf = int(current_frame); if (cf == 3) { cf = 1; }
-			sprite.setTextureRect(IntRect(22 * cf + cf + 1, 32 * dir + dir + 1, 22, 32)); //22, 32 - width, height
-			sprite.setScale(2.0, 2.0);
+			sprite.setTextureRect(IntRect(w * cf + cf + 1, h * dir + dir + 1, w, h)); //44, 64 - width, height
 		}
         moveCurrentFrame(time);
 	}
@@ -80,6 +67,16 @@ protected:
 			key_space = true;
 			space_timer = 1000;
 		} else { key_space = false; }
+	}
+	void dash(auto& time) {
+		if (dash_timer > 0) {
+			dash_timer -= time;
+			speed *= 10;
+		}
+		if (key_space && key_shift && (key_d || key_a || key_w || key_s) && dash_cd <= 0) {
+			dash_timer = 200;
+			dash_cd = 5000;
+		}
 	}
 	void keyE(auto& game) {
 		if (Keyboard::isKeyPressed(Keyboard::E) && game.items_dropped.size() != 0 && !key_g) {

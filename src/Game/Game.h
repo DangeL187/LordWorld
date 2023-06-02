@@ -99,6 +99,9 @@ public:
         if (player->defence && player->inv_items[28] != 0) {
             window->draw(AnimationShieldSprite);
         }
+        if (player->dash_timer > 0) {
+            window->draw(AnimationDashSprite);
+        }
         for (auto& i_sprite: gui_sprites) {
             bool i1 = index != 1;
             bool i2 = index != 2;
@@ -215,7 +218,7 @@ public:
     void timers(auto& time, auto& game) {
         if (game.player->space_timer > 0) {
             game.player->space_timer -= time;
-            if (750 >= game.player->space_timer && game.player->space_timer >= 500) {
+            if (500 <= game.player->space_timer && game.player->space_timer <= 750) {
                 game.player->space_hit = true;
             } else {
                 game.player->space_hit = false;
@@ -248,6 +251,11 @@ public:
             game.player->attack2_cd -= time;
         } else {
             game.player->attack2_cd = 0;
+        }
+        if (game.player->dash_cd > 0) {
+            game.player->dash_cd -= time;
+        } else {
+            game.player->dash_cd = 0;
         }
         for (auto& i: game.player->cooldowns) {
             if (i > 0) {

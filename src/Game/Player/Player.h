@@ -10,7 +10,7 @@ public:
         p_cords[0] = x_; p_cords[1] = y_;
         NewSprite *new_player_sprite = new NewSprite("../images/hero.png");
         sprite = new_player_sprite->getSprite();
-		sprite.setTextureRect(IntRect(0, 0, w, h));
+		sprite.setTextureRect(IntRect(1, 1, w, h));
         for (int i = 0; i <= 33; i++) { //add zero items in inventory
             inv_items[i] = 0;
             if (i <= 24) {
