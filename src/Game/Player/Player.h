@@ -17,6 +17,9 @@ public:
                 inv_types[i] = 0;
             }
         }
+	for (int i = 0; i <= 24; i++) { //add zero items in inventory
+            inv_spells[i] = 0;
+        }
         hotbar_spells[0] = 1;
         hotbar_spells[1] = 2;
 	}
