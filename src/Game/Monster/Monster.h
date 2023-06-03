@@ -31,7 +31,6 @@ public:
 		        }
 	        }
 	    }
-		float what = player->getX();
 		float condx0 = pow(pow((x - player->getX()), 2), 0.5);
 		float condy0 = pow(pow((y - player->getY()), 2), 0.5);
 		if (condx0 <= 52 && condy0 <= 64 && !stun) { //collision with player

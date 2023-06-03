@@ -1,6 +1,6 @@
 class Renderer: public WindowManager {
 public:
-    //unite in images.png:
+    //TODO: unite in images.png:
     Sprite ColdSnapSprite;
     Sprite ColdSnap2Sprite;
     Sprite AnimationWoodenSwordSprite;
@@ -15,7 +15,7 @@ public:
     std::vector<Sprite> current_other_sprites;
     Sprite GuiInfoSprite;
     Sprite GuiPickedSpellSprite;
-    Sprite gui_equipment_sprites[6];
+    Sprite GuiEquipmentSprites[6];
     Sprite InventoryItemsSprite[27];
     Sprite SpellsInventorySprite[24];
     Sprite SpellsHotbarSprites[9];
@@ -25,6 +25,7 @@ public:
     Sprite AnimationDashSprite;
     int item_sprite_counter = 0;
     int other_sprite_counter = 0;
+    //text:
     Font font;
     Text text_cd_0;
     Text text_cd_1;
@@ -124,12 +125,12 @@ protected:
         AnimationWeaponSprite = createSprite("GuiEmptyItem.png");
         AnimationShieldSprite = createSprite("GuiEmptyItem.png");
         InventoryItemEmptySprite = createSprite("GuiEmptyItem.png");
-        gui_equipment_sprites[0] = createSprite("GuiSlotWeapon.png");
-        gui_equipment_sprites[1] = createSprite("GuiSlotShield.png");
-        gui_equipment_sprites[2] = createSprite("GuiSlotHelm.png");
-        gui_equipment_sprites[3] = createSprite("GuiSlotChest.png");
-        gui_equipment_sprites[4] = createSprite("GuiSlotPants.png");
-        gui_equipment_sprites[5] = createSprite("GuiSlotBoots.png");
+        GuiEquipmentSprites[0] = createSprite("GuiSlotWeapon.png");
+        GuiEquipmentSprites[1] = createSprite("GuiSlotShield.png");
+        GuiEquipmentSprites[2] = createSprite("GuiSlotHelm.png");
+        GuiEquipmentSprites[3] = createSprite("GuiSlotChest.png");
+        GuiEquipmentSprites[4] = createSprite("GuiSlotPants.png");
+        GuiEquipmentSprites[5] = createSprite("GuiSlotBoots.png");
         for (int i = 0; i < 27; i++) {
             InventoryItemsSprite[i] = createSprite("GuiEmptyItem.png");
             //SpellsInventoryPageImage[i] = createSprite("GuiEmptyItem.png");
@@ -186,34 +187,34 @@ protected:
         }
 
         if (player->inv_items[27] != 0) {
-            gui_equipment_sprites[0].setPosition(view.getCenter().x - 231 - 15, view.getCenter().y - 227 - 15);
+            GuiEquipmentSprites[0].setPosition(view.getCenter().x - 231 - 15, view.getCenter().y - 227 - 15);
         } else {
-            gui_equipment_sprites[0].setPosition(view.getCenter().x - 231 - 29, view.getCenter().y - 227 - 29);
+            GuiEquipmentSprites[0].setPosition(view.getCenter().x - 231 - 29, view.getCenter().y - 227 - 29);
         }
         if (player->inv_items[28] != 0) {
-            gui_equipment_sprites[1].setPosition(view.getCenter().x + 89 - 15, view.getCenter().y - 227 - 15);
+            GuiEquipmentSprites[1].setPosition(view.getCenter().x + 89 - 15, view.getCenter().y - 227 - 15);
         } else {
-            gui_equipment_sprites[1].setPosition(view.getCenter().x + 89 - 29, view.getCenter().y - 227 - 29);
+            GuiEquipmentSprites[1].setPosition(view.getCenter().x + 89 - 29, view.getCenter().y - 227 - 29);
         }
         if (player->inv_items[29] != 0) {
-            gui_equipment_sprites[2].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y - 351 - 15);
+            GuiEquipmentSprites[2].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y - 351 - 15);
         } else {
-            gui_equipment_sprites[2].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y - 351 - 29);
+            GuiEquipmentSprites[2].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y - 351 - 29);
         }
         if (player->inv_items[30] != 0) {
-            gui_equipment_sprites[3].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y - 227 - 15);
+            GuiEquipmentSprites[3].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y - 227 - 15);
         } else {
-            gui_equipment_sprites[3].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y - 227 - 29);
+            GuiEquipmentSprites[3].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y - 227 - 29);
         }
         if (player->inv_items[31] != 0) {
-            gui_equipment_sprites[4].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y - 103 - 15);
+            GuiEquipmentSprites[4].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y - 103 - 15);
         } else {
-            gui_equipment_sprites[4].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y - 103 - 29);
+            GuiEquipmentSprites[4].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y - 103 - 29);
         }
         if (player->inv_items[32] != 0) {
-            gui_equipment_sprites[5].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y + 21 - 15);
+            GuiEquipmentSprites[5].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y + 21 - 15);
         } else {
-            gui_equipment_sprites[5].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y + 21 - 29);
+            GuiEquipmentSprites[5].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y + 21 - 29);
         }
         InventoryItemsSprite[24].setPosition(view.getCenter().x - 203 - 15, view.getCenter().y + 185 - 15);
         InventoryItemsSprite[25].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y + 185 - 15);
@@ -336,7 +337,7 @@ protected:
     }
     void guiTarget(auto& game) {
         if (game.target_m != NULL) {
-            game.target_m = &(game.v_monsters[game.target_number]);
+            //game.target_m = &(game.v_monsters[game.target_number]);
             std::stringstream ss;
             std::stringstream ss2;
             std::string t_lvl;

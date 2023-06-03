@@ -23,7 +23,6 @@ public:
 	int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-vertical line;
 protected:
 	void setEquipmentStats(auto& game, auto& inv_items) {
-		//setWeaponStats(game, inv_items);
 		setArmorStats(game, inv_items);
 		armor = armor_shield + armor_helmet + armor_chestplate + armor_pants + armor_boots;
 		setOtherStats(inv_items);
@@ -120,9 +119,10 @@ public:
 	        	float condxp = get_x/1 + melee_weapon*64;
 		        float condyp = get_y/1 + melee_weapon*64;
 				float condym = get_y/1 - melee_weapon*64;
-	       		return (condxm <= game.player->p_cords[0] && game.player->p_cords[0] <= condxp
-					&& condym <= game.player->p_cords[1] && game.player->p_cords[1] <= condyp);
+	       		return (condxm <= game.player->getX() && game.player->getX() <= condxp
+					&& condym <= game.player->getY() && game.player->getY() <= condyp);
                 break;
         }
+		return false;
 	}
 };

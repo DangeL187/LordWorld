@@ -19,8 +19,8 @@ void spells(auto& time, auto& game) {
         for (int v = 0; v < game.damaged_numbers.size(); v++) {
             float mx = game.v_monsters[game.damaged_numbers[v]].getX();
             float my = game.v_monsters[game.damaged_numbers[v]].getY();
-            float condx = pow(pow((mx - game.player->p_cords[0]), 2), 0.5);
-            float condy = pow(pow((my - game.player->p_cords[1]), 2), 0.5);
+            float condx = pow(pow((mx - game.player->getX()), 2), 0.5);
+            float condy = pow(pow((my - game.player->getY()), 2), 0.5);
             if (condx <= 300 && condy <= 300) {
                 std::cout << "FUCK " << damage_from_spell << "\n";
                 game.v_monsters[game.damaged_numbers[v]].giveBuff("ColdSnap", 5000);
@@ -36,8 +36,8 @@ void spells(auto& time, auto& game) {
         for (int v = 0; v < game.damaged_numbers.size(); v++) {
             float mx = game.v_monsters[game.damaged_numbers[v]].getX();
             float my = game.v_monsters[game.damaged_numbers[v]].getY();
-            float condx = pow(pow((mx - game.player->p_cords[0]), 2), 0.5);
-            float condy = pow(pow((my - game.player->p_cords[1]), 2), 0.5);
+            float condx = pow(pow((mx - game.player->getX()), 2), 0.5);
+            float condy = pow(pow((my - game.player->getY()), 2), 0.5);
             if (condx <= 300 && condy <= 300) {
                 std::cout << "FUCK " << damage_from_spell << "\n";
                 game.v_monsters[game.damaged_numbers[v]].giveBuff("ColdSnap", 5000);

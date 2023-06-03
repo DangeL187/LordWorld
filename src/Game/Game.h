@@ -14,11 +14,9 @@ public:
     std::shared_ptr<Player> player;
     std::vector<NPC> v_NPC;
     std::vector<Monster> v_monsters;
-    Monster *target_m; //pointer to targeted monster
+    Monster *target_m = NULL; //pointer to targeted monster
     std::array<std::vector<int>, 5> items_dropped;
     std::vector<int> damaged_numbers;
-    int target_number = -1;
-    bool inited = false;
 
     Game() = default;
 
@@ -120,7 +118,7 @@ public:
             for (auto& i_sprite: InventoryItemsSprite) {
                 window->draw(i_sprite);
             }
-            for (auto& i_sprite: gui_equipment_sprites) {
+            for (auto& i_sprite: GuiEquipmentSprites) {
                 window->draw(i_sprite);
             }
         }
@@ -287,12 +285,11 @@ public:
         int outy = game.player->getY() - (544 - Mouse::getPosition().y);
         for (int v = 0; v < v_monsters.size(); v++) {
             float mx = v_monsters[v].getX();
-    		    float my = v_monsters[v].getY();
+    		float my = v_monsters[v].getY();
             float condx = mx/1 + 64 - 14;
             float condy = my/1 + 64;
             if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) {
                 target_m = &v_monsters[v];
-                target_number = v;
             }
         }
     }
@@ -307,10 +304,11 @@ public:
             if (v_monsters[i].getHP() <= 0) {
                 current_other_sprites.erase(current_other_sprites.begin() + v_monsters[i].getSprite());
                 other_sprite_counter--;
-                if (target_m->getHP() <= 0) {
-                    target_m = NULL;
-                    target_number = -1;
-                    text_target.setString("");
+                if (target_m != NULL) {
+                    if (target_m->getHP() <= 0) {
+                        target_m = NULL;
+                        text_target.setString("");
+                    }
                 }
                 for (int j = 0; j < v_monsters.size(); j++) {
                     if (j > i) {
@@ -325,8 +323,8 @@ public:
     }
     void spellDamaged(auto& game) { //TODO: different types of damage range
         damaged_numbers.clear();
-        int out = game.player->p_cords[0] - (962 - Mouse::getPosition().x);
-    	int outy = game.player->p_cords[1] - (544 - Mouse::getPosition().y);
+        int out = game.player->getX() - (962 - Mouse::getPosition().x);
+    	int outy = game.player->getY() - (544 - Mouse::getPosition().y);
     	for (int v = 0; v < v_monsters.size(); v++) {
             float mx = v_monsters[v].getX();
     		float my = v_monsters[v].getY();
