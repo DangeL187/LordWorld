@@ -44,7 +44,7 @@ protected:
             xp = 5;
             drop.push_back(8);
             drop_chance.push_back(50);
-            sprite = monster_sprites_[0]; //Rat
+            sprite = monster_sprites_[1]; //Rat
             //replace this shit with returning array [sprite, int]
 		}
     }

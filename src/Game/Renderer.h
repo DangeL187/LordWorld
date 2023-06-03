@@ -71,6 +71,7 @@ protected:
     }
     void createMonsterSprites() {
         monster_sprites.push_back(createSprite("Rat.png"));
+        monster_sprites.push_back(createSprite("Rat2.png"));
     }
     void createGuiSprites() {
         gui_sprites.push_back(createSprite("GuiBar.png"));
@@ -334,18 +335,18 @@ protected:
         text.setCharacterSize(size);
     }
     void guiTarget(auto& game) {
-        if (game.target_m.size() != 0) {
-            game.target_m[0] = game.v_monsters[game.target_number];
+        if (game.target_m != NULL) {
+            game.target_m = &(game.v_monsters[game.target_number]);
             std::stringstream ss;
             std::stringstream ss2;
             std::string t_lvl;
             std::string t_hp;
             std::string t_name;
-    	    ss<<game.target_m[0].getLVL();
+    	    ss<<game.target_m->getLVL();
     	    ss>>t_lvl;
-            ss2<<game.target_m[0].getHP();
+            ss2<<game.target_m->getHP();
             ss2>>t_hp;
-            t_name = game.target_m[0].getName();
+            t_name = game.target_m->getName();
             text_target.setString("TARGET: " + t_name + "\nLVL: " + t_lvl + "\nHP: " + t_hp);
         } else {
             text_target.setString("");

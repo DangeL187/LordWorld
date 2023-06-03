@@ -4,10 +4,10 @@ public:
     int attack = 0;
     int attack_animation = 0;
     int attack_speed = 1000;
-	int dir = 0;
+	  int dir = 0;
     int range = 1; //*64
-	int inv_items[33]; //items inventory
-	int inv_types[24]; //item types invenory
+	  int inv_items[33]; //items inventory
+	  int inv_types[24]; //item types invenory
     int inv_spells[24]; //spells inventory
     int hotbar_spells[9]; //spells hotbar
     int cooldowns[9] {0, 0, 0, 0, 0, 0, 0, 0, 0}; //spell cooldowns
@@ -95,27 +95,13 @@ protected:
         }
     }
     void animations(auto& time, auto& game) {  // move to its own class
-        if (animation_timer > 0) {
-            animation_timer -= time;
-        } else {
-            animation_timer = 150;
-            if (attack_animation != 0 && attack_animation < 5) {
-                attack_animation++;
-            } else {
-                game.AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
-                game.AnimationWeaponSprite.setPosition(p_cords[0] - 20, p_cords[1]);
-                attack_animation = 0;
-            }
-        }
         if (attack_animation == 5) {
             auto cf = int(current_frame); if (cf == 3) { cf = 1; }
-			sprite.setTextureRect(IntRect(w * cf + cf + 1, h * dir + dir + 1, w, h)); //w, h - width, height
-
+			      sprite.setTextureRect(IntRect(w * cf + cf + 1, h * dir + dir + 1, w, h)); //w, h - width, height
             game.AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
             game.AnimationWeaponSprite.setPosition(p_cords[0] - 20, p_cords[1]);
             attack_animation = 0;
-        }
-        if (attack_animation != 0 && attack_animation != 5)  {
+        } else if (attack_animation != 0)  {
             int n = ((attack_animation % 2)-1) * ((attack_animation % 2)-1) + 3;
             sprite.setTextureRect(IntRect(w * n + n + 1, h * dir + dir + 1, w, h));
             game.AnimationWeaponSprite.setTextureRect(IntRect(80 * (attack_animation - 1) + attack_animation, 76 * dir + dir + 1, 80, 76)); //80, 76 - width, height

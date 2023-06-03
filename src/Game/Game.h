@@ -14,7 +14,7 @@ public:
     std::shared_ptr<Player> player;
     std::vector<NPC> v_NPC;
     std::vector<Monster> v_monsters;
-    std::vector<Monster> target_m; //targeted monster
+    Monster *target_m; //pointer to targeted monster
     std::array<std::vector<int>, 5> items_dropped;
     std::vector<int> damaged_numbers;
     int target_number = -1;
@@ -180,8 +180,8 @@ public:
         //v_monsters[2].hitMonster(300, time, player); //stress test
         updateGuiSprites(player);
         updateText(player);
-        guiTarget(game);
         monsterDeath(game);
+        guiTarget(game);
         int index1 = 0;
         for (auto& i: v_monsters) {
             i.update(time, map_manager, game, player);
@@ -226,6 +226,7 @@ public:
         } else {
             game.player->space_timer = 0;
         }
+
         if (game.player->timer_hp_regen > 0) {
             game.player->timer_hp_regen -= time;
         } else {
@@ -234,6 +235,7 @@ public:
                 game.player->hp += 1;
             }
         }
+
         if (game.player->timer_mp_regen > 0) {
             game.player->timer_mp_regen -= time;
         } else {
@@ -242,21 +244,36 @@ public:
                 game.player->mp += 1;
             }
         }
+
         if (game.player->attack1_cd > 0) {
             game.player->attack1_cd -= time;
         } else {
             game.player->attack1_cd = 0;
         }
+
         if (game.player->attack2_cd > 0) {
             game.player->attack2_cd -= time;
         } else {
             game.player->attack2_cd = 0;
         }
+
+        if (game.player->animation_timer > 0) {
+            game.player->animation_timer -= time;
+        } else {
+            game.player->animation_timer = 150;
+            if (game.player->attack_animation != 0 && game.player->attack_animation < 5) {
+                game.player->attack_animation++;
+            } else {
+                game.player->attack_animation = 0;
+            }
+        }
+
         if (game.player->dash_cd > 0) {
             game.player->dash_cd -= time;
         } else {
             game.player->dash_cd = 0;
         }
+
         for (auto& i: game.player->cooldowns) {
             if (i > 0) {
                 i -= time;
@@ -267,23 +284,17 @@ public:
     }
     void targeting(auto& game) {
         int out = game.player->getX() - (962 - Mouse::getPosition().x);
-    	int outy = game.player->getY() - (544 - Mouse::getPosition().y);
-    	for (int v = 0; v < v_monsters.size(); v++) {
-    		float mx = v_monsters[v].getX();
-    		float my = v_monsters[v].getY();
+        int outy = game.player->getY() - (544 - Mouse::getPosition().y);
+        for (int v = 0; v < v_monsters.size(); v++) {
+            float mx = v_monsters[v].getX();
+    		    float my = v_monsters[v].getY();
             float condx = mx/1 + 64 - 14;
             float condy = my/1 + 64;
-    		if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) {
-    			if (target_m.size() == 0) {
-                    target_m.push_back(v_monsters[v]);
-                    target_number = v;
-                }
-    			else {
-                    target_m[0] = v_monsters[v];
-                    target_number = v;
-                }
-    		}
-    	}
+            if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) {
+                target_m = &v_monsters[v];
+                target_number = v;
+            }
+        }
     }
     void gainLVL(auto& game) {
         if (game.player->xp >= game.player->lvl * 100) {
@@ -296,8 +307,8 @@ public:
             if (v_monsters[i].getHP() <= 0) {
                 current_other_sprites.erase(current_other_sprites.begin() + v_monsters[i].getSprite());
                 other_sprite_counter--;
-                if (i == target_number) {
-                    target_m.erase(target_m.begin() + 0);
+                if (target_m->getHP() <= 0) {
+                    target_m = NULL;
                     target_number = -1;
                     text_target.setString("");
                 }
