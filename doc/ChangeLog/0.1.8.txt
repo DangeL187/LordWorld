@@ -8,4 +8,8 @@ Version 0.1.8 ChangeLog
 02.06.2023 - added dash (shift+space+wasd)
 03.06.2023 - fixed bug with dead monster being targeted
 03.06.2023 - a bit of refactoring
+07.06.2023 - added delayed attacks that stun enemies, added increasing dmg during dash
+07.06.2023 - fixed double attack bug
+07.06.2023 - changed shield system, now player has 0.5 secs to block
+12.06.2023 - added increasing dmg after 3 successful attacks
 ----------------------------------------------------------------------------------------------------
