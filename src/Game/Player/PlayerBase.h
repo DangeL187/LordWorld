@@ -18,9 +18,11 @@ public:
     int attack_animation = 0;
     int attack_speed = 1000;
     int range = 1; //*64
+    //NPC:
+    int dialog_phase = 0;
     //inventory:
     int inv_items[33]; //items inventory
-	  int inv_types[24]; //item types invenory
+	int inv_types[24]; //item types invenory
     int inv_spells[24]; //spells inventory
     int hotbar_spells[9]; //spells hotbar
     int spell_name = 0;
@@ -42,7 +44,7 @@ public:
     //bools:
     bool aiming = false;
     bool attack_stun = false;
-	  bool defence = false;
+	bool defence = false;
     bool space_hit = false;
     bool is_dialog = false;
     bool is_inventory_open = false;

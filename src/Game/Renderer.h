@@ -40,6 +40,7 @@ public:
     Text player_stats_hp;
     Text player_stats_mp;
     Text player_stats_lvl;
+    Text text_NPC_talk;
     Text text_target;
     Text text_info;
     Text text_strength;
@@ -75,6 +76,9 @@ protected:
         monster_sprites.push_back(createSprite("Rat.png"));
         monster_sprites.push_back(createSprite("Rat2.png"));
     }
+    void createNPCSprites() {
+        NPC_sprites.push_back(createSprite("hero.png"));
+    }
     void createGuiSprites() {
         gui_sprites.push_back(createSprite("GuiBar.png"));
         gui_sprites.push_back(createSprite("GuiInventory.png"));
@@ -100,6 +104,7 @@ protected:
         setText(player_stats_hp, font, 30);
         setText(player_stats_mp, font, 30);
         setText(player_stats_lvl, font, 30);
+        setText(text_NPC_talk, font, 40);
         setText(text_target, font, 40);
         setText(text_info, font, 30);
         setText(text_strength, font, 30);
@@ -317,6 +322,7 @@ protected:
         player_stats_hp.setPosition(view.getCenter().x - 690, view.getCenter().y - 511);
         player_stats_mp.setPosition(view.getCenter().x - 690, view.getCenter().y - 443);
         player_stats_lvl.setPosition(view.getCenter().x - 690, view.getCenter().y - 375);
+        text_NPC_talk.setPosition(view.getCenter().x - 495, view.getCenter().y + 85);
         text_target.setPosition(view.getCenter().x + 700, view.getCenter().y - 500);
         text_strength.setPosition(view.getCenter().x - 900, view.getCenter().y - 260);
         text_damage.setPosition(view.getCenter().x - 900, view.getCenter().y - 220);

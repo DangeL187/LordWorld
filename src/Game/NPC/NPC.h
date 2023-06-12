@@ -5,8 +5,8 @@ public:
 	float x, y;
 	float w, h, dx, dy, speed;
 	int dir = 0;
-	int dialog_phase = 0;
 	int static_sprite;
+	int start_dialog_phase = 0;
 	std::vector<std::string> dialog;
 	std::string name;
 	Image image;
@@ -17,11 +17,11 @@ public:
 		dx=0; dy=0; speed=0;
 		w = w_; h = h_;
 		name = name_;
-        static_sprite = other_sprite_counter_;
+    	static_sprite = other_sprite_counter_;
 		defineNPC(name, NPC_sprites_, sprite, dialog);
 		current_other_sprites_.push_back(sprite);
 		x = x_; y = y_;
-		current_other_sprites_[static_sprite].setTextureRect(IntRect(0, 0, w, h));
+		current_other_sprites_[static_sprite].setTextureRect(IntRect(1, 1, w, h));
 		other_sprite_counter_++;
 	}
 
@@ -56,11 +56,25 @@ public:
 
 		speed = 0;
 		interactionWithMap(map_manager);
+		updateDialog(game);
 		game.current_other_sprites[static_sprite].setPosition(x, y);
 	}
 
-    void startDialog() {
-		std::cout << dialog[dialog_phase] << std::endl;
+    void updateDialog(auto& game) {
+		if (game.player->is_dialog) {
+			if (game.player->dialog_phase < dialog.size()) {
+				game.text_NPC_talk.setString(dialog[game.player->dialog_phase]);
+			} else {
+				game.player->dialog_phase = 0; //todo: repalce with unique dialog ending for each NPC
+				game.text_NPC_talk.setString("");
+				game.player->is_dialog = false;
+			}
+		} else {
+			game.text_NPC_talk.setString("");
+		}
+	}
+	int getStartDialogPhase() {
+		return start_dialog_phase;
 	}
 	int getSprite() {
 		return static_sprite;

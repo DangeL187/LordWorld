@@ -2,7 +2,7 @@ class Keys: public PlayerBase, public Equipment {
 private:
 	bool key_a = false, key_d = false, key_w = false, key_s = false;
 	bool key_e = false, key_g = false;
-	bool key_m1 = true, key_m2 = false;
+	bool key_m1 = false, key_m2 = false;
 	bool key_m1_go = false, key_m2_go = false;
 	bool key_1 = false, key_2 = false, key_3 = false, key_4 = false;
 	bool key_5 = false, key_6 = false, key_7 = false, key_8 = false, key_9 = false;
@@ -10,6 +10,7 @@ private:
 	bool aiming_kid4 = false, aiming_kid5 = false, aiming_kid6 = false;
 	bool aiming_kid7 = false, aiming_kid8 = false, aiming_kid9 = false;
 	bool key_shift = false, key_space = false;
+	bool key_enter = false, key_enter_go = false;
 	bool is_info = false;
 	bool break4items = false;
 	bool defence_go = false;
@@ -26,6 +27,7 @@ protected:
 		keyI();
 		keyO();
 		keyEscape();
+		keyEnter(game);
 		keysAiming();
 		keysTargeting(game);
 		spellAiming();
@@ -85,10 +87,12 @@ protected:
 		}
 	}
 	void keyE(auto& game) {
-		if (Keyboard::isKeyPressed(Keyboard::E) && game.items_dropped.size() != 0 && !key_g) {
+		if (Keyboard::isKeyPressed(Keyboard::E) && !key_g) {
 			key_e = true;
-			//eventNPCDialog(game);
-			eventPickItem(game);
+			if (game.items_dropped.size() != 0) {
+				eventPickItem(game);
+			}
+			eventNPCDialog(game);
 		} else { key_e = false; }
 	}
 	void keyG(auto& game) {
@@ -113,7 +117,25 @@ protected:
 	}
 	void keyEscape() {
 		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-			//
+			if (is_dialog) {
+				dialog_phase = 0;
+				is_dialog = false;
+			}
+		}
+	}
+	void keyEnter(auto& game) {
+		if (Keyboard::isKeyPressed(Keyboard::Enter) && key_enter) {
+			key_enter_go = true;
+		}
+		if (!Keyboard::isKeyPressed(Keyboard::Enter)) {
+			key_enter = true;
+			if (key_enter_go) {
+				if (is_dialog) {
+					dialog_phase++;
+				}
+				key_enter = false;
+				key_enter_go = false;
+			}
 		}
 	}
 	void keysAiming() {
@@ -152,25 +174,25 @@ protected:
 		}
 	}
 	void mouseLeft(auto& time, auto& game) {
-			if (Mouse::isButtonPressed(Mouse::Left) && key_m1) {
-					key_m1_go = true;
+		if (Mouse::isButtonPressed(Mouse::Left) && key_m1) {
+			key_m1_go = true;
+		}
+		if (!Mouse::isButtonPressed(Mouse::Left)) {
+			key_m1 = true;
+			if (key_m1_go && !Mouse::isButtonPressed(Mouse::Right)) {
+				if (!is_inventory_open && !is_spells_inventory_open && !aiming) {
+					attack = 1; //first type of attack
+				} else {
+					attack = 0;
+				}
+				if (aiming) {
+					aiming = false;
+					key_m1 = false;
+					spells(time, game);
+				}
+				key_m1_go = false;
 			}
-			if (!Mouse::isButtonPressed(Mouse::Left)) {
-					key_m1 = true;
-					if (key_m1_go && !Mouse::isButtonPressed(Mouse::Right)) {
-				    	if (!is_inventory_open && !is_spells_inventory_open && !aiming) {
-									attack = 1; //first type of attack
-							} else {
-									attack = 0;
-							}
-							if (aiming) {
-									aiming = false;
-									key_m1 = false;
-									spells(time, game);
-							}
-							key_m1_go = false;
-					}
-			}
+		}
 	}
 	void mouseRight(auto& game) {
 		if (Mouse::isButtonPressed(Mouse::Right) && key_m2) {
@@ -185,8 +207,8 @@ protected:
 					attack = 0;
 				}
 				if (aiming) {
-						aiming = false;
-						key_m2 = false;
+					aiming = false;
+					key_m2 = false;
 				}
 				mouseInventory(game);
 				key_m2_go = false;
@@ -195,16 +217,17 @@ protected:
 	}
 
 	void eventNPCDialog(auto& game) {
-		/*for (int l = 0; l < v_NPC.size(); l++) {
-			if (x < v_NPC[l].getX() + 64 &&
-				x + 64 > v_NPC[l].getX() &&
-				y < v_NPC[l].getY() + 64 &&
-				y + 64 > v_NPC[l].getY())
+		for (int l = 0; l < game.v_NPC.size(); l++) {
+			if (x < game.v_NPC[l].getX() + 64 &&
+				x + 64 > game.v_NPC[l].getX() &&
+				y < game.v_NPC[l].getY() + 64 &&
+				y + 64 > game.v_NPC[l].getY() && !game.player->is_dialog)
 			{
-				v_NPC[l].startDialog();
+				dialog_phase = game.v_NPC[l].getStartDialogPhase();
 				is_dialog = true;
+				break;
 			}
-		}*/
+		}
 	}
 	void eventPickItem(auto& game) {
 		for (int i = 0; i < game.items_dropped[0].size(); i++) {

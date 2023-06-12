@@ -28,6 +28,7 @@ public:
         createMapSprite(map_manager);
         createItemSprites();
         createMonsterSprites();
+        createNPCSprites();
         createGuiSprites();
     }
     void initMap(auto& map_manager) {
@@ -169,6 +170,7 @@ public:
         window->draw(text_melee_weapon);
         window->draw(text_range_weapon);
         window->draw(text_info);
+        window->draw(text_NPC_talk);
     }
     void updates(auto& map_manager, auto& game) {
         time = clock.getElapsedTime().asMicroseconds();
@@ -184,37 +186,8 @@ public:
         updateText(player);
         monsterDeath(game);
         guiTarget(game);
-        int index1 = 0;
-        for (auto& i: v_monsters) {
-            i.update(time, map_manager, game, player);
-            i.moveMonster(time, map_manager, game, player);
-            int index2 = 0;
-            for (auto& i2: v_monsters) {
-                float mx1 = i.getX();
-                float mx2 = i2.getX();
-                float my1 = i.getY();
-                float my2 = i2.getY();
-                float condx = pow(pow((mx1 - mx2), 2), 0.5);
-        		float condy = pow(pow((my1 - my2), 2), 0.5);
-                //todo: replace 52 and 64 with unique values for each monster
-        		if (condx <= 52 && condy <= 64 && index1 != index2) { //collision with monsters
-                    if (i.getDX() > 0) {
-                        i.addX(false);
-                    }
-                    if (i.getDX() < 0) {
-                        i.addX(true);
-                    }
-                    if (i.getDY() > 0) {
-                        i.addY(false);
-                    }
-                    if (i.getDY() < 0) {
-                        i.addY(true);
-                    }
-        		}
-                index2++;
-            }
-            index1++;
-        }
+        updateMonsters(time, map_manager, game, player);
+        updateNPCs(time, map_manager, game);
         viewSetCenter();
     }
     void timers(auto& time, auto& game) {
@@ -326,6 +299,71 @@ public:
         if (game.player->xp >= game.player->lvl * 100) {
             game.player->xp -= game.player->lvl * 100;
             game.player->lvl++;
+        }
+    }
+    void updateMonsters(auto& time, auto& map_manager, auto& game, auto& player) {
+        int index1 = 0;
+        for (auto& i: v_monsters) {
+            i.update(time, map_manager, game, player);
+            i.moveMonster(time, map_manager, game, player);
+            int index2 = 0;
+            for (auto& i2: v_monsters) {
+                float mx1 = i.getX();
+                float mx2 = i2.getX();
+                float my1 = i.getY();
+                float my2 = i2.getY();
+                float condx = pow(pow((mx1 - mx2), 2), 0.5);
+        		float condy = pow(pow((my1 - my2), 2), 0.5);
+                //todo: replace 52 and 64 with unique values for each monster
+        		if (condx <= 52 && condy <= 64 && index1 != index2) { //collision with monsters
+                    if (i.getDX() > 0) {
+                        i.addX(false);
+                    }
+                    if (i.getDX() < 0) {
+                        i.addX(true);
+                    }
+                    if (i.getDY() > 0) {
+                        i.addY(false);
+                    }
+                    if (i.getDY() < 0) {
+                        i.addY(true);
+                    }
+        		}
+                index2++;
+            }
+            index1++;
+        }
+    }
+    void updateNPCs(auto& time, auto& map_manager, auto& game) {
+        //int index1 = 0;
+        for (auto& i: v_NPC) {
+            i.update(time, map_manager, game);
+            /*int index2 = 0;
+            for (auto& i2: v_monsters) {
+                float mx1 = i.getX();
+                float mx2 = i2.getX();
+                float my1 = i.getY();
+                float my2 = i2.getY();
+                float condx = pow(pow((mx1 - mx2), 2), 0.5);
+        		float condy = pow(pow((my1 - my2), 2), 0.5);
+                //todo: replace 52 and 64 with unique values for each monster
+        		if (condx <= 52 && condy <= 64 && index1 != index2) { //collision with monsters
+                    if (i.getDX() > 0) {
+                        i.addX(false);
+                    }
+                    if (i.getDX() < 0) {
+                        i.addX(true);
+                    }
+                    if (i.getDY() > 0) {
+                        i.addY(false);
+                    }
+                    if (i.getDY() < 0) {
+                        i.addY(true);
+                    }
+        		}
+                index2++;
+
+            index1++;*/
         }
     }
     void monsterDeath(auto& game) {

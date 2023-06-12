@@ -27,18 +27,18 @@ public:
 	}
 
 	void interactionWithMap(auto& map_manager, auto& game) {
-	    for (int i = getY() / 64; i < (getY()+ h) / 64; i++) {
-	        for (int j = getX() / 64; j < (getX() + w) / 64; j++) {
+	    for (int i = y / 64; i < (y + h) / 64; i++) {
+	        for (int j = x / 64; j < (x + w) / 64; j++) {
 				for (int l = 0; l < game.v_NPC.size(); l++) {
-					if (getX() < game.v_NPC[l].getX() + 54 &&
-					    getX() + 50 > game.v_NPC[l].getX() &&
-					    getY() < game.v_NPC[l].getY() + 62 &&
-					    getY() + 62 > game.v_NPC[l].getY())
+					if (x < game.v_NPC[l].getX() + w &&
+					    x + w > game.v_NPC[l].getX() &&
+					    y < game.v_NPC[l].getY() + h &&
+					    y + h > game.v_NPC[l].getY())
 					{
-						if (dy>0) setY(i * 64 + 4);
-				        if (dy<0) setY(i * 64 + 64);
-				        if (dx>0) setX(j * 64 + 22);
-				        if (dx<0) setX(j * 64 + 15);
+						if (dy>0) y = (game.v_NPC[l].getY() - h);
+				        if (dy<0) y = (game.v_NPC[l].getY() + h);
+				        if (dx>0) x = (game.v_NPC[l].getX() - w);
+				        if (dx<0) x = (game.v_NPC[l].getX() + w);
 					}
 				}
                 auto t = map_manager.getTileMapID(i, j);

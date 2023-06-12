@@ -27,6 +27,7 @@ int main() {
     game.createPlayer(500, 500, 44.0, 64.0);
     game.createMonster(300, 300, 50.0, 62.0, "Rat");
     game.createMonster(400, 400, 50.0, 62.0, "Rat2");
+    game.createNPC(800, 804, 44.0, 64.0, "Trader");
     game.createItem(1, 600, 600);
     game.createItem(2, 700, 600);
     //game.AnimationWeaponSprite = game.AnimationWoodenSwordSprite;
