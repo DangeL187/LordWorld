@@ -17,6 +17,7 @@ public:
     Monster *target_m = NULL; //pointer to targeted monster
     std::array<std::vector<int>, 5> items_dropped;
     std::vector<int> damaged_numbers;
+    int target_number = -1;
 
     Game() = default;
 
@@ -99,6 +100,9 @@ public:
         }
         if (player->dash_timer > 0) {
             window->draw(AnimationDashSprite);
+        }
+        if (500 <= player->space_timer && player->space_timer <= 750) {
+            window->draw(GuiIndicatorSprite);
         }
         for (auto& i_sprite: gui_sprites) {
             bool i1 = index != 1;
@@ -243,6 +247,35 @@ public:
             }
         }
 
+        if (Mouse::isButtonPressed(Mouse::Left)) {
+            game.player->hold_attack_timer += time;
+            if (game.player->hold_attack_timer >= 1000) {
+              game.player->attack_stun = true;
+            }
+        } else {
+            game.player->hold_attack_timer = 0;
+            game.player->attack_stun = false;
+        }
+
+        if (game.player->animation_timer > 0) {
+            game.player->animation_timer -= time;
+        } else {
+            game.player->animation_timer = 150;
+            if (game.player->attack_animation != 0 && game.player->attack_animation < 5) {
+                game.player->attack_animation++;
+            } else {
+                game.player->attack_animation = 0;
+            }
+        }
+
+        if (game.player->defence_timer > 0 && player->inv_items[28] != 0) {
+            game.player->defence_timer -= time;
+            game.player->defence = true;
+        } else {
+            game.player->defence_timer = 0;
+            game.player->defence = false;
+        }
+
         if (game.player->attack1_cd > 0) {
             game.player->attack1_cd -= time;
         } else {
@@ -255,15 +288,10 @@ public:
             game.player->attack2_cd = 0;
         }
 
-        if (game.player->animation_timer > 0) {
-            game.player->animation_timer -= time;
+        if (game.player->shield_cd > 0) {
+            game.player->shield_cd -= time;
         } else {
-            game.player->animation_timer = 150;
-            if (game.player->attack_animation != 0 && game.player->attack_animation < 5) {
-                game.player->attack_animation++;
-            } else {
-                game.player->attack_animation = 0;
-            }
+            game.player->shield_cd = 0;
         }
 
         if (game.player->dash_cd > 0) {
@@ -290,6 +318,7 @@ public:
             float condy = my/1 + 64;
             if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) {
                 target_m = &v_monsters[v];
+                target_number = v;
             }
         }
     }
@@ -304,12 +333,13 @@ public:
             if (v_monsters[i].getHP() <= 0) {
                 current_other_sprites.erase(current_other_sprites.begin() + v_monsters[i].getSprite());
                 other_sprite_counter--;
-                if (target_m != NULL) {
-                    if (target_m->getHP() <= 0) {
+                //if (target_m != NULL && i == target_number) {
+                  //  if (target_m->getHP() <= 0) {
                         target_m = NULL;
+                        target_number = -1;
                         text_target.setString("");
-                    }
-                }
+                    //}
+                //}
                 for (int j = 0; j < v_monsters.size(); j++) {
                     if (j > i) {
                         v_monsters[j].reduceSprite();

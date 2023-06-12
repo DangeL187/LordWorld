@@ -22,7 +22,7 @@ protected:
 	bool dealt = false;
 	bool stun = false;
 
-    void defineMonster(std::string name, auto& monster_sprites_, auto& sprite) {
+  void defineMonster(std::string name, auto& monster_sprites_, auto& sprite) {
         if (name == "Rat") {
             dmg = 2;
             hp = 10;
@@ -37,7 +37,7 @@ protected:
 		}
         else if (name == "Rat2") {
             dmg = 2;
-            hp = 10;
+            hp = 100;
             mp = 10;
             lvl = 1;
             as = 1000;

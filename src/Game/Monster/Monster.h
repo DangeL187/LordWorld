@@ -48,13 +48,9 @@ public:
 				float a = player->armor / 5;
 				float aa = dmg - (dmg * (player->physical_resistance / 100));
 				int b = static_cast<int>(aa) - static_cast<int>(a);
-				if (b >= 0) {
-					if (player->defence && player->defence_counter < 2) {
-						player->defence_counter++;
-					}
-					else {
-					    player->hp -= b;
-				    }
+				if (b >= 0 && !player->defence) {
+						player->hp -= b;
+						player->shield_cd = 0;
 				}
 				switch (dir) {
 					case 0: game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 128, w, h)); break;

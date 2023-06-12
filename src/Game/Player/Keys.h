@@ -3,6 +3,7 @@ private:
 	bool key_a = false, key_d = false, key_w = false, key_s = false;
 	bool key_e = false, key_g = false;
 	bool key_m1 = true, key_m2 = false;
+	bool key_m1_go = false, key_m2_go = false;
 	bool key_1 = false, key_2 = false, key_3 = false, key_4 = false;
 	bool key_5 = false, key_6 = false, key_7 = false, key_8 = false, key_9 = false;
 	bool aiming_kid1 = false, aiming_kid2 = false, aiming_kid3 = false;
@@ -11,6 +12,7 @@ private:
 	bool key_shift = false, key_space = false;
 	bool is_info = false;
 	bool break4items = false;
+	bool defence_go = false;
 protected:
 	void keys(auto& time, auto& game) {
 		is_info = false;
@@ -59,8 +61,12 @@ protected:
 		if (Keyboard::isKeyPressed(Keyboard::LShift) && attack_animation == 0 && attack == 0) {
 			key_shift = true;
 			speed *= 0.5;
-			defence = true;
-		} else { key_shift = false; defence = false; }
+			if (defence_timer == 0 && shield_cd == 0 && defence_go) {
+				defence_timer = 500;
+				shield_cd = 5000;
+				defence_go = false;
+			}
+		} else { key_shift = false; defence = false; defence_go = true;}
 	}
 	void keySpace() {
 		if (Keyboard::isKeyPressed(Keyboard::Space) && attack_animation == 0) {
@@ -140,308 +146,52 @@ protected:
 		} else { key_9 = false; }
 	}
 	void keysTargeting(auto& game) {
-		if (Keyboard::isKeyPressed(Keyboard::LControl) && key_m2) {
+		if (Keyboard::isKeyPressed(Keyboard::LControl) && key_m2_go) {
 			game.targeting(game);
 			attack = 0;
 		}
 	}
 	void mouseLeft(auto& time, auto& game) {
-		if (Mouse::isButtonPressed(Mouse::Left) && key_m1) {
-			if (!is_inventory_open && !is_spells_inventory_open && !aiming) {
-				attack = 1; //first type of attack
-			} else {
-				attack = 0;
+			if (Mouse::isButtonPressed(Mouse::Left) && key_m1) {
+					key_m1_go = true;
 			}
-			if (aiming) {
-				aiming = false;
-				key_m1 = false;
-				spells(time, game);
+			if (!Mouse::isButtonPressed(Mouse::Left)) {
+					key_m1 = true;
+					if (key_m1_go && !Mouse::isButtonPressed(Mouse::Right)) {
+				    	if (!is_inventory_open && !is_spells_inventory_open && !aiming) {
+									attack = 1; //first type of attack
+							} else {
+									attack = 0;
+							}
+							if (aiming) {
+									aiming = false;
+									key_m1 = false;
+									spells(time, game);
+							}
+							key_m1_go = false;
+					}
 			}
-		}
-		if (!Mouse::isButtonPressed(Mouse::Left)) {
-			key_m1 = true;
-			attack = 0;
-		}
 	}
 	void mouseRight(auto& game) {
-		if (Mouse::isButtonPressed(Mouse::Right)) {
-			int out = game.player->getX() - (962 - Mouse::getPosition().x);
-			int outy = game.player->getY() - (544 - Mouse::getPosition().y);
-			int vx = game.view.getCenter().x + 261;
-			int vy = game.view.getCenter().y - 343;
-			if (!is_inventory_open && !is_spells_inventory_open && !Keyboard::isKeyPressed(Keyboard::LControl)) {
-				attack = 2; //second type of attack
-			} else {
-				attack = 0;
-			}
-			if (is_inventory_open) {
-				game.text_info.setString("");
-				for (int i = 0; i < 6; i++) {
-					vx = game.view.getCenter().x + 261;
-					for (int j = 0; j < 4; j++) {
-						if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-							if (inv_types[i * 4 + j] == 7 && inv_items[24] == 0) { //other1
-								game.InventoryItemsSprite[24] = game.InventoryItemsSprite[i * 4 + j];
-					            game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
-								inv_items[24] = inv_items[i * 4 + j];
-								inv_items[i * 4 + j] = 0;
-								inv_types[i * 4 + j] = 0;
-						    }
-							if (inv_types[i * 4 + j] == 7 && inv_items[25] == 0) { //other2
-								game.InventoryItemsSprite[25] = game.InventoryItemsSprite[i * 4 + j];
-					            game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
-								inv_items[25] = inv_items[i * 4 + j];
-								inv_items[i * 4 + j] = 0;
-								inv_types[i * 4 + j] = 0;
-						    }
-							if (inv_types[i * 4 + j] == 7 && inv_items[26] == 0) { //other3
-								game.InventoryItemsSprite[26] = game.InventoryItemsSprite[i * 4 + j];
-					            game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
-								inv_items[26] = inv_items[i * 4 + j];
-								inv_items[i * 4 + j] = 0;
-								inv_types[i * 4 + j] = 0;
-						    }
-						    if (inv_types[i * 4 + j] == 1 && inv_items[27] == 0) { //weapon
-								game.GuiEquipmentSprites[0] = game.InventoryItemsSprite[i * 4 + j];
-					            game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
-								inv_items[27] = inv_items[i * 4 + j];
-								inv_items[i * 4 + j] = 0;
-								inv_types[i * 4 + j] = 0;
-								setWeaponStats(game, inv_items);
-						    }
-							if (inv_types[i * 4 + j] == 2 && inv_items[28] == 0) { //shield
-								game.GuiEquipmentSprites[1] = game.InventoryItemsSprite[i * 4 + j];
-					            game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
-								inv_items[28] = inv_items[i * 4 + j];
-								inv_items[i * 4 + j] = 0;
-								inv_types[i * 4 + j] = 0;
-							}
-							if (inv_types[i * 4 + j] == 3 && inv_items[29] == 0) { //helmet
-								game.GuiEquipmentSprites[2] = game.InventoryItemsSprite[i * 4 + j];
-					            game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
-								inv_items[29] = inv_items[i * 4 + j];
-								inv_items[i * 4 + j] = 0;
-								inv_types[i * 4 + j] = 0;
-							}
-							if (inv_types[i * 4 + j] == 4 && inv_items[30] == 0) { //chestplate
-								game.GuiEquipmentSprites[3] = game.InventoryItemsSprite[i * 4 + j];
-					            game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
-								inv_items[30] = inv_items[i * 4 + j];
-								inv_items[i * 4 + j] = 0;
-								inv_types[i * 4 + j] = 0;
-							}
-							if (inv_types[i * 4 + j] == 5 && inv_items[31] == 0) { //pants
-								game.GuiEquipmentSprites[4] = game.InventoryItemsSprite[i * 4 + j];
-					            game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
-								inv_items[31] = inv_items[i * 4 + j];
-								inv_items[i * 4 + j] = 0;
-								inv_types[i * 4 + j] = 0;
-							}
-							if (inv_types[i * 4 + j] == 6 && inv_items[32] == 0) { //boots
-								game.GuiEquipmentSprites[5] = game.InventoryItemsSprite[i * 4 + j];
-					            game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
-								inv_items[32] = inv_items[i * 4 + j];
-								inv_items[i * 4 + j] = 0;
-								inv_types[i * 4 + j] = 0;
-							}
-						}
-						vx += 112;
-				    }
-					vy += 112;
-			    }
-				if (inv_items[24] != 0) {
-					vx = game.view.getCenter().x - 203;
-					vy = game.view.getCenter().y + 185;
-					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-						for (int j = 0; j < 24; j++) {
-							if (inv_items[j] == 0) {
-						        game.InventoryItemsSprite[j] = game.InventoryItemsSprite[24];
-						        game.InventoryItemsSprite[24] = game.InventoryItemEmptySprite;
-								inv_items[j] = inv_items[24];
-								inv_types[j] = 7;
-						        inv_items[24] = 0;
-							}
-						}
-					}
-				}
-				if (inv_items[25] != 0) {
-					vx = game.view.getCenter().x - 71;
-					vy = game.view.getCenter().y + 185;
-					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-						for (int j = 0; j < 24; j++) {
-							if (inv_items[j] == 0) {
-						        game.InventoryItemsSprite[j] = game.InventoryItemsSprite[25];
-						        game.InventoryItemsSprite[25] = game.InventoryItemEmptySprite;
-								inv_items[j] = inv_items[25];
-								inv_types[j] = 7;
-						        inv_items[25] = 0;
-							}
-						}
-					}
-				}
-				if (inv_items[26] != 0) {
-					vx = game.view.getCenter().x + 61;
-					vy = game.view.getCenter().y + 185;
-					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-						for (int j = 0; j < 24; j++) {
-							if (inv_items[j] == 0) {
-						        game.InventoryItemsSprite[j] = game.InventoryItemsSprite[26];
-						        game.InventoryItemsSprite[26] = game.InventoryItemEmptySprite;
-								inv_items[j] = inv_items[26];
-								inv_types[j] = 7;
-						        inv_items[26] = 0;
-							}
-						}
-					}
-				}
-				if (inv_items[27] != 0) {
-					vx = game.view.getCenter().x - 231;
-					vy = game.view.getCenter().y - 227;
-					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-						for (int j = 0; j < 24; j++) {
-							if (inv_items[j] == 0) {
-						        game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[0];
-						        game.GuiEquipmentSprites[0] = game.InventoryItemEmptySprite;
-								inv_items[j] = inv_items[27];
-								inv_types[j] = 1;
-						        inv_items[27] = 0;
-								game.GuiEquipmentSprites[0] = createSprite("GuiSlotWeapon.png");
-								game.GuiEquipmentSprites[0].setTextureRect(IntRect(0, 0, 116, 116));
-								break;
-							}
-						}
-					}
-					setWeaponStats(game, inv_items);
-				}
-				if (inv_items[28] != 0) {
-					vx = game.view.getCenter().x + 89;
-					vy = game.view.getCenter().y - 227;
-					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-						for (int j = 0; j < 24; j++) {
-							if (inv_items[j] == 0) {
-						        game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[1];
-						        game.GuiEquipmentSprites[1] = game.InventoryItemEmptySprite;
-								inv_items[j] = inv_items[28];
-								inv_types[j] = 2;
-						        inv_items[28] = 0;
-								game.GuiEquipmentSprites[1] = createSprite("GuiSlotShield.png");
-								game.GuiEquipmentSprites[1].setTextureRect(IntRect(0, 0, 116, 116));
-								break;
-							}
-						}
-					}
-				}
-				if (inv_items[29] != 0) {
-					vx = game.view.getCenter().x - 71;
-					vy = game.view.getCenter().y - 351;
-					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-						for (int j = 0; j < 24; j++) {
-							if (inv_items[j] == 0) {
-						        game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[2];
-						        game.GuiEquipmentSprites[2] = game.InventoryItemEmptySprite;
-								inv_items[j] = inv_items[29];
-								inv_types[j] = 3;
-						        inv_items[29] = 0;
-								game.GuiEquipmentSprites[2] = createSprite("GuiSlotHelm.png");
-								game.GuiEquipmentSprites[2].setTextureRect(IntRect(0, 0, 116, 116));
-								break;
-							}
-						}
-					}
-				}
-				if (inv_items[30] != 0) {
-					vx = game.view.getCenter().x - 71;
-					vy = game.view.getCenter().y - 227;
-					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-						for (int j = 0; j < 24; j++) {
-							if (inv_items[j] == 0) {
-						        game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[3];
-						        game.GuiEquipmentSprites[3] = game.InventoryItemEmptySprite;
-								inv_items[j] = inv_items[30];
-								inv_types[j] = 4;
-						        inv_items[30] = 0;
-								game.GuiEquipmentSprites[3] = createSprite("GuiSlotChest.png");
-								game.GuiEquipmentSprites[3].setTextureRect(IntRect(0, 0, 116, 116));
-								break;
-							}
-						}
-					}
-				}
-				if (inv_items[31] != 0) {
-					vx = game.view.getCenter().x - 71;
-					vy = game.view.getCenter().y - 103;
-					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-						for (int j = 0; j < 24; j++) {
-							if (inv_items[j] == 0) {
-						        game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[4];
-						        game.GuiEquipmentSprites[4] = game.InventoryItemEmptySprite;
-								inv_items[j] = inv_items[31];
-								inv_types[j] = 5;
-						        inv_items[31] = 0;
-								game.GuiEquipmentSprites[4] = createSprite("GuiSlotPants.png");
-								game.GuiEquipmentSprites[4].setTextureRect(IntRect(0, 0, 116, 116));
-								break;
-							}
-						}
-					}
-				}
-				if (inv_items[32] != 0) {
-					vx = game.view.getCenter().x - 71;
-					vy = game.view.getCenter().y + 21;
-					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-						for (int j = 0; j < 24; j++) {
-							if (inv_items[j] == 0) {
-						        game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[5];
-						        game.GuiEquipmentSprites[5] = game.InventoryItemEmptySprite;
-								inv_items[j] = inv_items[32];
-								inv_types[j] = 6;
-						        inv_items[32] = 0;
-								game.GuiEquipmentSprites[5] = createSprite("GuiSlotBoots.png");
-								game.GuiEquipmentSprites[5].setTextureRect(IntRect(0, 0, 116, 116));
-								break;
-							}
-						}
-					}
-				}
-			}
-			if (is_spells_inventory_open) {
-				int vx = game.view.getCenter().x + 231 + 15;
-				int vy = game.view.getCenter().y - 373 + 30;
-				for (int i = 0; i < 6; i++) {
-					vx = game.view.getCenter().x + 231 + 15;
-					for (int j = 0; j < 4; j++) {
-						if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-							if (inv_spells[i * 4 + j] != 0) {
-								for (int k = 0; k < 9; k++) {
-					                if (hotbar_spells[k] == 0) {
-									    hotbar_spells[k] = inv_spells[i * 4 + j];
-										inv_spells[i * 4 + j] = 0;
-								    	break;
-								    }
-					            }
-							}
-						}
-						vx += 112;
-				    }
-					vy += 112;
-			    }
-				vy = game.view.getCenter().y + 384 + 15;
-				for (int i = 0; i < 9; i++) {
-					vx = game.view.getCenter().x - 536 + 15 + 112 * i;
-				    if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-						for (int j = 0; j < 24; j++) {
-			                if (inv_spells[j] == 0 && cooldowns[i] <= 0) {
-								inv_spells[j] = hotbar_spells[i];
-								hotbar_spells[i] = 0;
-								break;
-							}
-						}
-					}
-				}
-			}
+		if (Mouse::isButtonPressed(Mouse::Right) && key_m2) {
+			key_m2_go = true;
+		}
+		if (!Mouse::isButtonPressed(Mouse::Right)) {
 			key_m2 = true;
-			aiming = false;
-		} else { key_m2 = false; }
+			if (key_m2_go && !Mouse::isButtonPressed(Mouse::Left)) {
+				if (!is_inventory_open && !is_spells_inventory_open && !Keyboard::isKeyPressed(Keyboard::LControl)) {
+					attack = 2; //second type of attack
+				} else {
+					attack = 0;
+				}
+				if (aiming) {
+						aiming = false;
+						key_m2 = false;
+				}
+				mouseInventory(game);
+				key_m2_go = false;
+			}
+		}
 	}
 
 	void eventNPCDialog(auto& game) {
@@ -597,6 +347,277 @@ protected:
 			spell_slot = 8;
 			aiming = true;
 			aiming_kid9 = false;
+		}
+	}
+	void mouseInventory(auto& game) {
+		int out = game.player->getX() - (962 - Mouse::getPosition().x);
+		int outy = game.player->getY() - (544 - Mouse::getPosition().y);
+		int vx = game.view.getCenter().x + 261;
+		int vy = game.view.getCenter().y - 343;
+		if (is_inventory_open) {
+			game.text_info.setString("");
+			for (int i = 0; i < 6; i++) {
+				vx = game.view.getCenter().x + 261;
+				for (int j = 0; j < 4; j++) {
+					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+						if (inv_types[i * 4 + j] == 7 && inv_items[24] == 0) { //other1
+							game.InventoryItemsSprite[24] = game.InventoryItemsSprite[i * 4 + j];
+										game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							inv_items[24] = inv_items[i * 4 + j];
+							inv_items[i * 4 + j] = 0;
+							inv_types[i * 4 + j] = 0;
+							}
+						if (inv_types[i * 4 + j] == 7 && inv_items[25] == 0) { //other2
+							game.InventoryItemsSprite[25] = game.InventoryItemsSprite[i * 4 + j];
+										game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							inv_items[25] = inv_items[i * 4 + j];
+							inv_items[i * 4 + j] = 0;
+							inv_types[i * 4 + j] = 0;
+							}
+						if (inv_types[i * 4 + j] == 7 && inv_items[26] == 0) { //other3
+							game.InventoryItemsSprite[26] = game.InventoryItemsSprite[i * 4 + j];
+										game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							inv_items[26] = inv_items[i * 4 + j];
+							inv_items[i * 4 + j] = 0;
+							inv_types[i * 4 + j] = 0;
+							}
+							if (inv_types[i * 4 + j] == 1 && inv_items[27] == 0) { //weapon
+							game.GuiEquipmentSprites[0] = game.InventoryItemsSprite[i * 4 + j];
+										game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							inv_items[27] = inv_items[i * 4 + j];
+							inv_items[i * 4 + j] = 0;
+							inv_types[i * 4 + j] = 0;
+							setWeaponStats(game, inv_items);
+							}
+						if (inv_types[i * 4 + j] == 2 && inv_items[28] == 0) { //shield
+							game.GuiEquipmentSprites[1] = game.InventoryItemsSprite[i * 4 + j];
+										game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							inv_items[28] = inv_items[i * 4 + j];
+							inv_items[i * 4 + j] = 0;
+							inv_types[i * 4 + j] = 0;
+						}
+						if (inv_types[i * 4 + j] == 3 && inv_items[29] == 0) { //helmet
+							game.GuiEquipmentSprites[2] = game.InventoryItemsSprite[i * 4 + j];
+										game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							inv_items[29] = inv_items[i * 4 + j];
+							inv_items[i * 4 + j] = 0;
+							inv_types[i * 4 + j] = 0;
+						}
+						if (inv_types[i * 4 + j] == 4 && inv_items[30] == 0) { //chestplate
+							game.GuiEquipmentSprites[3] = game.InventoryItemsSprite[i * 4 + j];
+										game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							inv_items[30] = inv_items[i * 4 + j];
+							inv_items[i * 4 + j] = 0;
+							inv_types[i * 4 + j] = 0;
+						}
+						if (inv_types[i * 4 + j] == 5 && inv_items[31] == 0) { //pants
+							game.GuiEquipmentSprites[4] = game.InventoryItemsSprite[i * 4 + j];
+										game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							inv_items[31] = inv_items[i * 4 + j];
+							inv_items[i * 4 + j] = 0;
+							inv_types[i * 4 + j] = 0;
+						}
+						if (inv_types[i * 4 + j] == 6 && inv_items[32] == 0) { //boots
+							game.GuiEquipmentSprites[5] = game.InventoryItemsSprite[i * 4 + j];
+										game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							inv_items[32] = inv_items[i * 4 + j];
+							inv_items[i * 4 + j] = 0;
+							inv_types[i * 4 + j] = 0;
+						}
+					}
+					vx += 112;
+					}
+				vy += 112;
+				}
+			if (inv_items[24] != 0) {
+				vx = game.view.getCenter().x - 203;
+				vy = game.view.getCenter().y + 185;
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					for (int j = 0; j < 24; j++) {
+						if (inv_items[j] == 0) {
+									game.InventoryItemsSprite[j] = game.InventoryItemsSprite[24];
+									game.InventoryItemsSprite[24] = game.InventoryItemEmptySprite;
+							inv_items[j] = inv_items[24];
+							inv_types[j] = 7;
+									inv_items[24] = 0;
+						}
+					}
+				}
+			}
+			if (inv_items[25] != 0) {
+				vx = game.view.getCenter().x - 71;
+				vy = game.view.getCenter().y + 185;
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					for (int j = 0; j < 24; j++) {
+						if (inv_items[j] == 0) {
+									game.InventoryItemsSprite[j] = game.InventoryItemsSprite[25];
+									game.InventoryItemsSprite[25] = game.InventoryItemEmptySprite;
+							inv_items[j] = inv_items[25];
+							inv_types[j] = 7;
+									inv_items[25] = 0;
+						}
+					}
+				}
+			}
+			if (inv_items[26] != 0) {
+				vx = game.view.getCenter().x + 61;
+				vy = game.view.getCenter().y + 185;
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					for (int j = 0; j < 24; j++) {
+						if (inv_items[j] == 0) {
+									game.InventoryItemsSprite[j] = game.InventoryItemsSprite[26];
+									game.InventoryItemsSprite[26] = game.InventoryItemEmptySprite;
+							inv_items[j] = inv_items[26];
+							inv_types[j] = 7;
+									inv_items[26] = 0;
+						}
+					}
+				}
+			}
+			if (inv_items[27] != 0) {
+				vx = game.view.getCenter().x - 231;
+				vy = game.view.getCenter().y - 227;
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					for (int j = 0; j < 24; j++) {
+						if (inv_items[j] == 0) {
+									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[0];
+									game.GuiEquipmentSprites[0] = game.InventoryItemEmptySprite;
+							inv_items[j] = inv_items[27];
+							inv_types[j] = 1;
+									inv_items[27] = 0;
+							game.GuiEquipmentSprites[0] = createSprite("GuiSlotWeapon.png");
+							game.GuiEquipmentSprites[0].setTextureRect(IntRect(0, 0, 116, 116));
+							break;
+						}
+					}
+				}
+				setWeaponStats(game, inv_items);
+			}
+			if (inv_items[28] != 0) {
+				vx = game.view.getCenter().x + 89;
+				vy = game.view.getCenter().y - 227;
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					for (int j = 0; j < 24; j++) {
+						if (inv_items[j] == 0) {
+									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[1];
+									game.GuiEquipmentSprites[1] = game.InventoryItemEmptySprite;
+							inv_items[j] = inv_items[28];
+							inv_types[j] = 2;
+									inv_items[28] = 0;
+							game.GuiEquipmentSprites[1] = createSprite("GuiSlotShield.png");
+							game.GuiEquipmentSprites[1].setTextureRect(IntRect(0, 0, 116, 116));
+							break;
+						}
+					}
+				}
+			}
+			if (inv_items[29] != 0) {
+				vx = game.view.getCenter().x - 71;
+				vy = game.view.getCenter().y - 351;
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					for (int j = 0; j < 24; j++) {
+						if (inv_items[j] == 0) {
+									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[2];
+									game.GuiEquipmentSprites[2] = game.InventoryItemEmptySprite;
+							inv_items[j] = inv_items[29];
+							inv_types[j] = 3;
+									inv_items[29] = 0;
+							game.GuiEquipmentSprites[2] = createSprite("GuiSlotHelm.png");
+							game.GuiEquipmentSprites[2].setTextureRect(IntRect(0, 0, 116, 116));
+							break;
+						}
+					}
+				}
+			}
+			if (inv_items[30] != 0) {
+				vx = game.view.getCenter().x - 71;
+				vy = game.view.getCenter().y - 227;
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					for (int j = 0; j < 24; j++) {
+						if (inv_items[j] == 0) {
+									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[3];
+									game.GuiEquipmentSprites[3] = game.InventoryItemEmptySprite;
+							inv_items[j] = inv_items[30];
+							inv_types[j] = 4;
+									inv_items[30] = 0;
+							game.GuiEquipmentSprites[3] = createSprite("GuiSlotChest.png");
+							game.GuiEquipmentSprites[3].setTextureRect(IntRect(0, 0, 116, 116));
+							break;
+						}
+					}
+				}
+			}
+			if (inv_items[31] != 0) {
+				vx = game.view.getCenter().x - 71;
+				vy = game.view.getCenter().y - 103;
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					for (int j = 0; j < 24; j++) {
+						if (inv_items[j] == 0) {
+									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[4];
+									game.GuiEquipmentSprites[4] = game.InventoryItemEmptySprite;
+							inv_items[j] = inv_items[31];
+							inv_types[j] = 5;
+									inv_items[31] = 0;
+							game.GuiEquipmentSprites[4] = createSprite("GuiSlotPants.png");
+							game.GuiEquipmentSprites[4].setTextureRect(IntRect(0, 0, 116, 116));
+							break;
+						}
+					}
+				}
+			}
+			if (inv_items[32] != 0) {
+				vx = game.view.getCenter().x - 71;
+				vy = game.view.getCenter().y + 21;
+				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					for (int j = 0; j < 24; j++) {
+						if (inv_items[j] == 0) {
+									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[5];
+									game.GuiEquipmentSprites[5] = game.InventoryItemEmptySprite;
+							inv_items[j] = inv_items[32];
+							inv_types[j] = 6;
+									inv_items[32] = 0;
+							game.GuiEquipmentSprites[5] = createSprite("GuiSlotBoots.png");
+							game.GuiEquipmentSprites[5].setTextureRect(IntRect(0, 0, 116, 116));
+							break;
+						}
+					}
+				}
+			}
+		}
+		if (is_spells_inventory_open) {
+			int vx = game.view.getCenter().x + 231 + 15;
+			int vy = game.view.getCenter().y - 373 + 30;
+			for (int i = 0; i < 6; i++) {
+				vx = game.view.getCenter().x + 231 + 15;
+				for (int j = 0; j < 4; j++) {
+					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+						if (inv_spells[i * 4 + j] != 0) {
+							for (int k = 0; k < 9; k++) {
+												if (hotbar_spells[k] == 0) {
+										hotbar_spells[k] = inv_spells[i * 4 + j];
+									inv_spells[i * 4 + j] = 0;
+										break;
+									}
+										}
+						}
+					}
+					vx += 112;
+					}
+				vy += 112;
+				}
+			vy = game.view.getCenter().y + 384 + 15;
+			for (int i = 0; i < 9; i++) {
+				vx = game.view.getCenter().x - 536 + 15 + 112 * i;
+					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
+					for (int j = 0; j < 24; j++) {
+										if (inv_spells[j] == 0 && cooldowns[i] <= 0) {
+							inv_spells[j] = hotbar_spells[i];
+							hotbar_spells[i] = 0;
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 	void ifs(auto& game) { //split into several methods

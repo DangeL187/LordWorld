@@ -13,6 +13,7 @@ public:
     //current sprites:
     std::vector<Sprite> current_item_sprites;
     std::vector<Sprite> current_other_sprites;
+    Sprite GuiIndicatorSprite;
     Sprite GuiInfoSprite;
     Sprite GuiPickedSpellSprite;
     Sprite GuiEquipmentSprites[6];
@@ -81,6 +82,7 @@ protected:
         gui_sprites.push_back(createSprite("GuiSpellsHotbar.png"));
         gui_sprites.push_back(createSprite("GuiStats.png"));
         gui_sprites.push_back(createSprite("NPCTalk.png"));
+        GuiIndicatorSprite = createSprite("GuiIndicator.png");
         GuiInfoSprite = createSprite("GuiInfo.png");
         GuiPickedSpellSprite = createSprite("GuiPickedSpell.png");
     }
@@ -219,6 +221,8 @@ protected:
         InventoryItemsSprite[24].setPosition(view.getCenter().x - 203 - 15, view.getCenter().y + 185 - 15);
         InventoryItemsSprite[25].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y + 185 - 15);
         InventoryItemsSprite[26].setPosition(view.getCenter().x + 61 - 15, view.getCenter().y + 185 - 15);
+
+        GuiIndicatorSprite.setPosition(player->getX()+18, player->getY()-34);
     }
     void updateText(auto& player) {
         text_cd_0.setColor(Color::White);
@@ -337,7 +341,6 @@ protected:
     }
     void guiTarget(auto& game) {
         if (game.target_m != NULL) {
-            //game.target_m = &(game.v_monsters[game.target_number]);
             std::stringstream ss;
             std::stringstream ss2;
             std::string t_lvl;
