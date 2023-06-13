@@ -2,17 +2,6 @@
 
 class NPC: public NPCBase {
 public:
-	float x, y;
-	float w, h, dx, dy, speed;
-	int dir = 0;
-	int static_sprite;
-	int start_dialog_phase = 0;
-	std::vector<std::string> dialog;
-	std::string name;
-	Image image;
-	Texture texture;
-	Sprite sprite;
-
 	NPC(float x_, float y_, float w_, float h_, std::string name_, auto& NPC_sprites_, auto& other_sprite_counter_, auto& current_other_sprites_) {
 		dx=0; dy=0; speed=0;
 		w = w_; h = h_;
@@ -62,19 +51,22 @@ public:
 
     void updateDialog(auto& game) {
 		if (game.player->is_dialog) {
-			if (game.player->dialog_phase < dialog.size()) {
-				game.text_NPC_talk.setString(dialog[game.player->dialog_phase]);
-			} else {
-				game.player->dialog_phase = 0; //todo: repalce with unique dialog ending for each NPC
+			if (game.player->dialog_phase == end_dialog_phases[end_dialog_phase]) {
+				if (end_dialog_phase+1 != end_dialog_phases.size()) {
+					start_dialog_phase++;
+					end_dialog_phase++;
+				}
 				game.text_NPC_talk.setString("");
 				game.player->is_dialog = false;
+			} else {
+				game.text_NPC_talk.setString(dialog[game.player->dialog_phase]);
 			}
 		} else {
 			game.text_NPC_talk.setString("");
 		}
 	}
 	int getStartDialogPhase() {
-		return start_dialog_phase;
+		return start_dialog_phases[start_dialog_phase];
 	}
 	int getSprite() {
 		return static_sprite;
