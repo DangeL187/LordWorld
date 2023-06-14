@@ -171,6 +171,9 @@ public:
         window->draw(text_range_weapon);
         window->draw(text_info);
         window->draw(text_NPC_talk);
+        if (!player->defence && player->show_cd_shield_timer > 0) {
+            window->draw(text_dynamic_shield_cd);
+        }
     }
     void updates(auto& map_manager, auto& game) {
         time = clock.getElapsedTime().asMicroseconds();
@@ -265,6 +268,12 @@ public:
             game.player->shield_cd -= time;
         } else {
             game.player->shield_cd = 0;
+        }
+
+        if (game.player->show_cd_shield_timer > 0) {
+            game.player->show_cd_shield_timer -= time;
+        } else {
+            game.player->show_cd_shield_timer = 0;
         }
 
         if (game.player->dash_cd > 0) {

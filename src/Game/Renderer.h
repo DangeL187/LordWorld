@@ -28,6 +28,7 @@ public:
     int other_sprite_counter = 0;
     //text:
     Font font;
+    Text text_dynamic_shield_cd;
     Text text_cd_0;
     Text text_cd_1;
     Text text_cd_2;
@@ -58,6 +59,8 @@ public:
 	Text text_magic_light;
 	Text text_melee_weapon;
 	Text text_range_weapon;
+    //dynamic_indexes:
+    float dynamic_index_show_cd_shield = 0;
 protected:
     void createMapSprite(auto& map_manager) {
         map_manager.setSprite(createSprite("map.png"));
@@ -92,6 +95,7 @@ protected:
     }
     void initText(auto& player) {
         font.loadFromFile("../font/OceanSummer.ttf");
+        setText(text_dynamic_shield_cd, font, 30);
         setText(text_cd_0, font, 60);
         setText(text_cd_1, font, 60);
         setText(text_cd_2, font, 60);
@@ -256,6 +260,7 @@ protected:
         player_stats_hp.setStyle(Text::Bold);
         player_stats_mp.setStyle(Text::Bold);
         player_stats_lvl.setStyle(Text::Bold);
+
         std::string p_lvl = std::to_string(player->lvl);
         std::string p_hp = std::to_string(player->hp);
         std::string p_mp = std::to_string(player->mp);
@@ -309,6 +314,17 @@ protected:
             text_cd_8.setString(std::to_string(player->cooldowns[8]/1000));
         } else {
             text_cd_8.setString("");
+        }
+        std::string a = std::to_string(int(player->shield_cd/100)/10.0);
+        text_dynamic_shield_cd.setString(a.erase(a.size() - 5));
+
+        if (player->show_cd_shield_timer > 0) {
+            dynamic_index_show_cd_shield += 0.1;
+            auto get_pos_x = player->getX()+50;
+            auto get_pos_y = player->getY()-10;
+            text_dynamic_shield_cd.setPosition(get_pos_x, get_pos_y - dynamic_index_show_cd_shield);
+        } else {
+            dynamic_index_show_cd_shield = 0;
         }
         text_cd_0.setPosition(view.getCenter().x - 490, view.getCenter().y + 404);
         text_cd_1.setPosition(view.getCenter().x - 380, view.getCenter().y + 404);

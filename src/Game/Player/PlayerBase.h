@@ -38,6 +38,7 @@ public:
     float dash_timer = 0;
     float defence_timer = 0;
     float hold_attack_timer = 0;
+    float show_cd_shield_timer = 0;
     float space_timer = 0;
     float timer_hp_regen = 0;
     float timer_mp_regen = 0;

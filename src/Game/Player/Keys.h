@@ -19,7 +19,7 @@ protected:
 		is_info = false;
 		//TODO: rename ALL!
 		keysMove(time);
-		keyShift();
+		keyShift(game);
 		keySpace();
 		dash(time);
 		keyE(game);
@@ -59,14 +59,18 @@ protected:
 		}
         moveCurrentFrame(time);
 	}
-	void keyShift() {
+	void keyShift(auto& game) {
 		if (Keyboard::isKeyPressed(Keyboard::LShift) && attack_animation == 0 && attack == 0) {
 			key_shift = true;
 			speed *= 0.5;
-			if (defence_timer == 0 && shield_cd == 0 && defence_go) {
+			if (shield_cd == 0 && defence_timer == 0 && defence_go) {
 				defence_timer = 500;
 				shield_cd = 5000;
 				defence_go = false;
+			} else {
+				if (show_cd_shield_timer == 0) {
+					show_cd_shield_timer = 500;
+				}
 			}
 		} else { key_shift = false; defence = false; defence_go = true;}
 	}
@@ -180,7 +184,7 @@ protected:
 		if (!Mouse::isButtonPressed(Mouse::Left)) {
 			key_m1 = true;
 			if (key_m1_go && !Mouse::isButtonPressed(Mouse::Right)) {
-				if (!is_inventory_open && !is_spells_inventory_open && !aiming) {
+				if (!is_inventory_open && !is_spells_inventory_open && !aiming && attack_animation == 0) {
 					attack = 1; //first type of attack
 				} else {
 					attack = 0;
@@ -201,7 +205,7 @@ protected:
 		if (!Mouse::isButtonPressed(Mouse::Right)) {
 			key_m2 = true;
 			if (key_m2_go && !Mouse::isButtonPressed(Mouse::Left)) {
-				if (!is_inventory_open && !is_spells_inventory_open && !Keyboard::isKeyPressed(Keyboard::LControl)) {
+				if (!is_inventory_open && !is_spells_inventory_open && attack_animation == 0 && !Keyboard::isKeyPressed(Keyboard::LControl)) {
 					attack = 2; //second type of attack
 				} else {
 					attack = 0;

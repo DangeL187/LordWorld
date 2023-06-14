@@ -56,6 +56,7 @@ protected:
     void attack2(auto& time, auto& game) {
         if (game.player->attack == 2 && game.player->attack2_cd == 0 && game.player->inv_items[27] != 0) {
             bool is_monster_damaged = false;
+            int old_combo_counter = game.player->combo_counter;
             for (int v = 0; v < game.v_monsters.size(); v++) {
                 float mx = game.v_monsters[v].getX();
                 float my = game.v_monsters[v].getY();
@@ -89,7 +90,7 @@ protected:
                     }
                 }
             }
-            if (game.player->combo_counter == 4) {
+            if (game.player->combo_counter == 4 || game.player->combo_counter == old_combo_counter) {
                 game.player->combo_counter = 0;
             }
             game.AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));

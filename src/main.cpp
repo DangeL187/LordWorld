@@ -3,9 +3,6 @@
 #include <vector>
 #include <array>
 #include <fstream>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <cstdlib>
 #include <string>
 #include <sstream>

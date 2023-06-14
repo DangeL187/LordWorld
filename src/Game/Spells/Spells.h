@@ -15,35 +15,39 @@ void setImages(auto& game, int size, auto& arr1, auto& arr2) {
 void spells(auto& time, auto& game) {
     if (game.player->spell_name == 1 && game.player->cooldowns[game.player->spell_slot] == 0) {
         int damage_from_spell = 2 * game.player->magic_ice;
+        int mana_cost = 5;
         game.spellDamaged(game);
         for (int v = 0; v < game.damaged_numbers.size(); v++) {
             float mx = game.v_monsters[game.damaged_numbers[v]].getX();
             float my = game.v_monsters[game.damaged_numbers[v]].getY();
             float condx = pow(pow((mx - game.player->getX()), 2), 0.5);
             float condy = pow(pow((my - game.player->getY()), 2), 0.5);
-            if (condx <= 300 && condy <= 300) {
+            if (condx <= 300 && condy <= 300 && game.player->mp >= mana_cost) {
                 std::cout << "FUCK " << damage_from_spell << "\n";
                 game.v_monsters[game.damaged_numbers[v]].giveBuff("ColdSnap", 5000);
                 game.v_monsters[game.damaged_numbers[v]].hitMonster(damage_from_spell, time, game.player);
                 game.v_monsters[game.damaged_numbers[v]].timer_ColdSnap_tick = 1000;
                 game.player->cooldowns[game.player->spell_slot] = 15000;
+                game.player->mp -= mana_cost;
             }
         }
     }
     if (game.player->spell_name == 2 && game.player->cooldowns[game.player->spell_slot] == 0) {
         int damage_from_spell = 2 * game.player->magic_ice;
+        int mana_cost = 5;
         game.spellDamaged(game);
         for (int v = 0; v < game.damaged_numbers.size(); v++) {
             float mx = game.v_monsters[game.damaged_numbers[v]].getX();
             float my = game.v_monsters[game.damaged_numbers[v]].getY();
             float condx = pow(pow((mx - game.player->getX()), 2), 0.5);
             float condy = pow(pow((my - game.player->getY()), 2), 0.5);
-            if (condx <= 300 && condy <= 300) {
+            if (condx <= 300 && condy <= 300 && game.player->mp >= mana_cost) {
                 std::cout << "FUCK " << damage_from_spell << "\n";
                 game.v_monsters[game.damaged_numbers[v]].giveBuff("ColdSnap", 5000);
                 game.v_monsters[game.damaged_numbers[v]].hitMonster(damage_from_spell, time, game.player);
                 game.v_monsters[game.damaged_numbers[v]].timer_ColdSnap_tick = 1000;
                 game.player->cooldowns[game.player->spell_slot] = 15000;
+                game.player->mp -= mana_cost;
             }
         }
     }
