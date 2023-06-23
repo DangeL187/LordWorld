@@ -11,6 +11,7 @@
 #include "split.h"
 using namespace sf;
 #include "Graphics/NewSprite.h"
+#include "Graphics/DynamicText.h"
 #include "Map/MapManager.h"
 #include "Game/Game.h"
 
@@ -36,7 +37,7 @@ int main() {
         game.windowSetView();
         game.windowClear();
 
-        game.updates(map_manager, game);
+        game.updates(map_manager);
         game.drawSprites(map_manager);
         game.windowDisplay();
     }

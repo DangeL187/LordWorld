@@ -28,7 +28,6 @@ public:
     int other_sprite_counter = 0;
     //text:
     Font font;
-    Text text_dynamic_shield_cd;
     Text text_cd_0;
     Text text_cd_1;
     Text text_cd_2;
@@ -59,8 +58,13 @@ public:
 	Text text_magic_light;
 	Text text_melee_weapon;
 	Text text_range_weapon;
-    //dynamic_indexes:
-    float dynamic_index_show_cd_shield = 0;
+    std::shared_ptr<DynamicText> text_dynamic_shield_cd;
+    std::vector<DynamicText> v_dynamic_texts;
+
+    void createDynamicText(Font font, int size, int timer, std::string value="None", float x=0, float y=0, bool isRed=false) {
+        DynamicText dynamic_text(font, size, timer, value, x, y, isRed);
+        v_dynamic_texts.push_back(dynamic_text);
+    }
 protected:
     void createMapSprite(auto& map_manager) {
         map_manager.setSprite(createSprite("map.png"));
@@ -95,7 +99,6 @@ protected:
     }
     void initText(auto& player) {
         font.loadFromFile("../font/OceanSummer.ttf");
-        setText(text_dynamic_shield_cd, font, 30);
         setText(text_cd_0, font, 60);
         setText(text_cd_1, font, 60);
         setText(text_cd_2, font, 60);
@@ -125,6 +128,7 @@ protected:
         setText(text_magic_light, font, 30);
         setText(text_melee_weapon, font, 30);
         setText(text_range_weapon, font, 30);
+        text_dynamic_shield_cd = std::make_shared<DynamicText>(font, 30);
     }
     void initImages() {
         ColdSnapSprite = createSprite("ColdSnap.png");
@@ -133,9 +137,9 @@ protected:
         AnimationWoodenSwordSprite = createSprite("AnimationWoodenSword.png");
         AnimationIronShieldSprite = createSprite("AnimationIronShield.png");
 
+        InventoryItemEmptySprite = createSprite("GuiEmptyItem.png");
         AnimationWeaponSprite = createSprite("GuiEmptyItem.png");
         AnimationShieldSprite = createSprite("GuiEmptyItem.png");
-        InventoryItemEmptySprite = createSprite("GuiEmptyItem.png");
         GuiEquipmentSprites[0] = createSprite("GuiSlotWeapon.png");
         GuiEquipmentSprites[1] = createSprite("GuiSlotShield.png");
         GuiEquipmentSprites[2] = createSprite("GuiSlotHelm.png");
@@ -233,7 +237,7 @@ protected:
 
         GuiIndicatorSprite.setPosition(player->getX()+18, player->getY()-34);
     }
-    void updateText(auto& player) {
+    void updateText(float time, auto& player) {
         text_cd_0.setColor(Color::White);
         text_cd_1.setColor(Color::White);
         text_cd_2.setColor(Color::White);
@@ -315,17 +319,17 @@ protected:
         } else {
             text_cd_8.setString("");
         }
-        std::string a = std::to_string(int(player->shield_cd/100)/10.0);
-        text_dynamic_shield_cd.setString(a.erase(a.size() - 5));
 
-        if (player->show_cd_shield_timer > 0) {
-            dynamic_index_show_cd_shield += 0.1;
-            auto get_pos_x = player->getX()+50;
-            auto get_pos_y = player->getY()-10;
-            text_dynamic_shield_cd.setPosition(get_pos_x, get_pos_y - dynamic_index_show_cd_shield);
-        } else {
-            dynamic_index_show_cd_shield = 0;
+        auto get_pos_x = player->getX()+50;
+        auto get_pos_y = player->getY()-10;
+        auto value = std::to_string(int(player->shield_cd/100)/10.0);
+        value = value.erase(value.size() - 5);
+        text_dynamic_shield_cd->update(time, get_pos_x, get_pos_y, value);
+
+        for (auto& i: v_dynamic_texts) {
+            i.update(time);
         }
+
         text_cd_0.setPosition(view.getCenter().x - 490, view.getCenter().y + 404);
         text_cd_1.setPosition(view.getCenter().x - 380, view.getCenter().y + 404);
         text_cd_2.setPosition(view.getCenter().x - 265, view.getCenter().y + 404);
@@ -342,13 +346,13 @@ protected:
         text_target.setPosition(view.getCenter().x + 700, view.getCenter().y - 500);
         text_strength.setPosition(view.getCenter().x - 900, view.getCenter().y - 260);
         text_damage.setPosition(view.getCenter().x - 900, view.getCenter().y - 220);
-    	text_armor.setPosition(view.getCenter().x - 900, view.getCenter().y - 180);
-    	text_magic.setPosition(view.getCenter().x - 900, view.getCenter().y - 140);
-    	text_critical_chance.setPosition(view.getCenter().x - 900, view.getCenter().y - 100);
+        text_armor.setPosition(view.getCenter().x - 900, view.getCenter().y - 180);
+        text_magic.setPosition(view.getCenter().x - 900, view.getCenter().y - 140);
+        text_critical_chance.setPosition(view.getCenter().x - 900, view.getCenter().y - 100);
         text_magic_resistance.setPosition(view.getCenter().x - 900, view.getCenter().y - 60);
         text_physical_resistance.setPosition(view.getCenter().x - 900, view.getCenter().y - 20);
         text_magic_ice.setPosition(view.getCenter().x - 900, view.getCenter().y + 20);
-    	text_magic_fire.setPosition(view.getCenter().x - 900, view.getCenter().y + 60);
+        text_magic_fire.setPosition(view.getCenter().x - 900, view.getCenter().y + 60);
         text_magic_earth.setPosition(view.getCenter().x - 900, view.getCenter().y + 100);
         text_magic_wind.setPosition(view.getCenter().x - 900, view.getCenter().y + 140);
         text_magic_dark.setPosition(view.getCenter().x - 900, view.getCenter().y + 180);

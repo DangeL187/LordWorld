@@ -17,7 +17,6 @@ public:
     Monster *target_m = NULL; //pointer to targeted monster
     std::array<std::vector<int>, 5> items_dropped;
     std::vector<int> damaged_numbers;
-    int target_number = -1;
 
     Game() = default;
 
@@ -171,26 +170,35 @@ public:
         window->draw(text_range_weapon);
         window->draw(text_info);
         window->draw(text_NPC_talk);
-        if (!player->defence && player->show_cd_shield_timer > 0) {
-            window->draw(text_dynamic_shield_cd);
+        for (auto& i: v_dynamic_texts) {
+            if (i.getTimer() > 0) {
+                Text temp_text = i.getText();
+                temp_text.setFont(i.getFont());
+                window->draw(temp_text);
+            }
+        }
+        if (!player->defence && text_dynamic_shield_cd->getTimer() > 0) {
+            Text temp_text = text_dynamic_shield_cd->getText();
+            temp_text.setFont(text_dynamic_shield_cd->getFont());
+            window->draw(temp_text);
         }
     }
-    void updates(auto& map_manager, auto& game) {
+    void updates(auto& map_manager) {
         time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
         time = time/800;
-        timers(time, game);
-        gainLVL(game);
-        setImages(game, 27, player->inv_spells, SpellsInventorySprite);
-        setImages(game, 9, player->hotbar_spells, SpellsHotbarSprites);
-        player->update(time, map_manager, game);
+        timers(time, *this);
+        gainLVL(*this);
+        setImages(*this, 27, player->inv_spells, SpellsInventorySprite);
+        setImages(*this, 9, player->hotbar_spells, SpellsHotbarSprites);
+        player->update(time, map_manager, *this);
         //v_monsters[2].hitMonster(300, time, player); //stress test
         updateGuiSprites(player);
-        updateText(player);
-        monsterDeath(game);
-        guiTarget(game);
-        updateMonsters(time, map_manager, game, player);
-        updateNPCs(time, map_manager, game);
+        updateText(time, player);
+        monsterDeath(*this);
+        guiTarget(*this);
+        updateMonsters(time, map_manager, *this, player);
+        updateNPCs(time, map_manager, *this);
         viewSetCenter();
     }
     void timers(auto& time, auto& game) {
@@ -270,12 +278,6 @@ public:
             game.player->shield_cd = 0;
         }
 
-        if (game.player->show_cd_shield_timer > 0) {
-            game.player->show_cd_shield_timer -= time;
-        } else {
-            game.player->show_cd_shield_timer = 0;
-        }
-
         if (game.player->dash_cd > 0) {
             game.player->dash_cd -= time;
         } else {
@@ -300,7 +302,6 @@ public:
             float condy = my/1 + 64;
             if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) {
                 target_m = &v_monsters[v];
-                target_number = v;
             }
         }
     }
@@ -380,13 +381,8 @@ public:
             if (v_monsters[i].getHP() <= 0) {
                 current_other_sprites.erase(current_other_sprites.begin() + v_monsters[i].getSprite());
                 other_sprite_counter--;
-                //if (target_m != NULL && i == target_number) {
-                  //  if (target_m->getHP() <= 0) {
-                        target_m = NULL;
-                        target_number = -1;
-                        text_target.setString("");
-                    //}
-                //}
+                target_m = NULL;
+                text_target.setString("");
                 for (int j = 0; j < v_monsters.size(); j++) {
                     if (j > i) {
                         v_monsters[j].reduceSprite();

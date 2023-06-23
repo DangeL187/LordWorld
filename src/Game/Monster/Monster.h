@@ -49,8 +49,13 @@ public:
 				float aa = dmg - (dmg * (player->physical_resistance / 100));
 				int b = static_cast<int>(aa) - static_cast<int>(a);
 				if (b >= 0 && !player->defence) {
-						player->hp -= b;
-						player->shield_cd = 0;
+					player->hp -= b;
+					player->shield_cd = 5000;
+					auto get_pos_x = player->getX() + int(w / 2);
+	                auto get_pos_y = player->getY() + 20;
+	                game.createDynamicText(game.font, 30, 500, std::to_string(0-b), get_pos_x, get_pos_y, true);
+				} else {
+					player->shield_cd = 0;
 				}
 				switch (dir) {
 					case 0: game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 128, w, h)); break;
@@ -223,6 +228,12 @@ public:
     }
     float getY() {
 	    return y;
+    }
+	float getWidth() {
+        return w;
+    }
+    float getHeight() {
+	    return h;
     }
 	int getHP() {
         return hp;

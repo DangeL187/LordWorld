@@ -27,9 +27,14 @@ void spells(auto& time, auto& game) {
                 game.v_monsters[game.damaged_numbers[v]].giveBuff("ColdSnap", 5000);
                 game.v_monsters[game.damaged_numbers[v]].hitMonster(damage_from_spell, time, game.player);
                 game.v_monsters[game.damaged_numbers[v]].timer_ColdSnap_tick = 1000;
-                game.player->cooldowns[game.player->spell_slot] = 15000;
-                game.player->mp -= mana_cost;
+                break;
             }
+        }
+        if (game.damaged_numbers.size() > 0 && game.player->mp >= mana_cost) {
+            game.player->cooldowns[game.player->spell_slot] = 15000;
+            game.player->mp -= mana_cost;
+        } else {
+            std::cout << "No mana!\n";
         }
     }
     if (game.player->spell_name == 2 && game.player->cooldowns[game.player->spell_slot] == 0) {
@@ -46,9 +51,14 @@ void spells(auto& time, auto& game) {
                 game.v_monsters[game.damaged_numbers[v]].giveBuff("ColdSnap", 5000);
                 game.v_monsters[game.damaged_numbers[v]].hitMonster(damage_from_spell, time, game.player);
                 game.v_monsters[game.damaged_numbers[v]].timer_ColdSnap_tick = 1000;
-                game.player->cooldowns[game.player->spell_slot] = 15000;
-                game.player->mp -= mana_cost;
+                break;
             }
+        }
+        if (game.damaged_numbers.size() > 0 && game.player->mp >= mana_cost) {
+            game.player->cooldowns[game.player->spell_slot] = 15000;
+            game.player->mp -= mana_cost;
+        } else {
+            std::cout << "No mana!\n";
         }
     }
 }

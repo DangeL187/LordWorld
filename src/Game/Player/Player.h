@@ -8,19 +8,22 @@ class Player: public Keys {
 public:
     Player(float x_, float y_, float w_, float h_) {
         dx=0; dy=0; speed=0;
-		    w = w_; h = h_;
+		w = w_; h = h_;
         x = x_; y = y_;
         NewSprite *new_player_sprite = new NewSprite("../images/hero.png");
         sprite = new_player_sprite->getSprite();
-		    sprite.setTextureRect(IntRect(1, 1, w, h));
-        for (int i = 0; i <= 33; i++) { //add zero items in inventory
+		sprite.setTextureRect(IntRect(1, 1, w, h));
+        for (int i = 0; i < 33; i++) { //add zero items in inventory
             inv_items[i] = 0;
-            if (i <= 24) {
+            if (i < 24) {
                 inv_types[i] = 0;
             }
         }
-        for (int i = 0; i <= 24; i++) { //add zero items in inventory
+        for (int i = 0; i < 24; i++) { //add zero items in spell inventory
             inv_spells[i] = 0;
+        }
+        for (int i = 0; i < 9; i++) { //add zero items in hotbar
+            hotbar_spells[i] = 0;
         }
         hotbar_spells[0] = 1;
         hotbar_spells[1] = 2;
@@ -67,6 +70,7 @@ public:
 		x += dx*time;
 		y += dy*time;
 		speed = 0;
+
 		interactionWithMap(map_manager, game);
 		sprite.setPosition(getX(), getY());
 		setEquipmentStats(game, inv_items);
