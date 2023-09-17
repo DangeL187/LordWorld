@@ -92,6 +92,22 @@ public:
             window->draw(i_sprite);
         }
         window->draw(player->getSprite());
+
+        /*window->draw(ShadowSprite1);
+        window->draw(ShadowSprite2);
+        window->draw(ShadowSprite3);
+        window->draw(ShadowSprite4);
+        window->draw(LightSprite);
+        //window->draw(ConvexShape);
+        window->draw(line1, 2, sf::Lines);
+        window->draw(line2, 2, sf::Lines);
+        window->draw(line3, 2, sf::Lines);
+        window->draw(line4, 2, sf::Lines);
+        window->draw(line11, 2, sf::Lines);
+        window->draw(line22, 2, sf::Lines);
+        window->draw(line33, 2, sf::Lines);
+        window->draw(line44, 2, sf::Lines);*/
+
         if (player->attack_animation != 0) {
             window->draw(AnimationWeaponSprite);
         }
@@ -104,7 +120,7 @@ public:
         if (500 <= player->space_timer && player->space_timer <= 750) {
             window->draw(GuiIndicatorSprite);
         }
-        for (auto& i_sprite: gui_sprites) {
+        for (auto& i_sprite: gui_sprites) { //TODO: replace with unique names so there won't be any "a", "b", "c" etc.
             bool i1 = index != 1;
             bool i2 = index != 2;
             bool i4 = index != 4;
@@ -139,6 +155,9 @@ public:
         }
         if (player->aiming) {
             window->draw(GuiPickedSpellSprite);
+        }
+        for (auto& i: GuiNoManaSprites) {
+            window->draw(i);
         }
         window->draw(player_stats_hp);
         window->draw(player_stats_mp);
@@ -191,9 +210,9 @@ public:
         gainLVL(*this);
         setImages(*this, 27, player->inv_spells, SpellsInventorySprite);
         setImages(*this, 9, player->hotbar_spells, SpellsHotbarSprites);
+        updateGuiSprites(player);
         player->update(time, map_manager, *this);
         //v_monsters[2].hitMonster(300, time, player); //stress test
-        updateGuiSprites(player);
         updateText(time, player);
         monsterDeath(*this);
         guiTarget(*this);

@@ -1,5 +1,20 @@
 class Renderer: public WindowManager {
 public:
+    //TEST, TEMP, SHADOWS
+    /*Sprite ShadowSprite1;
+    Sprite ShadowSprite2;
+    Sprite ShadowSprite3;
+    Sprite ShadowSprite4;
+    Sprite LightSprite;
+    sf::ConvexShape convex;
+    sf::Vertex line1[2];
+    sf::Vertex line2[2];
+    sf::Vertex line3[2];
+    sf::Vertex line4[2];
+    sf::Vertex line11[2];
+    sf::Vertex line22[2];
+    sf::Vertex line33[2];
+    sf::Vertex line44[2];*/
     //TODO: unite in images.png:
     Sprite ColdSnapSprite;
     Sprite ColdSnap2Sprite;
@@ -13,6 +28,7 @@ public:
     //current sprites:
     std::vector<Sprite> current_item_sprites;
     std::vector<Sprite> current_other_sprites;
+    Sprite GuiNoManaSprites[9];
     Sprite GuiIndicatorSprite;
     Sprite GuiInfoSprite;
     Sprite GuiPickedSpellSprite;
@@ -44,20 +60,20 @@ public:
     Text text_target;
     Text text_info;
     Text text_strength;
-	Text text_damage;
-	Text text_armor;
-	Text text_magic;
-	Text text_critical_chance;
-	Text text_magic_resistance;
-	Text text_physical_resistance;
-	Text text_magic_ice;
-	Text text_magic_fire;
-	Text text_magic_earth;
-	Text text_magic_wind;
-	Text text_magic_dark;
-	Text text_magic_light;
-	Text text_melee_weapon;
-	Text text_range_weapon;
+    Text text_damage;
+    Text text_armor;
+    Text text_magic;
+    Text text_critical_chance;
+    Text text_magic_resistance;
+    Text text_physical_resistance;
+    Text text_magic_ice;
+    Text text_magic_fire;
+    Text text_magic_earth;
+    Text text_magic_wind;
+    Text text_magic_dark;
+    Text text_magic_light;
+    Text text_melee_weapon;
+    Text text_range_weapon;
     std::shared_ptr<DynamicText> text_dynamic_shield_cd;
     std::vector<DynamicText> v_dynamic_texts;
 
@@ -66,11 +82,61 @@ public:
         v_dynamic_texts.push_back(dynamic_text);
     }
 protected:
+    /*float* getShadowEdge(float OX, float OY, float OZ, float LX, float LY, float LZ) { //replace with passing objectSprite and lightCords
+        std::cout << std::endl;
+        float a = abs(LY - OY);
+        float b = abs(LX - OX);
+        float c = pow(pow(a, 2) + pow(b, 2), 0.5);
+        //a = pow(pow(a, 2) + pow(LZ - OZ, 2), 0.5);
+        //c = pow(pow(c, 2) + pow(LZ - OZ, 2), 0.5);
+        float angle;
+        if (OX <= LX && OY > LY) {
+            std::cout << "#=Debug=# 90\n";
+            angle = acos(a/c) * 180 / PI + 90;
+        }
+        else if (OX < LX && OY <= LY) {
+            std::cout << "#=Debug=# 180\n";
+            angle = acos(b/c) * 180 / PI + 180;
+        }
+        else if (OX >= LX && OY < LY) {
+            std::cout << "#=Debug=# 270\n";
+            angle = acos(a/c) * 180 / PI + 270;
+        }
+        else {
+            std::cout << "#=Debug=# 0\n";
+            angle = acos(b/c) * 180 / PI;
+        }
+        std::cout << "#=Debug=# A: " << angle << std::endl;
+
+        float ca = cos(angle * PI / 180);
+        float sa = sin(angle * PI / 180);
+        std::cout << "#=Debug=# COSa and SINa: " << ca << " " << sa << std::endl;
+
+        float d = pow(pow(OX - LX, 2) + pow(OY - LY, 2), 0.5);
+        float x = OZ / (LZ - OZ) * d;
+        std::cout << "#=Debug=# SHADOW LEN: " << x << std::endl;
+        float y = 0;
+
+        float a11 = ca;
+        float a12 = sa;
+        float a21 = sa;
+        float a22 = ca;
+
+        float B[3] = {a11 * x + a12 * y + OX, a21 * x + a22 * y + OY, x};
+        std::cout << "#=Debug=# B: " << B[0] << " " << B[1] << " " << B[2] << std::endl;
+        float* p = new float[3];
+        p[0] = B[0];
+        p[1] = B[1];
+        p[2] = B[2];
+        return p;
+}*/
+
+
     void createMapSprite(auto& map_manager) {
         map_manager.setSprite(createSprite("map.png"));
     }
     void createItemSprites() {
-        item_sprites.push_back(createSprite("Wooden Sword.png"));
+        item_sprites.push_back(createSprite("Wooden Sword.png")); //TODO: take names from file
         item_sprites.push_back(createSprite("Iron Shield.png"));
         item_sprites.push_back(createSprite("Iron Helmet.png"));
         item_sprites.push_back(createSprite("Iron Chestplate.png"));
@@ -96,6 +162,9 @@ protected:
         GuiIndicatorSprite = createSprite("GuiIndicator.png");
         GuiInfoSprite = createSprite("GuiInfo.png");
         GuiPickedSpellSprite = createSprite("GuiPickedSpell.png");
+        for (auto& i: GuiNoManaSprites) {
+            i = createSprite("GuiNoMana.png");
+        }
     }
     void initText(auto& player) {
         font.loadFromFile("../font/OceanSummer.ttf");
@@ -131,6 +200,8 @@ protected:
         text_dynamic_shield_cd = std::make_shared<DynamicText>(font, 30);
     }
     void initImages() {
+        //shadow: LightSprite = createSprite("GuiIndicator.png");
+
         ColdSnapSprite = createSprite("ColdSnap.png");
         ColdSnap2Sprite = createSprite("ColdSnap2.png");
         AnimationDashSprite = createSprite("AnimationDash.png");
@@ -140,7 +211,7 @@ protected:
         InventoryItemEmptySprite = createSprite("GuiEmptyItem.png");
         AnimationWeaponSprite = createSprite("GuiEmptyItem.png");
         AnimationShieldSprite = createSprite("GuiEmptyItem.png");
-        GuiEquipmentSprites[0] = createSprite("GuiSlotWeapon.png");
+        GuiEquipmentSprites[0] = createSprite("GuiSlotWeapon.png"); //TODO: replace with unique sprite names
         GuiEquipmentSprites[1] = createSprite("GuiSlotShield.png");
         GuiEquipmentSprites[2] = createSprite("GuiSlotHelm.png");
         GuiEquipmentSprites[3] = createSprite("GuiSlotChest.png");
@@ -152,6 +223,56 @@ protected:
         }
     }
     void updateGuiSprites(auto& player) {
+        //SHADOW:
+
+        /*LightSprite.setPosition(900, 900);
+
+        float px = player->getX();
+        float py = player->getY()+player->getHeight();
+        std::cout << "#!\n";
+        float* G = getShadowEdge(px, py, player->getHeight(), 300+600, 300+600, 200);
+        std::cout << "#!\n";
+        float shadow_x = G[0];
+        float shadow_y = G[1];
+        ShadowSprite1.setPosition(shadow_x, shadow_y);
+        line1[0] = sf::Vertex(sf::Vector2f(900, 900));
+        line1[1] = sf::Vertex(sf::Vector2f(px, py));
+        line11[0] = sf::Vertex(sf::Vector2f(px, py));
+        line11[1] = sf::Vertex(sf::Vector2f(shadow_x, shadow_y));
+
+        px = player->getX()+player->getWidth();
+        py = player->getY()+player->getHeight();
+        G = getShadowEdge(px, py, player->getHeight(), 300+600, 300+600, 200);
+        shadow_x = G[0];
+        shadow_y = G[1];
+        ShadowSprite2.setPosition(shadow_x, shadow_y);
+        line2[0] = sf::Vertex(sf::Vector2f(900, 900));
+        line2[1] = sf::Vertex(sf::Vector2f(px, py));
+        line22[0] = sf::Vertex(sf::Vector2f(px, py));
+        line22[1] = sf::Vertex(sf::Vector2f(shadow_x, shadow_y));
+
+        px = player->getX();
+        py = player->getY();
+        G = getShadowEdge(px, py, player->getHeight(), 300+600, 300+600, 200);
+        shadow_x = G[0];
+        shadow_y = G[1];
+        ShadowSprite3.setPosition(shadow_x, shadow_y);
+        line3[0] = sf::Vertex(sf::Vector2f(900, 900));
+        line3[1] = sf::Vertex(sf::Vector2f(px, py));
+        line33[0] = sf::Vertex(sf::Vector2f(px, py));
+        line33[1] = sf::Vertex(sf::Vector2f(shadow_x, shadow_y));
+
+        px = player->getX()+player->getWidth();
+        py = player->getY();
+        G = getShadowEdge(px, py, player->getHeight(), 300+600, 300+600, 200);
+        shadow_x = G[0];
+        shadow_y = G[1];
+        ShadowSprite4.setPosition(shadow_x, shadow_y);
+        line4[0] = sf::Vertex(sf::Vector2f(900, 900));
+        line4[1] = sf::Vertex(sf::Vector2f(px, py));
+        line44[0] = sf::Vertex(sf::Vector2f(px, py));
+        line44[1] = sf::Vertex(sf::Vector2f(shadow_x, shadow_y));*/
+
         gui_sprites[0].setPosition(view.getCenter().x - 960, view.getCenter().y - 540);
         gui_sprites[1].setPosition(view.getCenter().x - 300, view.getCenter().y - 400);
         gui_sprites[2].setPosition(view.getCenter().x - 300, view.getCenter().y - 496);
@@ -171,7 +292,16 @@ protected:
         }
 
         for (int i = 0; i < 9; i++) {
+            int damage_from_spell;
+            int mana_cost;
             SpellsHotbarSprites[i].setPosition(view.getCenter().x - 536 + 112 * i, view.getCenter().y + 384);
+            GuiNoManaSprites[i].setPosition(view.getCenter().x - 536 + 112 * i, view.getCenter().y + 384);
+            defineSpell(player, player->hotbar_spells[i], damage_from_spell, mana_cost);
+            if (player->hotbar_spells[i] != 0 && (player->cooldowns[i] != 0 || player->mp < mana_cost)) {
+                GuiNoManaSprites[i].setColor(sf::Color(0, 0, 0, 160));
+            } else {
+                GuiNoManaSprites[i].setColor(sf::Color(0, 0, 0, 0));
+            }
         }
         if (player->aiming && player->spell_slot == 0) {
             GuiPickedSpellSprite.setPosition(view.getCenter().x - 536, view.getCenter().y + 384);
