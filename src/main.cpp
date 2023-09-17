@@ -9,6 +9,7 @@
 #include <cmath>
 #include <memory>
 #include "split.h"
+#define PI 3.14159265
 using namespace sf;
 #include "Graphics/NewSprite.h"
 #include "Graphics/DynamicText.h"

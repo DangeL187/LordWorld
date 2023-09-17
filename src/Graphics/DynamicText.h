@@ -39,7 +39,7 @@ public:
 
         if (show_timer > 0) {
             show_timer -= time;
-            dynamic_index += 1;
+            dynamic_index += 0.1; //TODO: add cofiguring
             text_dynamic.setPosition(x, y - dynamic_index);
         } else {
             show_timer = 0;
