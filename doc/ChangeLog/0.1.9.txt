@@ -4,4 +4,6 @@ Lord World (LW) by DangeL
 Version 0.1.9 ChangeLog
 ----------------------------------------------------------------------------------------------------
 12.06.2023 - added basic dialog system with NPC
+07.07.2023 - added mana cost for spells, added hotbar spell info, added showing if no mana to cast
+07.07.2023 - added dynamic dmg counters
 ----------------------------------------------------------------------------------------------------

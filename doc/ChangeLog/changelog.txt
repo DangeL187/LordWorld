@@ -28,5 +28,5 @@ Lord World (LW) by DangeL
 0.1.6  - beta first NPC
 0.1.7  - code was rewritten using OOP
 0.1.8  - improved combat and movement system, changed character
-0.1.9  - first NPC and dialog system
+0.1.9  - first NPC, dialog system and quest system
 ----------------------------------------------------------------------------------------------------
