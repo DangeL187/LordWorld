@@ -88,6 +88,12 @@ public:
     Sprite getSprite() {
         return sprite;
     }
+    float getWidth() {
+        return w;
+    }
+    float getHeight() {
+        return h;
+    }
     float getX() {
         return x;
     }
