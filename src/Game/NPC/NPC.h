@@ -14,10 +14,10 @@ public:
 		other_sprite_counter_++;
 	}
 
-	void interactionWithMap(auto& map_manager) {
+	void interactionWithMap(auto& map) {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
-				auto t = map_manager.getTileMapID(i, j);
+				auto t = map->getTileMapID(i, j);
 		        if (t == 4) {
 			        if (dy>0) y = i * 64 - h;
 			        if (dy<0) y = i * 64 + 64;
@@ -26,13 +26,13 @@ public:
 		        }
 		        if (t == 5) {
 			        x = 300; y = 300;
-					map_manager.setTileMapID(i, j, 0);
+					map->setTileMapID(i, j, 0);
 		        }
 	        }
 		}
     }
 
-    void update(auto& time, auto& map_manager, auto& game) {
+    void update(auto& time, auto& game) {
 		switch (dir) {
 		    case 0: dx = speed; dy = 0; break;
 		    case 1: dx = -speed; dy = 0; break;
@@ -44,7 +44,7 @@ public:
 		y += dy*time;
 
 		speed = 0;
-		interactionWithMap(map_manager);
+		interactionWithMap(game.map);
 		updateDialog(game);
 		game.current_other_sprites[static_sprite].setPosition(x, y);
 	}

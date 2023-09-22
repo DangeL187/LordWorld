@@ -13,16 +13,16 @@
 using namespace sf;
 #include "Graphics/NewSprite.h"
 #include "Graphics/DynamicText.h"
-#include "Map/MapManager.h"
+#include "Map/Map.h"
 #include "Game/Game.h"
 
 int main() {
-    MapManager map_manager;
     Game game;
 
-    game.createWindow();
-    game.viewReset();
-    game.initResources(map_manager, game);
+    game.createWindow("Lord World", 1920, 1080);
+    game.createMap();
+    game.createRenderer();
+    game.window_manager->viewReset();
     game.createPlayer(500, 500, 44.0, 64.0);
     game.createMonster(300, 300, 50.0, 62.0, "Rat");
     game.createMonster(400, 400, 50.0, 62.0, "Rat2");
@@ -32,15 +32,15 @@ int main() {
     //game.AnimationWeaponSprite = game.AnimationWoodenSwordSprite;
     game.AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
 
-    while(game.windowIsOpen()) {
+    while(game.window_manager->windowIsOpen()) {
         //game.createMonster(400, 400, 50.0, 62.0, "Rat"); //stress test
-        game.windowHandleEvents();
-        game.windowSetView();
-        game.windowClear();
+        game.window_manager->windowHandleEvents();
+        game.window_manager->windowSetView();
+        game.window_manager->windowClear();
 
-        game.updates(map_manager);
-        game.drawSprites(map_manager);
-        game.windowDisplay();
+        game.updates();
+        game.drawSprites();
+        game.window_manager->windowDisplay();
     }
 
     return 0;

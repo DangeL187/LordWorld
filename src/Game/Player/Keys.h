@@ -271,11 +271,11 @@ protected:
 		game.text_info.setString("");
 		float out = game.player->getX() - (962 - Mouse::getPosition().x);
 		float outy = game.player->getY() - (544 - Mouse::getPosition().y);
-		float vx = game.viewGetCenterX() + 261;
-		float vy = game.viewGetCenterY() - 343;
+		float vx = game.window_manager->viewGetCenterX() + 261;
+		float vy = game.window_manager->viewGetCenterY() - 343;
 		if (is_inventory_open) {
 			for (int i = 0; i < 6; i++) {
-				vx = game.viewGetCenterX() + 261;
+				vx = game.window_manager->viewGetCenterX() + 261;
 				for (int j = 0; j < 4; j++) {
 					if (inv_items[i * 4 + j] != 0) {
 						if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
@@ -377,12 +377,12 @@ protected:
 	void mouseInventory(auto& game) {
 		float out = game.player->getX() - (962 - Mouse::getPosition().x);
 		float outy = game.player->getY() - (544 - Mouse::getPosition().y);
-		float vx = game.view.getCenter().x + 261;
-		float vy = game.view.getCenter().y - 343;
+		float vx = game.window_manager->viewGetCenterX() + 261;
+		float vy = game.window_manager->viewGetCenterY() - 343;
 		if (is_inventory_open) {
 			game.text_info.setString("");
 			for (int i = 0; i < 6; i++) {
-				vx = game.view.getCenter().x + 261;
+				vx = game.window_manager->viewGetCenterX() + 261;
 				for (int j = 0; j < 4; j++) {
 					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 						if (inv_types[i * 4 + j] == 7 && inv_items[24] == 0) { //other1
@@ -455,8 +455,8 @@ protected:
 				vy += 112;
 			}
 			if (inv_items[24] != 0) {
-				vx = game.view.getCenter().x - 203;
-				vy = game.view.getCenter().y + 185;
+				vx = game.window_manager->viewGetCenterX() - 203;
+				vy = game.window_manager->viewGetCenterY() + 185;
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
@@ -470,8 +470,8 @@ protected:
 				}
 			}
 			if (inv_items[25] != 0) {
-				vx = game.view.getCenter().x - 71;
-				vy = game.view.getCenter().y + 185;
+				vx = game.window_manager->viewGetCenterX() - 71;
+				vy = game.window_manager->viewGetCenterY() + 185;
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
@@ -485,8 +485,8 @@ protected:
 				}
 			}
 			if (inv_items[26] != 0) {
-				vx = game.view.getCenter().x + 61;
-				vy = game.view.getCenter().y + 185;
+				vx = game.window_manager->viewGetCenterX() + 61;
+				vy = game.window_manager->viewGetCenterY() + 185;
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
@@ -500,8 +500,8 @@ protected:
 				}
 			}
 			if (inv_items[27] != 0) {
-				vx = game.view.getCenter().x - 231;
-				vy = game.view.getCenter().y - 227;
+				vx = game.window_manager->viewGetCenterX() - 231;
+				vy = game.window_manager->viewGetCenterY() - 227;
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
@@ -519,8 +519,8 @@ protected:
 				setWeaponStats(game, inv_items);
 			}
 			if (inv_items[28] != 0) {
-				vx = game.view.getCenter().x + 89;
-				vy = game.view.getCenter().y - 227;
+				vx = game.window_manager->viewGetCenterX() + 89;
+				vy = game.window_manager->viewGetCenterY() - 227;
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
@@ -537,8 +537,8 @@ protected:
 				}
 			}
 			if (inv_items[29] != 0) {
-				vx = game.view.getCenter().x - 71;
-				vy = game.view.getCenter().y - 351;
+				vx = game.window_manager->viewGetCenterX() - 71;
+				vy = game.window_manager->viewGetCenterY() - 351;
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
@@ -555,8 +555,8 @@ protected:
 				}
 			}
 			if (inv_items[30] != 0) {
-				vx = game.view.getCenter().x - 71;
-				vy = game.view.getCenter().y - 227;
+				vx = game.window_manager->viewGetCenterX() - 71;
+				vy = game.window_manager->viewGetCenterY() - 227;
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
@@ -573,8 +573,8 @@ protected:
 				}
 			}
 			if (inv_items[31] != 0) {
-				vx = game.view.getCenter().x - 71;
-				vy = game.view.getCenter().y - 103;
+				vx = game.window_manager->viewGetCenterX() - 71;
+				vy = game.window_manager->viewGetCenterY() - 103;
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
@@ -591,8 +591,8 @@ protected:
 				}
 			}
 			if (inv_items[32] != 0) {
-				vx = game.view.getCenter().x - 71;
-				vy = game.view.getCenter().y + 21;
+				vx = game.window_manager->viewGetCenterX() - 71;
+				vy = game.window_manager->viewGetCenterY() + 21;
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
@@ -610,10 +610,10 @@ protected:
 			}
 		}
 		if (is_spells_inventory_open) {
-			float vx = game.view.getCenter().x + 231 + 15;
-			float vy = game.view.getCenter().y - 373 + 30;
+			float vx = game.window_manager->viewGetCenterX() + 231 + 15;
+			float vy = game.window_manager->viewGetCenterY() - 373 + 30;
 			for (int i = 0; i < 6; i++) {
-				vx = game.view.getCenter().x + 231 + 15;
+				vx = game.window_manager->viewGetCenterX() + 231 + 15;
 				for (int j = 0; j < 4; j++) {
 					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 						if (inv_spells[i * 4 + j] != 0) {
@@ -630,9 +630,9 @@ protected:
 					}
 				vy += 112;
 				}
-			vy = game.view.getCenter().y + 384 + 15;
+			vy = game.window_manager->viewGetCenterY() + 384 + 15;
 			for (int i = 0; i < 9; i++) {
-				vx = game.view.getCenter().x - 536 + 15 + 112 * i;
+				vx = game.window_manager->viewGetCenterX() - 536 + 15 + 112 * i;
 					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_spells[j] == 0 && cooldowns[i] <= 0) {
@@ -649,10 +649,10 @@ protected:
 		float out = game.player->getX() - (962 - Mouse::getPosition().x);
 		float outy = game.player->getY() - (544 - Mouse::getPosition().y);
 		if (is_inventory_open) {
-			float vx = game.view.getCenter().x + 261;
-			float vy = game.view.getCenter().y - 343;
+			float vx = game.window_manager->viewGetCenterX() + 261;
+			float vy = game.window_manager->viewGetCenterY() - 343;
 			for (int i = 0; i < 6; i++) {
-				vx = game.view.getCenter().x + 261;
+				vx = game.window_manager->viewGetCenterX() + 261;
 				for (int j = 0; j < 4; j++) {
 					if (vx/1 - 25 <= out && out <= vx/1 + 80 && vy/1 - 25 <= outy && outy <= vy/1 + 80) {
 						setInfo(true, inv_items[i * 4 + j], game.text_info);
@@ -666,10 +666,10 @@ protected:
 			}
 		}
 		if (is_spells_inventory_open) {
-			float vx = game.view.getCenter().x + 261;
-			float vy = game.view.getCenter().y - 343;
+			float vx = game.window_manager->viewGetCenterX() + 261;
+			float vy = game.window_manager->viewGetCenterY() - 343;
 		    for (int i = 0; i < 6; i++) {
-		    	vx = game.view.getCenter().x + 261;
+		    	vx = game.window_manager->viewGetCenterX() + 261;
 			    for (int j = 0; j < 4; j++) {
 					if (vx/1 - 25 <= out && out <= vx/1 + 80 && vy/1 - 25 <= outy && outy <= vy/1 + 80) {
 						setInfo(false, inv_spells[i * 4 + j], game.text_info);
@@ -683,8 +683,8 @@ protected:
 		    }
 		}
 
-		float vx = game.view.getCenter().x - 506;
-		float vy = game.view.getCenter().y + 414;
+		float vx = game.window_manager->viewGetCenterX() - 506;
+		float vy = game.window_manager->viewGetCenterY() + 414;
 		for (int i = 0; i < 9; i++) {
 			if (vx/1 - 30 <= out && out <= vx/1 + 80 && vy/1 - 30 <= outy && outy <= vy/1 + 80 && hotbar_spells[i] != 0) {
 				setInfo(false, hotbar_spells[i], game.text_info);
@@ -695,8 +695,8 @@ protected:
 			vx += 112;
 		}
 
-		vx = game.view.getCenter().x - 940;
-		vy = game.view.getCenter().y - 480;
+		vx = game.window_manager->viewGetCenterX() - 940;
+		vy = game.window_manager->viewGetCenterY() - 480;
 		if (vx/1 <= out && out <= vx/1 + 170 && vy/1 <= outy && outy <= vy/1 + 100) {
 			game.text_strength.setString("Strength: " + std::to_string(game.player->strength));
 			game.text_damage.setString("Damage: " + std::to_string(game.player->damage));

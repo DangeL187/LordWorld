@@ -7,55 +7,37 @@
 #include "NPC/NPC.h"
 #include "Monster/Monster.h"
 
-class Game: public Renderer {
+class Game {
 public:
     float time;
     Clock clock;
+    Monster *target_m = NULL; //pointer to targeted monster
     std::shared_ptr<Player> player;
     std::vector<NPC> v_NPC;
     std::vector<Monster> v_monsters;
-    Monster *target_m = NULL; //pointer to targeted monster
     std::array<std::vector<int>, 5> items_dropped;
     std::vector<int> damaged_numbers;
+    std::shared_ptr<Map> map;
+    std::shared_ptr<WindowManager> window_manager;
+    std::shared_ptr<Renderer> renderer;
 
     Game() = default;
 
-    void initResources(auto& map_manager, auto& game) {
-        initText(game.player);
-        initImages();
-        initMap(map_manager);
-        createMapSprite(map_manager);
-        createItemSprites();
-        createMonsterSprites();
-        createNPCSprites();
-        createGuiSprites();
+    void createRenderer() {
+        renderer = std::make_shared<Renderer>(map);
     }
-    void initMap(auto& map_manager) {
-        std::string line;
-        int index = 0;
-        std::ifstream file;
-        file.open("map.txt");
-        if (file.is_open()) {
-            while (file) {
-                std::getline(file, line);
-                std::vector<std::string> smap = split(line, ' ');
-                for (int i = 0; i < smap.size()-1; i++) {
-                    map_manager.setTileMapID(index, i, std::stoi(smap[i]));
-                }
-                index++;
-            }
-        }
-        file.close();
+    void createWindow(std::string name, int w, int h) {
+        window_manager = std::make_shared<WindowManager>(name, w, h);
     }
-    void viewSetCenter() {
-        view.setCenter(player->getX(), player->getY());
+    void createMap() {
+        map = std::make_shared<Map>();
     }
     void createItem(int id, int x, int y) {
         items_dropped[0].push_back(id);
         items_dropped[1].push_back(x);
         items_dropped[2].push_back(y);
-        items_dropped[3].push_back(item_sprite_counter);
-        defineItemType(id, current_item_sprites, item_sprites, items_dropped);
+        items_dropped[3].push_back(renderer->item_sprite_counter);
+        defineItemType(id, renderer->current_item_sprites, renderer->item_sprites, items_dropped);
         current_item_sprites[item_sprite_counter].setTextureRect(IntRect(0, 0, 56, 56));
         current_item_sprites[item_sprite_counter].setScale(0.75, 0.75);
         current_item_sprites[item_sprite_counter].setPosition(x, y);
@@ -65,62 +47,62 @@ public:
         player = std::make_shared<Player>(x, y, w, h);
     }
     void createMonster(float x, float y, float w, float h, std::string name) {
-        Monster m(x, y, w, h, name, monster_sprites, other_sprite_counter, current_other_sprites);
+        Monster m(x, y, w, h, name, renderer->monster_sprites, renderer->other_sprite_counter, renderer->current_other_sprites);
         v_monsters.push_back(m);
     }
     void createNPC(float x, float y, float w, float h, std::string name) {
-        NPC m(x, y, w, h, name, NPC_sprites, other_sprite_counter, current_other_sprites);
+        NPC m(x, y, w, h, name, renderer->NPC_sprites, renderer->other_sprite_counter, renderer->current_other_sprites);
         v_NPC.push_back(m);
     }
-    void drawSprites(auto& map_manager) {
+    void drawSprites() {
         int index = 0;
         bool a = player->is_inventory_open;
         bool b = player->is_spells_inventory_open;
         bool c = player->is_stats_open;
         bool d = player->is_dialog;
-        for (int i = 0; i < map_manager.getMapHeight(); i++) {
-            for (int j = 0; j < map_manager.getMapWidth(); j++) {
-                map_manager.defineTile(i, j);
-                map_manager.setSpritePosition(j * 64, i * 64);
-                window->draw(map_manager.getSprite());
+        for (int i = 0; i < map->getMapHeight(); i++) {
+            for (int j = 0; j < map->getMapWidth(); j++) {
+                map->defineTile(i, j);
+                map->setSpritePosition(j * 64, i * 64);
+                window_manager->windowDraw(map->getSprite());
             }
         }
-        for (auto& i_sprite: current_item_sprites) {
-            window->draw(i_sprite);
+        for (auto& i_sprite: renderer->current_item_sprites) {
+            window_manager->windowDraw(i_sprite);
         }
-        for (auto& i_sprite: current_other_sprites) {
-            window->draw(i_sprite);
+        for (auto& i_sprite: renderer->current_other_sprites) {
+            window_manager->windowDraw(i_sprite);
         }
-        window->draw(player->getSprite());
+        window_manager->windowDraw(player->getSprite());
 
-        /*window->draw(ShadowSprite1);
-        window->draw(ShadowSprite2);
-        window->draw(ShadowSprite3);
-        window->draw(ShadowSprite4);
-        window->draw(LightSprite);
-        //window->draw(ConvexShape);
-        window->draw(line1, 2, sf::Lines);
-        window->draw(line2, 2, sf::Lines);
-        window->draw(line3, 2, sf::Lines);
-        window->draw(line4, 2, sf::Lines);
-        window->draw(line11, 2, sf::Lines);
-        window->draw(line22, 2, sf::Lines);
-        window->draw(line33, 2, sf::Lines);
-        window->draw(line44, 2, sf::Lines);*/
+        /*window_manager->windowDraw(ShadowSprite1);
+        window_manager->windowDraw(ShadowSprite2);
+        window_manager->windowDraw(ShadowSprite3);
+        window_manager->windowDraw(ShadowSprite4);
+        window_manager->windowDraw(LightSprite);
+        //window_manager->windowDraw(ConvexShape);
+        window_manager->windowDraw(line1, 2, sf::Lines);
+        window_manager->windowDraw(line2, 2, sf::Lines);
+        window_manager->windowDraw(line3, 2, sf::Lines);
+        window_manager->windowDraw(line4, 2, sf::Lines);
+        window_manager->windowDraw(line11, 2, sf::Lines);
+        window_manager->windowDraw(line22, 2, sf::Lines);
+        window_manager->windowDraw(line33, 2, sf::Lines);
+        window_manager->windowDraw(line44, 2, sf::Lines);*/
 
         if (player->attack_animation != 0) {
-            window->draw(AnimationWeaponSprite);
+            window_manager->windowDraw(renderer->AnimationWeaponSprite);
         }
         if (player->defence && player->inv_items[28] != 0) {
-            window->draw(AnimationShieldSprite);
+            window_manager->windowDraw(renderer->AnimationShieldSprite);
         }
         if (player->dash_timer > 0) {
-            window->draw(AnimationDashSprite);
+            window_manager->windowDraw(renderer->AnimationDashSprite);
         }
         if (500 <= player->space_timer && player->space_timer <= 750) {
-            window->draw(GuiIndicatorSprite);
+            window_manager->windowDraw(renderer->GuiIndicatorSprite);
         }
-        for (auto& i_sprite: gui_sprites) { //TODO: replace with unique names so there won't be any "a", "b", "c" etc.
+        for (auto& i_sprite: renderer->gui_sprites) { //TODO: replace with unique names so there won't be any "a", "b", "c" etc.
             bool i1 = index != 1;
             bool i2 = index != 2;
             bool i4 = index != 4;
@@ -130,95 +112,95 @@ public:
             bool g = c && i1 && i2 && i5;
             bool h = d && i1 && i2 && i4;
             if ((i1 && i2 && i4 && i5) || e || f || g || h) {
-                window->draw(i_sprite);
+                window_manager->windowDraw(i_sprite);
             }
             index++;
         }
         if (a && !b) {
-            for (auto& i_sprite: InventoryItemsSprite) {
-                window->draw(i_sprite);
+            for (auto& i_sprite: renderer->InventoryItemsSprite) {
+                window_manager->windowDraw(i_sprite);
             }
-            for (auto& i_sprite: GuiEquipmentSprites) {
-                window->draw(i_sprite);
+            for (auto& i_sprite: renderer->GuiEquipmentSprites) {
+                window_manager->windowDraw(i_sprite);
             }
         }
         if (!a && b) {
-            for (auto& i_sprite: SpellsInventorySprite) {
-                window->draw(i_sprite);
+            for (auto& i_sprite: renderer->SpellsInventorySprite) {
+                window_manager->windowDraw(i_sprite);
             }
         }
-        for (auto& i_sprite: SpellsHotbarSprites) {
-            window->draw(i_sprite);
+        for (auto& i_sprite: renderer->SpellsHotbarSprites) {
+            window_manager->windowDraw(i_sprite);
         }
         if (text_info.getString() != "") {
-            window->draw(GuiInfoSprite);
+            window_manager->windowDraw(renderer->GuiInfoSprite);
         }
         if (player->aiming) {
-            window->draw(GuiPickedSpellSprite);
+            window_manager->windowDraw(renderer->GuiPickedSpellSprite);
         }
-        for (auto& i: GuiNoManaSprites) {
-            window->draw(i);
+        for (auto& i: renderer->GuiNoManaSprites) {
+            window_manager->windowDraw(i);
         }
-        window->draw(player_stats_hp);
-        window->draw(player_stats_mp);
-        window->draw(player_stats_lvl);
-        window->draw(text_cd_0);
-        window->draw(text_cd_1);
-        window->draw(text_cd_2);
-        window->draw(text_cd_3);
-        window->draw(text_cd_4);
-        window->draw(text_cd_5);
-        window->draw(text_cd_6);
-        window->draw(text_cd_7);
-        window->draw(text_cd_8);
-        window->draw(text_target);
-        window->draw(text_strength);
-        window->draw(text_damage);
-        window->draw(text_armor);
-        window->draw(text_magic);
-        window->draw(text_critical_chance);
-        window->draw(text_magic_resistance);
-        window->draw(text_physical_resistance);
-        window->draw(text_magic_ice);
-        window->draw(text_magic_fire);
-        window->draw(text_magic_earth);
-        window->draw(text_magic_wind);
-        window->draw(text_magic_dark);
-        window->draw(text_magic_light);
-        window->draw(text_melee_weapon);
-        window->draw(text_range_weapon);
-        window->draw(text_info);
-        window->draw(text_NPC_talk);
-        for (auto& i: v_dynamic_texts) {
+        window_manager->windowDraw(renderer->player_stats_hp);
+        window_manager->windowDraw(renderer->player_stats_mp);
+        window_manager->windowDraw(renderer->player_stats_lvl);
+        window_manager->windowDraw(renderer->text_cd_0);
+        window_manager->windowDraw(renderer->text_cd_1);
+        window_manager->windowDraw(renderer->text_cd_2);
+        window_manager->windowDraw(renderer->text_cd_3);
+        window_manager->windowDraw(renderer->text_cd_4);
+        window_manager->windowDraw(renderer->text_cd_5);
+        window_manager->windowDraw(renderer->text_cd_6);
+        window_manager->windowDraw(renderer->text_cd_7);
+        window_manager->windowDraw(renderer->text_cd_8);
+        window_manager->windowDraw(renderer->text_target);
+        window_manager->windowDraw(renderer->text_strength);
+        window_manager->windowDraw(renderer->text_damage);
+        window_manager->windowDraw(renderer->text_armor);
+        window_manager->windowDraw(renderer->text_magic);
+        window_manager->windowDraw(renderer->text_critical_chance);
+        window_manager->windowDraw(renderer->text_magic_resistance);
+        window_manager->windowDraw(renderer->text_physical_resistance);
+        window_manager->windowDraw(renderer->text_magic_ice);
+        window_manager->windowDraw(renderer->text_magic_fire);
+        window_manager->windowDraw(renderer->text_magic_earth);
+        window_manager->windowDraw(renderer->text_magic_wind);
+        window_manager->windowDraw(renderer->text_magic_dark);
+        window_manager->windowDraw(renderer->text_magic_light);
+        window_manager->windowDraw(renderer->text_melee_weapon);
+        window_manager->windowDraw(renderer->text_range_weapon);
+        window_manager->windowDraw(renderer->text_info);
+        window_manager->windowDraw(renderer->text_NPC_talk);
+        for (auto& i: renderer->v_dynamic_texts) {
             if (i.getTimer() > 0) {
                 Text temp_text = i.getText();
                 temp_text.setFont(i.getFont());
-                window->draw(temp_text);
+                window_manager->windowDraw(temp_text);
             }
         }
-        if (!player->defence && text_dynamic_shield_cd->getTimer() > 0) {
-            Text temp_text = text_dynamic_shield_cd->getText();
-            temp_text.setFont(text_dynamic_shield_cd->getFont());
-            window->draw(temp_text);
+        if (!player->defence && renderer->text_dynamic_shield_cd->getTimer() > 0) {
+            Text temp_text = renderer->text_dynamic_shield_cd->getText();
+            temp_text.setFont(renderer->text_dynamic_shield_cd->getFont());
+            window_manager->windowDraw(temp_text);
         }
     }
-    void updates(auto& map_manager) {
+    void updates() {
         time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
         time = time/800;
         timers(time, *this);
         gainLVL(*this);
-        setImages(*this, 27, player->inv_spells, SpellsInventorySprite);
-        setImages(*this, 9, player->hotbar_spells, SpellsHotbarSprites);
-        updateGuiSprites(player);
-        player->update(time, map_manager, *this);
+        setImages(*this, 27, player->inv_spells, renderer->SpellsInventorySprite);
+        setImages(*this, 9, player->hotbar_spells, renderer->SpellsHotbarSprites);
+        renderer->updateGuiSprites(*this);
+        player->update(time, *this);
         //v_monsters[2].hitMonster(300, time, player); //stress test
-        updateText(time, player);
+        renderer->updateText(time, *this);
         monsterDeath(*this);
-        guiTarget(*this);
-        updateMonsters(time, map_manager, *this, player);
-        updateNPCs(time, map_manager, *this);
-        viewSetCenter();
+        renderer->guiTarget(*this);
+        updateMonsters(time, *this, player);
+        updateNPCs(time, *this);
+        window_manager->viewSetCenter(player->getX(), player->getY());
     }
     void timers(auto& time, auto& game) {
         if (game.player->space_timer > 0) {
@@ -330,11 +312,11 @@ public:
             game.player->lvl++;
         }
     }
-    void updateMonsters(auto& time, auto& map_manager, auto& game, auto& player) {
+    void updateMonsters(auto& time, auto& game, auto& player) {
         int index1 = 0;
         for (auto& i: v_monsters) {
-            i.update(time, map_manager, game, player);
-            i.moveMonster(time, map_manager, game, player);
+            i.update(time, game, player);
+            i.moveMonster(time, game, player);
             int index2 = 0;
             for (auto& i2: v_monsters) {
                 float mx1 = i.getX();
@@ -363,10 +345,10 @@ public:
             index1++;
         }
     }
-    void updateNPCs(auto& time, auto& map_manager, auto& game) {
+    void updateNPCs(auto& time, auto& game) {
         //int index1 = 0;
         for (auto& i: v_NPC) {
-            i.update(time, map_manager, game);
+            i.update(time, game);
             /*int index2 = 0;
             for (auto& i2: v_monsters) {
                 float mx1 = i.getX();
@@ -398,10 +380,11 @@ public:
     void monsterDeath(auto& game) {
         for (int i = 0; i < v_monsters.size(); i++) {
             if (v_monsters[i].getHP() <= 0) {
-                current_other_sprites.erase(current_other_sprites.begin() + v_monsters[i].getSprite());
+                std::vector<Sprite> cos = renderer->current_other_sprites;
+                cos.erase(cos.begin() + v_monsters[i].getSprite());
                 other_sprite_counter--;
                 target_m = NULL;
-                text_target.setString("");
+                renderer->text_target.setString("");
                 for (int j = 0; j < v_monsters.size(); j++) {
                     if (j > i) {
                         v_monsters[j].reduceSprite();

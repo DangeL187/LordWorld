@@ -29,7 +29,7 @@ public:
         hotbar_spells[1] = 2;
 	}
 
-	void interactionWithMap(auto& map_manager, auto& game) {
+	void interactionWithMap(auto& game) {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
 				for (int l = 0; l < game.v_NPC.size(); l++) {
@@ -44,7 +44,7 @@ public:
 				        if (dx<0) x = (game.v_NPC[l].getX() + w);
 					}
 				}
-                auto t = map_manager.getTileMapID(i, j);
+                auto t = game.map->getTileMapID(i, j);
 		        if (t == 4) {
 			        if (dy>0) setY(i * 64 - h);
 			        if (dy<0) setY(i * 64 + 64);
@@ -53,13 +53,13 @@ public:
 		        }
 		        if (t == 5) {
 			        setX(300); setY(300);
-					map_manager.setTileMapID(i, j, 0);
+					game.map->setTileMapID(i, j, 0);
 		        }
 	        }
 	    }
     }
 
-    void update(float time, auto& map_manager, auto& game) {
+    void update(float time, auto& game) {
 		switch (dir) {
 			case 0: dx = speed; dy = 0; break;
 			case 1: dx = -speed; dy = 0; break;
@@ -71,7 +71,7 @@ public:
 		y += dy*time;
 		speed = 0;
 
-		interactionWithMap(map_manager, game);
+		interactionWithMap(game);
 		sprite.setPosition(getX(), getY());
 		setEquipmentStats(game, inv_items);
         keys(time, game);

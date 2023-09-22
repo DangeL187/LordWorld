@@ -1,13 +1,25 @@
 class WindowManager {
-protected:
+private:
     std::shared_ptr<RenderWindow> window;
     unsigned int window_w = 1920; //TODO: make resolution customizable
     unsigned int window_h = 1080;
-public:
     View view;
 
-    void createWindow() {
-        window = std::make_shared<RenderWindow>(VideoMode(window_w, window_h), "Lord World", sf::Style::Fullscreen);
+    void createWindow(std::string name) {
+        window = std::make_shared<RenderWindow>(VideoMode(window_w, window_h), name, sf::Style::Fullscreen);
+    }
+public:
+    WindowManager(std::string name, int w, int h) {
+        window_w = w;
+        window_h = h;
+        createWindow(name);
+    }
+
+    void viewSetCenter(float x, float y) {
+        view.setCenter(x, y);
+    }
+    void viewReset() {
+        view.reset(FloatRect(0, 0, window_w, window_h));
     }
     float viewGetCenterX() {
         return view.getCenter().x;
@@ -15,9 +27,7 @@ public:
     float viewGetCenterY() {
         return view.getCenter().y;
     }
-    void viewReset() {
-        view.reset(FloatRect(0, 0, window_w, window_h));
-    }
+
     void windowHandleEvents() {
         Event event;
         while (window->pollEvent(event)) {
@@ -34,6 +44,12 @@ public:
     }
     void windowDisplay() {
         window->display();
+    }
+    void windowDraw(Sprite to_draw) {
+        window->draw(to_draw);
+    }
+    void windowDraw(Text to_draw) {
+        window->draw(to_draw);
     }
     bool windowIsOpen() {
         return window->isOpen();

@@ -15,10 +15,10 @@ public:
 		other_sprite_counter_++;
 	}
 
-	void interactionWithMap(auto& time, auto& map_manager, auto& game, auto& player) {
+	void interactionWithMap(auto& time, auto& game, auto& player) {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
-				auto t = map_manager.getTileMapID(i, j);
+				auto t = game.map->getTileMapID(i, j);
 		        if (t == 4) {
 			        if (dy>0) y = i * 64 - h;
 			        if (dy<0) y = i * 64 + 64;
@@ -27,7 +27,7 @@ public:
 		        }
 		        if (t == 5) {
 			        x = 300; y = 300;
-			        map_manager.setTileMapID(i, j, 0);
+			        game.map->setTileMapID(i, j, 0);
 		        }
 	        }
 	    }
@@ -68,7 +68,7 @@ public:
 		} else { as_cd = as; }
     }
 
-    void update(auto& time, auto& map_manager, auto& game, auto& player) {
+    void update(auto& time, auto& game, auto& player) {
 		switch (dir) {
 		    case 0: dx = speed; dy = 0; break;
 		    case 1: dx = -speed; dy = 0; break;
@@ -80,12 +80,12 @@ public:
 		y += dy*time;
 
 		speed = 0;
-		interactionWithMap(time, map_manager, game, player);
+		interactionWithMap(time, game, player);
 		game.current_other_sprites[static_sprite].setPosition(x, y);
 		checkBuff(time, player);
 	}
 
-	void moveMonster(auto& time, auto& map_manager, auto& game, auto& player) {
+	void moveMonster(auto& time, auto& game, auto& player) {
 		if (move_monster_timer > 0) {
             move_monster_timer -= time;
         } else {
@@ -104,7 +104,7 @@ public:
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
 				    }
-					update(time, map_manager, game, player);
+					update(time, game, player);
 				}
 				if (y >= player->getY()) {
 					speed = 0.1; dir = 2;
@@ -113,7 +113,7 @@ public:
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
 				    }
-					update(time, map_manager, game, player);
+					update(time, game, player);
 				}
 				if (x <= player->getX()) {
 					speed = 0.1; dir = 0;
@@ -122,7 +122,7 @@ public:
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
 				    }
-					update(time, map_manager, game, player);
+					update(time, game, player);
 				}
 				if (x >= player->getX()) {
 					speed = 0.1; dir = 1;
@@ -131,7 +131,7 @@ public:
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
 				    }
-					update(time, map_manager, game, player);
+					update(time, game, player);
 				}
 			}
 		}
@@ -141,22 +141,22 @@ public:
 				    case 0:
 					    speed = 0.1;
 						dir = 0;
-						update(time, map_manager, game, player);
+						update(time, game, player);
 						break;
 				    case 1:
 					    speed = 0.1;
 						dir = 1;
-						update(time, map_manager, game, player);
+						update(time, game, player);
 						break;
 				    case 2:
 					    speed = 0.1;
 						dir = 2;
-						update(time, map_manager, game, player);
+						update(time, game, player);
 						break;
 				    case 3:
 					    speed = 0.1;
 						dir = 3;
-						update(time, map_manager, game, player);
+						update(time, game, player);
 						break;
 				}
 			}

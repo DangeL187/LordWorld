@@ -1,5 +1,5 @@
-class Renderer: public WindowManager {
-public:
+class Renderer {
+private:
     //TEST, TEMP, SHADOWS
     /*Sprite ShadowSprite1;
     Sprite ShadowSprite2;
@@ -76,12 +76,21 @@ public:
     Text text_range_weapon;
     std::shared_ptr<DynamicText> text_dynamic_shield_cd;
     std::vector<DynamicText> v_dynamic_texts;
+public:
+    Renderer(Map& map) {
+        initText();
+        initImages();
+        createMapSprite(map);
+        createItemSprites();
+        createMonsterSprites();
+        createNPCSprites();
+        createGuiSprites();
+    }
 
     void createDynamicText(Font font, int size, int timer, std::string value="None", float x=0, float y=0, bool isRed=false) {
         DynamicText dynamic_text(font, size, timer, value, x, y, isRed);
         v_dynamic_texts.push_back(dynamic_text);
     }
-protected:
     /*float* getShadowEdge(float OX, float OY, float OZ, float LX, float LY, float LZ) { //replace with passing objectSprite and lightCords
         std::cout << std::endl;
         float a = abs(LY - OY);
@@ -131,9 +140,8 @@ protected:
         return p;
 }*/
 
-
-    void createMapSprite(auto& map_manager) {
-        map_manager.setSprite(createSprite("map.png"));
+    void createMapSprite(auto& map) {
+        map->setSprite(createSprite("map.png"));
     }
     void createItemSprites() {
         item_sprites.push_back(createSprite("Wooden Sword.png")); //TODO: take names from file
@@ -166,7 +174,7 @@ protected:
             i = createSprite("GuiNoMana.png");
         }
     }
-    void initText(auto& player) {
+    void initText() {
         font.loadFromFile("../font/OceanSummer.ttf");
         setText(text_cd_0, font, 60);
         setText(text_cd_1, font, 60);
@@ -222,7 +230,7 @@ protected:
             //SpellsInventoryPageImage[i] = createSprite("GuiEmptyItem.png");
         }
     }
-    void updateGuiSprites(auto& player) {
+    void updateGuiSprites(auto& game) {
         //SHADOW:
 
         /*LightSprite.setPosition(900, 900);
@@ -273,19 +281,22 @@ protected:
         line44[0] = sf::Vertex(sf::Vector2f(px, py));
         line44[1] = sf::Vertex(sf::Vector2f(shadow_x, shadow_y));*/
 
-        gui_sprites[0].setPosition(view.getCenter().x - 960, view.getCenter().y - 540);
-        gui_sprites[1].setPosition(view.getCenter().x - 300, view.getCenter().y - 400);
-        gui_sprites[2].setPosition(view.getCenter().x - 300, view.getCenter().y - 496);
-        gui_sprites[3].setPosition(view.getCenter().x - 540, view.getCenter().y + 380);
-        gui_sprites[4].setPosition(view.getCenter().x - 920, view.getCenter().y - 310);
-        gui_sprites[5].setPosition(view.getCenter().x - 540, view.getCenter().y + 80);
+        float view_x = game.window_manager->viewGetCenterX();
+        float view_y = game.window_manager->viewGetCenterY();
+
+        gui_sprites[0].setPosition(view_x - 960, view_y - 540);
+        gui_sprites[1].setPosition(view_x - 300, view_y - 400);
+        gui_sprites[2].setPosition(view_x - 300, view_y - 496);
+        gui_sprites[3].setPosition(view_x - 540, view_y + 380);
+        gui_sprites[4].setPosition(view_x - 920, view_y - 310);
+        gui_sprites[5].setPosition(view_x - 540, view_y + 80);
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 4; j++) {
-                float condix1 = view.getCenter().x + 261 - 15 + 112 * j;
-                float condiy1 = view.getCenter().y - 343 - 15 + 112 * i;
-                float condix2 = view.getCenter().x + 231 + 112 * j;
-                float condiy2 = view.getCenter().y - 373 + 112 * i;
+                float condix1 = view_x + 261 - 15 + 112 * j;
+                float condiy1 = view_y - 343 - 15 + 112 * i;
+                float condix2 = view_x + 231 + 112 * j;
+                float condiy2 = view_y - 373 + 112 * i;
                 InventoryItemsSprite[i * 4 + j].setPosition(condix1, condiy1);
                 SpellsInventorySprite[i * 4 + j].setPosition(condix2+5, condiy2);
             }
@@ -294,80 +305,80 @@ protected:
         for (int i = 0; i < 9; i++) {
             int damage_from_spell;
             int mana_cost;
-            SpellsHotbarSprites[i].setPosition(view.getCenter().x - 536 + 112 * i, view.getCenter().y + 384);
-            GuiNoManaSprites[i].setPosition(view.getCenter().x - 536 + 112 * i, view.getCenter().y + 384);
-            defineSpell(player, player->hotbar_spells[i], damage_from_spell, mana_cost);
-            if (player->hotbar_spells[i] != 0 && (player->cooldowns[i] != 0 || player->mp < mana_cost)) {
+            SpellsHotbarSprites[i].setPosition(view_x - 536 + 112 * i, view_y + 384);
+            GuiNoManaSprites[i].setPosition(view_x - 536 + 112 * i, view_y + 384);
+            defineSpell(game.player, game.player->hotbar_spells[i], damage_from_spell, mana_cost);
+            if (game.player->hotbar_spells[i] != 0 && (game.player->cooldowns[i] != 0 || game.player->mp < mana_cost)) {
                 GuiNoManaSprites[i].setColor(sf::Color(0, 0, 0, 160));
             } else {
                 GuiNoManaSprites[i].setColor(sf::Color(0, 0, 0, 0));
             }
         }
-        if (player->aiming && player->spell_slot == 0) {
-            GuiPickedSpellSprite.setPosition(view.getCenter().x - 536, view.getCenter().y + 384);
+        if (game.player->aiming && game.player->spell_slot == 0) {
+            GuiPickedSpellSprite.setPosition(view_x - 536, view_y + 384);
         }
-        if (player->aiming && player->spell_slot == 1) {
-            GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112, view.getCenter().y + 384);
+        if (game.player->aiming && game.player->spell_slot == 1) {
+            GuiPickedSpellSprite.setPosition(view_x - 536 + 112, view_y + 384);
         }
-        if (player->aiming && player->spell_slot == 2) {
-            GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 2, view.getCenter().y + 384);
+        if (game.player->aiming && game.player->spell_slot == 2) {
+            GuiPickedSpellSprite.setPosition(view_x - 536 + 112 * 2, view_y + 384);
         }
-        if (player->aiming && player->spell_slot == 3) {
-            GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 3, view.getCenter().y + 384);
+        if (game.player->aiming && game.player->spell_slot == 3) {
+            GuiPickedSpellSprite.setPosition(view_x - 536 + 112 * 3, view_y + 384);
         }
-        if (player->aiming && player->spell_slot == 4) {
-            GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 4, view.getCenter().y + 384);
+        if (game.player->aiming && game.player->spell_slot == 4) {
+            GuiPickedSpellSprite.setPosition(view_x - 536 + 112 * 4, view_y + 384);
         }
-        if (player->aiming && player->spell_slot == 5) {
-            GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 5, view.getCenter().y + 384);
+        if (game.player->aiming && game.player->spell_slot == 5) {
+            GuiPickedSpellSprite.setPosition(view_x - 536 + 112 * 5, view_y + 384);
         }
-        if (player->aiming && player->spell_slot == 6) {
-            GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 6, view.getCenter().y + 384);
+        if (game.player->aiming && game.player->spell_slot == 6) {
+            GuiPickedSpellSprite.setPosition(view_x - 536 + 112 * 6, view_y + 384);
         }
-        if (player->aiming && player->spell_slot == 7) {
-            GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 7, view.getCenter().y + 384);
+        if (game.player->aiming && game.player->spell_slot == 7) {
+            GuiPickedSpellSprite.setPosition(view_x - 536 + 112 * 7, view_y + 384);
         }
-        if (player->aiming && player->spell_slot == 8) {
-            GuiPickedSpellSprite.setPosition(view.getCenter().x - 536 + 112 * 8, view.getCenter().y + 384);
+        if (game.player->aiming && game.player->spell_slot == 8) {
+            GuiPickedSpellSprite.setPosition(view_x - 536 + 112 * 8, view_y + 384);
         }
 
-        if (player->inv_items[27] != 0) {
-            GuiEquipmentSprites[0].setPosition(view.getCenter().x - 231 - 15, view.getCenter().y - 227 - 15);
+        if (game.player->inv_items[27] != 0) {
+            GuiEquipmentSprites[0].setPosition(view_x - 231 - 15, view_y - 227 - 15);
         } else {
-            GuiEquipmentSprites[0].setPosition(view.getCenter().x - 231 - 29, view.getCenter().y - 227 - 29);
+            GuiEquipmentSprites[0].setPosition(view_x - 231 - 29, view_y - 227 - 29);
         }
-        if (player->inv_items[28] != 0) {
-            GuiEquipmentSprites[1].setPosition(view.getCenter().x + 89 - 15, view.getCenter().y - 227 - 15);
+        if (game.player->inv_items[28] != 0) {
+            GuiEquipmentSprites[1].setPosition(view_x + 89 - 15, view_y - 227 - 15);
         } else {
-            GuiEquipmentSprites[1].setPosition(view.getCenter().x + 89 - 29, view.getCenter().y - 227 - 29);
+            GuiEquipmentSprites[1].setPosition(view_x + 89 - 29, view_y - 227 - 29);
         }
-        if (player->inv_items[29] != 0) {
-            GuiEquipmentSprites[2].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y - 351 - 15);
+        if (game.player->inv_items[29] != 0) {
+            GuiEquipmentSprites[2].setPosition(view_x - 71 - 15, view_y - 351 - 15);
         } else {
-            GuiEquipmentSprites[2].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y - 351 - 29);
+            GuiEquipmentSprites[2].setPosition(view_x - 71 - 29, view_y - 351 - 29);
         }
-        if (player->inv_items[30] != 0) {
-            GuiEquipmentSprites[3].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y - 227 - 15);
+        if (game.player->inv_items[30] != 0) {
+            GuiEquipmentSprites[3].setPosition(view_x - 71 - 15, view_y - 227 - 15);
         } else {
-            GuiEquipmentSprites[3].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y - 227 - 29);
+            GuiEquipmentSprites[3].setPosition(view_x - 71 - 29, view_y - 227 - 29);
         }
-        if (player->inv_items[31] != 0) {
-            GuiEquipmentSprites[4].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y - 103 - 15);
+        if (game.player->inv_items[31] != 0) {
+            GuiEquipmentSprites[4].setPosition(view_x - 71 - 15, view_y - 103 - 15);
         } else {
-            GuiEquipmentSprites[4].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y - 103 - 29);
+            GuiEquipmentSprites[4].setPosition(view_x - 71 - 29, view_y - 103 - 29);
         }
-        if (player->inv_items[32] != 0) {
-            GuiEquipmentSprites[5].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y + 21 - 15);
+        if (game.player->inv_items[32] != 0) {
+            GuiEquipmentSprites[5].setPosition(view_x - 71 - 15, view_y + 21 - 15);
         } else {
-            GuiEquipmentSprites[5].setPosition(view.getCenter().x - 71 - 29, view.getCenter().y + 21 - 29);
+            GuiEquipmentSprites[5].setPosition(view_x - 71 - 29, view_y + 21 - 29);
         }
-        InventoryItemsSprite[24].setPosition(view.getCenter().x - 203 - 15, view.getCenter().y + 185 - 15);
-        InventoryItemsSprite[25].setPosition(view.getCenter().x - 71 - 15, view.getCenter().y + 185 - 15);
-        InventoryItemsSprite[26].setPosition(view.getCenter().x + 61 - 15, view.getCenter().y + 185 - 15);
+        InventoryItemsSprite[24].setPosition(view_x - 203 - 15, view_y + 185 - 15);
+        InventoryItemsSprite[25].setPosition(view_x - 71 - 15, view_y + 185 - 15);
+        InventoryItemsSprite[26].setPosition(view_x + 61 - 15, view_y + 185 - 15);
 
-        GuiIndicatorSprite.setPosition(player->getX()+18, player->getY()-34);
+        GuiIndicatorSprite.setPosition(game.player->getX()+18, game.player->getY()-34);
     }
-    void updateText(float time, auto& player) {
+    void updateText(float time, auto& game) {
         text_cd_0.setColor(Color::White);
         text_cd_1.setColor(Color::White);
         text_cd_2.setColor(Color::White);
@@ -395,64 +406,64 @@ protected:
         player_stats_mp.setStyle(Text::Bold);
         player_stats_lvl.setStyle(Text::Bold);
 
-        std::string p_lvl = std::to_string(player->lvl);
-        std::string p_hp = std::to_string(player->hp);
-        std::string p_mp = std::to_string(player->mp);
-        std::string p_xp = std::to_string(player->xp);
-        std::string p_hr = std::to_string(player->hp_regen);
-        std::string p_mr = std::to_string(player->mp_regen);
+        std::string p_lvl = std::to_string(game.player->lvl);
+        std::string p_hp = std::to_string(game.player->hp);
+        std::string p_mp = std::to_string(game.player->mp);
+        std::string p_xp = std::to_string(game.player->xp);
+        std::string p_hr = std::to_string(game.player->hp_regen);
+        std::string p_mr = std::to_string(game.player->mp_regen);
         player_stats_hp.setString(p_hp + " +" + p_hr[0] + p_hr[1] + p_hr[2]);
         player_stats_mp.setString(p_mp + " +" + p_mr[0] + p_mr[1] + p_mr[2]);
         player_stats_lvl.setString(p_lvl + " (" + p_xp + "/" + p_lvl + "00)");
-        if (player->cooldowns[0] != 0) {
-            text_cd_0.setString(std::to_string(player->cooldowns[0]/1000));
+        if (game.player->cooldowns[0] != 0) {
+            text_cd_0.setString(std::to_string(game.player->cooldowns[0]/1000));
         } else {
             text_cd_0.setString("");
         }
-        if (player->cooldowns[1] != 0) {
-            text_cd_1.setString(std::to_string(player->cooldowns[1]/1000));
+        if (game.player->cooldowns[1] != 0) {
+            text_cd_1.setString(std::to_string(game.player->cooldowns[1]/1000));
         } else {
             text_cd_1.setString("");
         }
-        if (player->cooldowns[2] != 0) {
-            text_cd_2.setString(std::to_string(player->cooldowns[2]/1000));
+        if (game.player->cooldowns[2] != 0) {
+            text_cd_2.setString(std::to_string(game.player->cooldowns[2]/1000));
         } else {
             text_cd_2.setString("");
         }
-        if (player->cooldowns[3] != 0) {
-            text_cd_3.setString(std::to_string(player->cooldowns[3]/1000));
+        if (game.player->cooldowns[3] != 0) {
+            text_cd_3.setString(std::to_string(game.player->cooldowns[3]/1000));
         } else {
             text_cd_3.setString("");
         }
-        if (player->cooldowns[4] != 0) {
-            text_cd_4.setString(std::to_string(player->cooldowns[4]/1000));
+        if (game.player->cooldowns[4] != 0) {
+            text_cd_4.setString(std::to_string(game.player->cooldowns[4]/1000));
         } else {
             text_cd_4.setString("");
         }
-        if (player->cooldowns[5] != 0) {
-            text_cd_5.setString(std::to_string(player->cooldowns[5]/1000));
+        if (game.player->cooldowns[5] != 0) {
+            text_cd_5.setString(std::to_string(game.player->cooldowns[5]/1000));
         } else {
             text_cd_5.setString("");
         }
-        if (player->cooldowns[6] != 0) {
-            text_cd_6.setString(std::to_string(player->cooldowns[6]/1000));
+        if (game.player->cooldowns[6] != 0) {
+            text_cd_6.setString(std::to_string(game.player->cooldowns[6]/1000));
         } else {
             text_cd_6.setString("");
         }
-        if (player->cooldowns[7] != 0) {
-            text_cd_7.setString(std::to_string(player->cooldowns[7]/1000));
+        if (game.player->cooldowns[7] != 0) {
+            text_cd_7.setString(std::to_string(game.player->cooldowns[7]/1000));
         } else {
             text_cd_7.setString("");
         }
-        if (player->cooldowns[8] != 0) {
-            text_cd_8.setString(std::to_string(player->cooldowns[8]/1000));
+        if (game.player->cooldowns[8] != 0) {
+            text_cd_8.setString(std::to_string(game.player->cooldowns[8]/1000));
         } else {
             text_cd_8.setString("");
         }
 
-        auto get_pos_x = player->getX()+50;
-        auto get_pos_y = player->getY()-10;
-        auto value = std::to_string(int(player->shield_cd/100)/10.0);
+        auto get_pos_x = game.player->getX()+50;
+        auto get_pos_y = game.player->getY()-10;
+        auto value = std::to_string(int(game.player->shield_cd/100)/10.0);
         value = value.erase(value.size() - 5);
         text_dynamic_shield_cd->update(time, get_pos_x, get_pos_y, value);
 
@@ -460,35 +471,38 @@ protected:
             i.update(time);
         }
 
-        text_cd_0.setPosition(view.getCenter().x - 490, view.getCenter().y + 404);
-        text_cd_1.setPosition(view.getCenter().x - 380, view.getCenter().y + 404);
-        text_cd_2.setPosition(view.getCenter().x - 265, view.getCenter().y + 404);
-        text_cd_3.setPosition(view.getCenter().x - 155, view.getCenter().y + 404);
-        text_cd_4.setPosition(view.getCenter().x - 45, view.getCenter().y + 404);
-        text_cd_5.setPosition(view.getCenter().x + 70, view.getCenter().y + 404);
-        text_cd_6.setPosition(view.getCenter().x + 180, view.getCenter().y + 404);
-        text_cd_7.setPosition(view.getCenter().x + 295, view.getCenter().y + 404);
-        text_cd_8.setPosition(view.getCenter().x + 405, view.getCenter().y + 404);
-        player_stats_hp.setPosition(view.getCenter().x - 690, view.getCenter().y - 511);
-        player_stats_mp.setPosition(view.getCenter().x - 690, view.getCenter().y - 443);
-        player_stats_lvl.setPosition(view.getCenter().x - 690, view.getCenter().y - 375);
-        text_NPC_talk.setPosition(view.getCenter().x - 495, view.getCenter().y + 85);
-        text_target.setPosition(view.getCenter().x + 700, view.getCenter().y - 500);
-        text_strength.setPosition(view.getCenter().x - 900, view.getCenter().y - 260);
-        text_damage.setPosition(view.getCenter().x - 900, view.getCenter().y - 220);
-        text_armor.setPosition(view.getCenter().x - 900, view.getCenter().y - 180);
-        text_magic.setPosition(view.getCenter().x - 900, view.getCenter().y - 140);
-        text_critical_chance.setPosition(view.getCenter().x - 900, view.getCenter().y - 100);
-        text_magic_resistance.setPosition(view.getCenter().x - 900, view.getCenter().y - 60);
-        text_physical_resistance.setPosition(view.getCenter().x - 900, view.getCenter().y - 20);
-        text_magic_ice.setPosition(view.getCenter().x - 900, view.getCenter().y + 20);
-        text_magic_fire.setPosition(view.getCenter().x - 900, view.getCenter().y + 60);
-        text_magic_earth.setPosition(view.getCenter().x - 900, view.getCenter().y + 100);
-        text_magic_wind.setPosition(view.getCenter().x - 900, view.getCenter().y + 140);
-        text_magic_dark.setPosition(view.getCenter().x - 900, view.getCenter().y + 180);
-        text_magic_light.setPosition(view.getCenter().x - 900, view.getCenter().y + 220);
-        text_melee_weapon.setPosition(view.getCenter().x - 900, view.getCenter().y + 260);
-        text_range_weapon.setPosition(view.getCenter().x - 900, view.getCenter().y + 300);
+        float view_x = game.window_manager->viewGetCenterX();
+        float view_y = game.window_manager->viewGetCenterY();
+
+        text_cd_0.setPosition(view_x - 490, view_y + 404);
+        text_cd_1.setPosition(view_x - 380, view_y + 404);
+        text_cd_2.setPosition(view_x - 265, view_y + 404);
+        text_cd_3.setPosition(view_x - 155, view_y + 404);
+        text_cd_4.setPosition(view_x - 45, view_y + 404);
+        text_cd_5.setPosition(view_x + 70, view_y + 404);
+        text_cd_6.setPosition(view_x + 180, view_y + 404);
+        text_cd_7.setPosition(view_x + 295, view_y + 404);
+        text_cd_8.setPosition(view_x + 405, view_y + 404);
+        player_stats_hp.setPosition(view_x - 690, view_y - 511);
+        player_stats_mp.setPosition(view_x - 690, view_y - 443);
+        player_stats_lvl.setPosition(view_x - 690, view_y - 375);
+        text_NPC_talk.setPosition(view_x - 495, view_y + 85);
+        text_target.setPosition(view_x + 700, view_y - 500);
+        text_strength.setPosition(view_x - 900, view_y - 260);
+        text_damage.setPosition(view_x - 900, view_y - 220);
+        text_armor.setPosition(view_x - 900, view_y - 180);
+        text_magic.setPosition(view_x - 900, view_y - 140);
+        text_critical_chance.setPosition(view_x - 900, view_y - 100);
+        text_magic_resistance.setPosition(view_x - 900, view_y - 60);
+        text_physical_resistance.setPosition(view_x - 900, view_y - 20);
+        text_magic_ice.setPosition(view_x - 900, view_y + 20);
+        text_magic_fire.setPosition(view_x - 900, view_y + 60);
+        text_magic_earth.setPosition(view_x - 900, view_y + 100);
+        text_magic_wind.setPosition(view_x - 900, view_y + 140);
+        text_magic_dark.setPosition(view_x - 900, view_y + 180);
+        text_magic_light.setPosition(view_x - 900, view_y + 220);
+        text_melee_weapon.setPosition(view_x - 900, view_y + 260);
+        text_range_weapon.setPosition(view_x - 900, view_y + 300);
     }
     void setText(auto& text, auto& font, auto size) {
         text.setFont(font);
