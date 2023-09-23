@@ -1,7 +1,9 @@
 #include "WindowManager.h"
 #include "Renderer.h"
+#include "SpriteLoader.h"
 #include "Info/Info.h"
 #include "Items/Items.h"
+#include "EntityManager.h"
 #include "Spells/Spells.h"
 #include "Player/Player.h"
 #include "NPC/NPC.h"
@@ -15,14 +17,21 @@ public:
     std::shared_ptr<Player> player;
     std::vector<NPC> v_NPC;
     std::vector<Monster> v_monsters;
-    std::array<std::vector<int>, 5> items_dropped;
     std::vector<int> damaged_numbers;
     std::shared_ptr<Map> map;
     std::shared_ptr<WindowManager> window_manager;
     std::shared_ptr<Renderer> renderer;
+    std::shared_ptr<EntityManager> entity_manager;
+    std::shared_ptr<SpriteLoader> sprite_loader;
 
     Game() = default;
 
+    void createSpriteLoader() {
+        sprite_loader = std::make_shared<SpriteLoader>();
+    }
+    void createEntityManager() {
+        entity_manager = std::make_shared<EntityManager>();
+    }
     void createRenderer() {
         renderer = std::make_shared<Renderer>(map);
     }
@@ -31,17 +40,6 @@ public:
     }
     void createMap() {
         map = std::make_shared<Map>();
-    }
-    void createItem(int id, int x, int y) {
-        items_dropped[0].push_back(id);
-        items_dropped[1].push_back(x);
-        items_dropped[2].push_back(y);
-        items_dropped[3].push_back(renderer->item_sprite_counter);
-        defineItemType(id, renderer->current_item_sprites, renderer->item_sprites, items_dropped);
-        current_item_sprites[item_sprite_counter].setTextureRect(IntRect(0, 0, 56, 56));
-        current_item_sprites[item_sprite_counter].setScale(0.75, 0.75);
-        current_item_sprites[item_sprite_counter].setPosition(x, y);
-        item_sprite_counter++;
     }
     void createPlayer(float x, float y, float w, float h) {
         player = std::make_shared<Player>(x, y, w, h);
@@ -132,7 +130,7 @@ public:
         for (auto& i_sprite: renderer->SpellsHotbarSprites) {
             window_manager->windowDraw(i_sprite);
         }
-        if (text_info.getString() != "") {
+        if (renderer->text_info.getString() != "") {
             window_manager->windowDraw(renderer->GuiInfoSprite);
         }
         if (player->aiming) {
@@ -382,7 +380,7 @@ public:
             if (v_monsters[i].getHP() <= 0) {
                 std::vector<Sprite> cos = renderer->current_other_sprites;
                 cos.erase(cos.begin() + v_monsters[i].getSprite());
-                other_sprite_counter--;
+                renderer->other_sprite_counter--;
                 target_m = NULL;
                 renderer->text_target.setString("");
                 for (int j = 0; j < v_monsters.size(); j++) {

@@ -68,7 +68,7 @@ protected:
 				shield_cd = 5000;
 				defence_go = false;
 			} else {
-				game.text_dynamic_shield_cd->start(500);
+				game.renderer->text_dynamic_shield_cd->start(500);
 			}
 		} else { key_shift = false; defence = false; defence_go = true;}
 	}
@@ -91,7 +91,7 @@ protected:
 	void keyE(auto& game) {
 		if (Keyboard::isKeyPressed(Keyboard::E) && !key_g) {
 			key_e = true;
-			if (game.items_dropped.size() != 0) {
+			if (game.entity_manager->v_items.size() != 0) {
 				eventPickItem(game);
 			}
 			eventNPCDialog(game);
@@ -232,30 +232,28 @@ protected:
 		}
 	}
 	void eventPickItem(auto& game) {
-		for (int i = 0; i < game.items_dropped[0].size(); i++) {
-			float x_m = game.items_dropped[1][i]/1 - range*64;
-			float x_p = game.items_dropped[1][i]/1 + range*64;
-			float y_m = game.items_dropped[2][i]/1 - range*64;
-			float y_p = game.items_dropped[2][i]/1 + range*64;
+		for (int i = 0; i < game.entity_manager->v_items.size(); i++) {
+			float x_m = game.entity_manager->v_items[i].getX()/1 - range*64;
+			float x_p = game.entity_manager->v_items[i].getX()/1 + range*64;
+			float y_m = game.entity_manager->v_items[i].getY()/1 - range*64;
+			float y_p = game.entity_manager->v_items[i].getY()/1 + range*64;
 			if (x_m <= game.player->getX() && game.player->getX() <= x_p &&
 				y_m <= game.player->getY() && game.player->getY() <= y_p) {
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
-						inv_items[j] = game.items_dropped[0][i];
-						inv_types[j] = game.items_dropped[4][i];
-						game.InventoryItemsSprite[j] = game.current_item_sprites[game.items_dropped[3][i]];
-						game.InventoryItemsSprite[j].setTextureRect(IntRect(0, 0, 56, 56));
-						game.InventoryItemsSprite[j].setScale(1.5, 1.5);
-						for (int k = 0; k < game.items_dropped[3].size(); k++) {
+						inv_items[j] = game.entity_manager->v_items[i].getID();
+						inv_types[j] = game.entity_manager->v_items[i].getType();
+						game.renderer->InventoryItemsSprite[j] = game.renderer->current_item_sprites[game.entity_manager->v_items[i].getSprite()];
+						game.renderer->InventoryItemsSprite[j].setTextureRect(IntRect(0, 0, 56, 56));
+						game.renderer->InventoryItemsSprite[j].setScale(1.5, 1.5);
+						for (int k = 0; k < game.entity_manager->v_items.size(); k++) {
 							if (k > i) {
-								game.items_dropped[3][k] = game.items_dropped[3][k] - 1;
+								game.entity_manager->v_items[k].setSprite(game.entity_manager->v_items[k].getID() - 1);
 							}
 						}
-						game.current_item_sprites.erase(game.current_item_sprites.begin() + game.items_dropped[3][i]);
-						for (auto& e: game.items_dropped) {
-							e.erase(e.begin() + i);
-						}
-						game.item_sprite_counter--;
+						game.renderer->current_item_sprites.erase(game.renderer->current_item_sprites.begin() + game.entity_manager->v_items[i].getSprite());
+						game.entity_manager->v_items.erase(game.entity_manager->v_items.begin() + i);
+						game.renderer->item_sprite_counter--;
 						break4items = true;
 						break;
 					}
@@ -268,7 +266,7 @@ protected:
 		}
 	}
 	void eventDropItem(auto& game) {
-		game.text_info.setString("");
+		game.renderer->text_info.setString("");
 		float out = game.player->getX() - (962 - Mouse::getPosition().x);
 		float outy = game.player->getY() - (544 - Mouse::getPosition().y);
 		float vx = game.window_manager->viewGetCenterX() + 261;
@@ -279,8 +277,8 @@ protected:
 				for (int j = 0; j < 4; j++) {
 					if (inv_items[i * 4 + j] != 0) {
 						if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
-							game.createItem(inv_items[i * 4 + j], game.player->getX(), game.player->getY());
+							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
+							game.entity_manager->createItem(game.player->getX(), game.player->getY(), inv_items[i * 4 + j], game);
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
@@ -380,71 +378,71 @@ protected:
 		float vx = game.window_manager->viewGetCenterX() + 261;
 		float vy = game.window_manager->viewGetCenterY() - 343;
 		if (is_inventory_open) {
-			game.text_info.setString("");
+			game.renderer->text_info.setString("");
 			for (int i = 0; i < 6; i++) {
 				vx = game.window_manager->viewGetCenterX() + 261;
 				for (int j = 0; j < 4; j++) {
 					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 						if (inv_types[i * 4 + j] == 7 && inv_items[24] == 0) { //other1
-							game.InventoryItemsSprite[24] = game.InventoryItemsSprite[i * 4 + j];
-							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							game.renderer->InventoryItemsSprite[24] = game.renderer->InventoryItemsSprite[i * 4 + j];
+							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
 							inv_items[24] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 							}
 						if (inv_types[i * 4 + j] == 7 && inv_items[25] == 0) { //other2
-							game.InventoryItemsSprite[25] = game.InventoryItemsSprite[i * 4 + j];
-							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							game.renderer->InventoryItemsSprite[25] = game.renderer->InventoryItemsSprite[i * 4 + j];
+							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
 							inv_items[25] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 							}
 						if (inv_types[i * 4 + j] == 7 && inv_items[26] == 0) { //other3
-							game.InventoryItemsSprite[26] = game.InventoryItemsSprite[i * 4 + j];
-							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							game.renderer->InventoryItemsSprite[26] = game.renderer->InventoryItemsSprite[i * 4 + j];
+							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
 							inv_items[26] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 							}
 							if (inv_types[i * 4 + j] == 1 && inv_items[27] == 0) { //weapon
-							game.GuiEquipmentSprites[0] = game.InventoryItemsSprite[i * 4 + j];
-							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							game.renderer->GuiEquipmentSprites[0] = game.renderer->InventoryItemsSprite[i * 4 + j];
+							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
 							inv_items[27] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 							setWeaponStats(game, inv_items);
 							}
 						if (inv_types[i * 4 + j] == 2 && inv_items[28] == 0) { //shield
-							game.GuiEquipmentSprites[1] = game.InventoryItemsSprite[i * 4 + j];
-							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							game.renderer->GuiEquipmentSprites[1] = game.renderer->InventoryItemsSprite[i * 4 + j];
+							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
 							inv_items[28] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
 						if (inv_types[i * 4 + j] == 3 && inv_items[29] == 0) { //helmet
-							game.GuiEquipmentSprites[2] = game.InventoryItemsSprite[i * 4 + j];
-							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							game.renderer->GuiEquipmentSprites[2] = game.renderer->InventoryItemsSprite[i * 4 + j];
+							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
 							inv_items[29] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
 						if (inv_types[i * 4 + j] == 4 && inv_items[30] == 0) { //chestplate
-							game.GuiEquipmentSprites[3] = game.InventoryItemsSprite[i * 4 + j];
-							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							game.renderer->GuiEquipmentSprites[3] = game.renderer->InventoryItemsSprite[i * 4 + j];
+							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
 							inv_items[30] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
 						if (inv_types[i * 4 + j] == 5 && inv_items[31] == 0) { //pants
-							game.GuiEquipmentSprites[4] = game.InventoryItemsSprite[i * 4 + j];
-							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							game.renderer->GuiEquipmentSprites[4] = game.renderer->InventoryItemsSprite[i * 4 + j];
+							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
 							inv_items[31] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
 						if (inv_types[i * 4 + j] == 6 && inv_items[32] == 0) { //boots
-							game.GuiEquipmentSprites[5] = game.InventoryItemsSprite[i * 4 + j];
-							game.InventoryItemsSprite[i * 4 + j] = game.InventoryItemEmptySprite;
+							game.renderer->GuiEquipmentSprites[5] = game.renderer->InventoryItemsSprite[i * 4 + j];
+							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
 							inv_items[32] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
@@ -460,8 +458,8 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.InventoryItemsSprite[j] = game.InventoryItemsSprite[24];
-									game.InventoryItemsSprite[24] = game.InventoryItemEmptySprite;
+									game.renderer->InventoryItemsSprite[j] = game.renderer->InventoryItemsSprite[24];
+									game.renderer->InventoryItemsSprite[24] = game.renderer->InventoryItemEmptySprite;
 							inv_items[j] = inv_items[24];
 							inv_types[j] = 7;
 									inv_items[24] = 0;
@@ -475,8 +473,8 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.InventoryItemsSprite[j] = game.InventoryItemsSprite[25];
-									game.InventoryItemsSprite[25] = game.InventoryItemEmptySprite;
+									game.renderer->InventoryItemsSprite[j] = game.renderer->InventoryItemsSprite[25];
+									game.renderer->InventoryItemsSprite[25] = game.renderer->InventoryItemEmptySprite;
 							inv_items[j] = inv_items[25];
 							inv_types[j] = 7;
 									inv_items[25] = 0;
@@ -490,8 +488,8 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.InventoryItemsSprite[j] = game.InventoryItemsSprite[26];
-									game.InventoryItemsSprite[26] = game.InventoryItemEmptySprite;
+									game.renderer->InventoryItemsSprite[j] = game.renderer->InventoryItemsSprite[26];
+									game.renderer->InventoryItemsSprite[26] = game.renderer->InventoryItemEmptySprite;
 							inv_items[j] = inv_items[26];
 							inv_types[j] = 7;
 									inv_items[26] = 0;
@@ -505,13 +503,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[0];
-									game.GuiEquipmentSprites[0] = game.InventoryItemEmptySprite;
+									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[0];
+									game.renderer->GuiEquipmentSprites[0] = game.renderer->InventoryItemEmptySprite;
 							inv_items[j] = inv_items[27];
 							inv_types[j] = 1;
 									inv_items[27] = 0;
-							game.GuiEquipmentSprites[0] = createSprite("GuiSlotWeapon.png");
-							game.GuiEquipmentSprites[0].setTextureRect(IntRect(0, 0, 116, 116));
+							game.renderer->GuiEquipmentSprites[0] = createSprite("GuiSlotWeapon.png");
+							game.renderer->GuiEquipmentSprites[0].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -524,13 +522,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[1];
-									game.GuiEquipmentSprites[1] = game.InventoryItemEmptySprite;
+									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[1];
+									game.renderer->GuiEquipmentSprites[1] = game.renderer->InventoryItemEmptySprite;
 							inv_items[j] = inv_items[28];
 							inv_types[j] = 2;
 									inv_items[28] = 0;
-							game.GuiEquipmentSprites[1] = createSprite("GuiSlotShield.png");
-							game.GuiEquipmentSprites[1].setTextureRect(IntRect(0, 0, 116, 116));
+							game.renderer->GuiEquipmentSprites[1] = createSprite("GuiSlotShield.png");
+							game.renderer->GuiEquipmentSprites[1].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -542,13 +540,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[2];
-									game.GuiEquipmentSprites[2] = game.InventoryItemEmptySprite;
+									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[2];
+									game.renderer->GuiEquipmentSprites[2] = game.renderer->InventoryItemEmptySprite;
 							inv_items[j] = inv_items[29];
 							inv_types[j] = 3;
 									inv_items[29] = 0;
-							game.GuiEquipmentSprites[2] = createSprite("GuiSlotHelm.png");
-							game.GuiEquipmentSprites[2].setTextureRect(IntRect(0, 0, 116, 116));
+							game.renderer->GuiEquipmentSprites[2] = createSprite("GuiSlotHelm.png");
+							game.renderer->GuiEquipmentSprites[2].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -560,13 +558,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[3];
-									game.GuiEquipmentSprites[3] = game.InventoryItemEmptySprite;
+									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[3];
+									game.renderer->GuiEquipmentSprites[3] = game.renderer->InventoryItemEmptySprite;
 							inv_items[j] = inv_items[30];
 							inv_types[j] = 4;
 									inv_items[30] = 0;
-							game.GuiEquipmentSprites[3] = createSprite("GuiSlotChest.png");
-							game.GuiEquipmentSprites[3].setTextureRect(IntRect(0, 0, 116, 116));
+							game.renderer->GuiEquipmentSprites[3] = createSprite("GuiSlotChest.png");
+							game.renderer->GuiEquipmentSprites[3].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -578,13 +576,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[4];
-									game.GuiEquipmentSprites[4] = game.InventoryItemEmptySprite;
+									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[4];
+									game.renderer->GuiEquipmentSprites[4] = game.renderer->InventoryItemEmptySprite;
 							inv_items[j] = inv_items[31];
 							inv_types[j] = 5;
 									inv_items[31] = 0;
-							game.GuiEquipmentSprites[4] = createSprite("GuiSlotPants.png");
-							game.GuiEquipmentSprites[4].setTextureRect(IntRect(0, 0, 116, 116));
+							game.renderer->GuiEquipmentSprites[4] = createSprite("GuiSlotPants.png");
+							game.renderer->GuiEquipmentSprites[4].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -596,13 +594,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.InventoryItemsSprite[j] = game.GuiEquipmentSprites[5];
-									game.GuiEquipmentSprites[5] = game.InventoryItemEmptySprite;
+									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[5];
+									game.renderer->GuiEquipmentSprites[5] = game.renderer->InventoryItemEmptySprite;
 							inv_items[j] = inv_items[32];
 							inv_types[j] = 6;
 									inv_items[32] = 0;
-							game.GuiEquipmentSprites[5] = createSprite("GuiSlotBoots.png");
-							game.GuiEquipmentSprites[5].setTextureRect(IntRect(0, 0, 116, 116));
+							game.renderer->GuiEquipmentSprites[5] = createSprite("GuiSlotBoots.png");
+							game.renderer->GuiEquipmentSprites[5].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -655,9 +653,9 @@ protected:
 				vx = game.window_manager->viewGetCenterX() + 261;
 				for (int j = 0; j < 4; j++) {
 					if (vx/1 - 25 <= out && out <= vx/1 + 80 && vy/1 - 25 <= outy && outy <= vy/1 + 80) {
-						setInfo(true, inv_items[i * 4 + j], game.text_info);
-						game.GuiInfoSprite.setPosition(out - 10, outy);
-						game.text_info.setPosition(out, outy + 15);
+						setInfo(true, inv_items[i * 4 + j], game.renderer->text_info);
+						game.renderer->GuiInfoSprite.setPosition(out - 10, outy);
+						game.renderer->text_info.setPosition(out, outy + 15);
 						is_info = true;
 					}
 					vx += 112;
@@ -672,9 +670,9 @@ protected:
 		    	vx = game.window_manager->viewGetCenterX() + 261;
 			    for (int j = 0; j < 4; j++) {
 					if (vx/1 - 25 <= out && out <= vx/1 + 80 && vy/1 - 25 <= outy && outy <= vy/1 + 80) {
-						setInfo(false, inv_spells[i * 4 + j], game.text_info);
-						game.GuiInfoSprite.setPosition(out - 10, outy);
-						game.text_info.setPosition(out, outy + 15);
+						setInfo(false, inv_spells[i * 4 + j], game.renderer->text_info);
+						game.renderer->GuiInfoSprite.setPosition(out - 10, outy);
+						game.renderer->text_info.setPosition(out, outy + 15);
 						is_info = true;
 					}
 				    vx += 112;
@@ -687,9 +685,9 @@ protected:
 		float vy = game.window_manager->viewGetCenterY() + 414;
 		for (int i = 0; i < 9; i++) {
 			if (vx/1 - 30 <= out && out <= vx/1 + 80 && vy/1 - 30 <= outy && outy <= vy/1 + 80 && hotbar_spells[i] != 0) {
-				setInfo(false, hotbar_spells[i], game.text_info);
-				game.GuiInfoSprite.setPosition(vx - 34, vy - 270);
-				game.text_info.setPosition(vx - 24, vy - 270 + 15);
+				setInfo(false, hotbar_spells[i], game.renderer->text_info);
+				game.renderer->GuiInfoSprite.setPosition(vx - 34, vy - 270);
+				game.renderer->text_info.setPosition(vx - 24, vy - 270 + 15);
 				is_info = true;
 			}
 			vx += 112;
@@ -698,43 +696,43 @@ protected:
 		vx = game.window_manager->viewGetCenterX() - 940;
 		vy = game.window_manager->viewGetCenterY() - 480;
 		if (vx/1 <= out && out <= vx/1 + 170 && vy/1 <= outy && outy <= vy/1 + 100) {
-			game.text_strength.setString("Strength: " + std::to_string(game.player->strength));
-			game.text_damage.setString("Damage: " + std::to_string(game.player->damage));
-			game.text_armor.setString("Armor: " + std::to_string(game.player->armor));
-			game.text_magic.setString("Magic: " + std::to_string(game.player->magic));
-			game.text_critical_chance.setString("Critical Chance: " + std::to_string(static_cast<int>(game.player->critical_chance)) + "%");
-			game.text_magic_resistance.setString("Magic Resistance: " + std::to_string(static_cast<int>(game.player->magic_resistance)) + "%");
-			game.text_physical_resistance.setString("Physical Resistance: " + std::to_string(static_cast<int>(game.player->physical_resistance)) + "%");
-			game.text_magic_ice.setString("Magic Ice: " + std::to_string(game.player->magic_ice));
-			game.text_magic_fire.setString("Magic Fire: " + std::to_string(game.player->magic_fire));
-			game.text_magic_earth.setString("Magic Earth: " + std::to_string(game.player->magic_earth));
-			game.text_magic_wind.setString("Magic Wind: " + std::to_string(game.player->magic_wind));
-			game.text_magic_dark.setString("Magic Dark: " + std::to_string(game.player->magic_dark));
-			game.text_magic_light.setString("Magic Light: " + std::to_string(game.player->magic_light));
-			game.text_melee_weapon.setString("Melee Weapon: " + std::to_string(game.player->melee_weapon));
-			game.text_range_weapon.setString("Range Weapon: " + std::to_string(game.player->range_weapon));
+			game.renderer->text_strength.setString("Strength: " + std::to_string(game.player->strength));
+			game.renderer->text_damage.setString("Damage: " + std::to_string(game.player->damage));
+			game.renderer->text_armor.setString("Armor: " + std::to_string(game.player->armor));
+			game.renderer->text_magic.setString("Magic: " + std::to_string(game.player->magic));
+			game.renderer->text_critical_chance.setString("Critical Chance: " + std::to_string(static_cast<int>(game.player->critical_chance)) + "%");
+			game.renderer->text_magic_resistance.setString("Magic Resistance: " + std::to_string(static_cast<int>(game.player->magic_resistance)) + "%");
+			game.renderer->text_physical_resistance.setString("Physical Resistance: " + std::to_string(static_cast<int>(game.player->physical_resistance)) + "%");
+			game.renderer->text_magic_ice.setString("Magic Ice: " + std::to_string(game.player->magic_ice));
+			game.renderer->text_magic_fire.setString("Magic Fire: " + std::to_string(game.player->magic_fire));
+			game.renderer->text_magic_earth.setString("Magic Earth: " + std::to_string(game.player->magic_earth));
+			game.renderer->text_magic_wind.setString("Magic Wind: " + std::to_string(game.player->magic_wind));
+			game.renderer->text_magic_dark.setString("Magic Dark: " + std::to_string(game.player->magic_dark));
+			game.renderer->text_magic_light.setString("Magic Light: " + std::to_string(game.player->magic_light));
+			game.renderer->text_melee_weapon.setString("Melee Weapon: " + std::to_string(game.player->melee_weapon));
+			game.renderer->text_range_weapon.setString("Range Weapon: " + std::to_string(game.player->range_weapon));
 			is_stats_open = true;
 		} else {
-			game.text_strength.setString("");
-			game.text_damage.setString("");
-			game.text_armor.setString("");
-			game.text_magic.setString("");
-			game.text_critical_chance.setString("");
-			game.text_magic_resistance.setString("");
-			game.text_physical_resistance.setString("");
-			game.text_magic_ice.setString("");
-			game.text_magic_fire.setString("");
-			game.text_magic_earth.setString("");
-			game.text_magic_wind.setString("");
-			game.text_magic_dark.setString("");
-			game.text_magic_light.setString("");
-			game.text_melee_weapon.setString("");
-			game.text_range_weapon.setString("");
+			game.renderer->text_strength.setString("");
+			game.renderer->text_damage.setString("");
+			game.renderer->text_armor.setString("");
+			game.renderer->text_magic.setString("");
+			game.renderer->text_critical_chance.setString("");
+			game.renderer->text_magic_resistance.setString("");
+			game.renderer->text_physical_resistance.setString("");
+			game.renderer->text_magic_ice.setString("");
+			game.renderer->text_magic_fire.setString("");
+			game.renderer->text_magic_earth.setString("");
+			game.renderer->text_magic_wind.setString("");
+			game.renderer->text_magic_dark.setString("");
+			game.renderer->text_magic_light.setString("");
+			game.renderer->text_melee_weapon.setString("");
+			game.renderer->text_range_weapon.setString("");
 			is_stats_open = false;
 		}
 
 		if (!is_info) {
-			game.text_info.setString("");
+			game.renderer->text_info.setString("");
 		}
 	}
 	void moveCurrentFrame(auto& time) {

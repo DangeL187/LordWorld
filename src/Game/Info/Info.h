@@ -7,15 +7,15 @@ void setInfo(bool is_item, int get_id, auto& text_info) {
             text_info.setString(name + stats + lore);
         }
         else if (get_id == 2) {
-            std::string name = "      Iron Chestplate\n";
-            std::string stats = " + 1 Armor\n";
-            std::string lore = "\n Chestplate forged from\n high-quality iron";
-            text_info.setString(name + stats + lore);
-        }
-        else if (get_id == 3) {
             std::string name = "       Iron Shield\n";
             std::string stats = " + 1 Armor\n";
             std::string lore = "\n Shield forged from\n high-quality iron";
+            text_info.setString(name + stats + lore);
+        }
+        else if (get_id == 3) {
+            std::string name = "      Iron Chestplate\n";
+            std::string stats = " + 1 Armor\n";
+            std::string lore = "\n Chestplate forged from\n high-quality iron";
             text_info.setString(name + stats + lore);
         }
         else if (get_id == 4) {

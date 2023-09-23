@@ -1,13 +1,13 @@
 void setImages(auto& game, int size, auto& arr1, auto& arr2) {
     for (int i = 0; i < size; i++) {
         if (arr1[i] == 1) { //Cold Snap
-            arr2[i] = game.ColdSnapSprite;
+            arr2[i] = game.renderer->ColdSnapSprite;
         }
         else if (arr1[i] == 2) { //Cold Snap2
-            arr2[i] = game.ColdSnap2Sprite;
+            arr2[i] = game.renderer->ColdSnap2Sprite;
         }
         else {
-            arr2[i] = game.InventoryItemEmptySprite;
+            arr2[i] = game.renderer->InventoryItemEmptySprite;
         }
     }
 }
@@ -48,7 +48,7 @@ void spells(auto& time, auto& game) {
             game.player->cooldowns[game.player->spell_slot] = 15000;
             game.player->mp -= mana_cost;
         } else {
-            game.GuiNoManaSprites[game.player->spell_slot].setColor(sf::Color(0, 0, 0, 160));
+            game.renderer->GuiNoManaSprites[game.player->spell_slot].setColor(sf::Color(0, 0, 0, 160));
             std::cout << "No mana!\n";
         }
     }

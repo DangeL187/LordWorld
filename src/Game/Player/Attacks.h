@@ -41,7 +41,7 @@ protected:
                     game.v_monsters[v].hitMonster(game.player->damage + ah, time, game.player);
                     auto get_pos_x = game.v_monsters[v].getX() + int(game.v_monsters[v].getWidth() / 2);
                     auto get_pos_y = game.v_monsters[v].getY() + 20;
-                    game.createDynamicText(game.font, 30, 500, std::to_string(game.player->damage + ah), get_pos_x, get_pos_y);
+                    game.renderer->createDynamicText(game.renderer->font, 30, 500, std::to_string(game.player->damage + ah), get_pos_x, get_pos_y);
                 }
             }
             if (game.player->combo_counter == 4 || game.player->combo_counter == old_combo_counter) {
@@ -50,8 +50,8 @@ protected:
             if (game.player->space_hit) {
                 attack_cd = game.player->attack_speed * 3;
             }
-            game.AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
-            game.AnimationWeaponSprite.setPosition(game.player->getX() - 20, game.player->getY());
+            game.renderer->AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
+            game.renderer->AnimationWeaponSprite.setPosition(game.player->getX() - 20, game.player->getY());
             game.player->attack = 0;
             game.player->attack_animation = 1;
         }

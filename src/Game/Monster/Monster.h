@@ -2,17 +2,17 @@
 
 class Monster: public MonsterBase {
 public:
-	Monster(float x_, float y_, float w_, float h_, std::string name_, auto& monster_sprites_, auto& other_sprite_counter_, auto& current_other_sprites_) {
-		static_sprite = other_sprite_counter_;
+	Monster(float x_, float y_, float w_, float h_, std::string name_, auto& monster_sprites, auto& other_sprite_counter, auto& current_other_sprites) {
+		static_sprite = other_sprite_counter;
 		dx=0; dy=0; speed=0;
 		w = w_; h = h_;
 		name = name_;
-		defineMonster(name, monster_sprites_, sprite);
+		defineMonster(name, monster_sprites, sprite);
 		as_cd = as;
-		current_other_sprites_.push_back(sprite);
+		current_other_sprites.push_back(sprite);
 		x = x_; y = y_;
-		current_other_sprites_[static_sprite].setTextureRect(IntRect(0, 0, w, h));
-		other_sprite_counter_++;
+		current_other_sprites[static_sprite].setTextureRect(IntRect(0, 0, w, h));
+		other_sprite_counter++;
 	}
 
 	void interactionWithMap(auto& time, auto& game, auto& player) {
@@ -38,10 +38,10 @@ public:
 	            as_cd -= time;
 				if (as_cd <= (as - 300)) {
 					switch (dir) {
-					    case 0: game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 128, w, h)); break;
-					    case 1: game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 64, w, h)); break;
-					    case 2: game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 192, w, h)); break;
-					    case 3: game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 0, w, h)); break;
+					    case 0: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 128, w, h)); break;
+					    case 1: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 64, w, h)); break;
+					    case 2: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 192, w, h)); break;
+					    case 3: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 0, w, h)); break;
 					}
 				}
 	        } else {
@@ -53,15 +53,15 @@ public:
 					player->shield_cd = 5000;
 					auto get_pos_x = player->getX() + int(w / 2);
 	                auto get_pos_y = player->getY() + 20;
-	                game.createDynamicText(game.font, 30, 500, std::to_string(0-b), get_pos_x, get_pos_y, true);
+	                game.renderer->createDynamicText(game.renderer->font, 30, 500, std::to_string(0-b), get_pos_x, get_pos_y, true);
 				} else {
 					player->shield_cd = 0;
 				}
 				switch (dir) {
-					case 0: game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 128, w, h)); break;
-					case 1: game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 64, w, h)); break;
-					case 2: game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 192, w, h)); break;
-					case 3: game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 0, w, h)); break;
+					case 0: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 128, w, h)); break;
+					case 1: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 64, w, h)); break;
+					case 2: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 192, w, h)); break;
+					case 3: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 0, w, h)); break;
 				}
 	            as_cd = as;
 	        }
@@ -81,7 +81,7 @@ public:
 
 		speed = 0;
 		interactionWithMap(time, game, player);
-		game.current_other_sprites[static_sprite].setPosition(x, y);
+		game.renderer->current_other_sprites[static_sprite].setPosition(x, y);
 		checkBuff(time, player);
 	}
 
@@ -99,7 +99,7 @@ public:
 			else {
 				if (y <= player->getY()) {
 					speed = 0.1; dir = 3;
-					game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 0, w, h));
+					game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 0, w, h));
 					monster_frame += 0.005 * time;
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
@@ -108,7 +108,7 @@ public:
 				}
 				if (y >= player->getY()) {
 					speed = 0.1; dir = 2;
-					game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 192, w, h));
+					game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 192, w, h));
 					monster_frame += 0.005 * time;
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
@@ -117,7 +117,7 @@ public:
 				}
 				if (x <= player->getX()) {
 					speed = 0.1; dir = 0;
-					game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 128, w, h));
+					game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 128, w, h));
 					monster_frame += 0.005 * time;
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
@@ -126,7 +126,7 @@ public:
 				}
 				if (x >= player->getX()) {
 					speed = 0.1; dir = 1;
-					game.current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 64, w, h));
+					game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 64, w, h));
 					monster_frame += 0.005 * time;
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
@@ -188,7 +188,7 @@ public:
 			int random_drop = rand() % 100;
 			random_drop++;
 			if (random_drop <= drop_chance[r]) {
-				game.createItem(drop[r], x, y);
+				game.entity_manager->createItem(x, y, drop[r], game);
 			}
 		}
 	}

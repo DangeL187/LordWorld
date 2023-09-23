@@ -46,7 +46,7 @@ public:
 		speed = 0;
 		interactionWithMap(game.map);
 		updateDialog(game);
-		game.current_other_sprites[static_sprite].setPosition(x, y);
+		game.renderer->current_other_sprites[static_sprite].setPosition(x, y);
 	}
 
     void updateDialog(auto& game) {
@@ -56,13 +56,13 @@ public:
 					start_dialog_phase++;
 					end_dialog_phase++;
 				}
-				game.text_NPC_talk.setString("");
+				game.renderer->text_NPC_talk.setString("");
 				game.player->is_dialog = false;
 			} else {
-				game.text_NPC_talk.setString(dialog[game.player->dialog_phase]);
+				game.renderer->text_NPC_talk.setString(dialog[game.player->dialog_phase]);
 			}
 		} else {
-			game.text_NPC_talk.setString("");
+			game.renderer->text_NPC_talk.setString("");
 		}
 	}
 	int getStartDialogPhase() {

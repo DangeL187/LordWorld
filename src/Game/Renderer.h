@@ -1,5 +1,5 @@
 class Renderer {
-private:
+public:
     //TEST, TEMP, SHADOWS
     /*Sprite ShadowSprite1;
     Sprite ShadowSprite2;
@@ -76,8 +76,8 @@ private:
     Text text_range_weapon;
     std::shared_ptr<DynamicText> text_dynamic_shield_cd;
     std::vector<DynamicText> v_dynamic_texts;
-public:
-    Renderer(Map& map) {
+
+    Renderer(std::shared_ptr<Map>& map) {
         initText();
         initImages();
         createMapSprite(map);
@@ -140,7 +140,7 @@ public:
         return p;
 }*/
 
-    void createMapSprite(auto& map) {
+    void createMapSprite(std::shared_ptr<Map>& map) {
         map->setSprite(createSprite("map.png"));
     }
     void createItemSprites() {

@@ -1,36 +1,65 @@
-void defineItemType(int id, auto& current_item_sprites, auto& item_sprites, auto& items_dropped) {
-    switch (id) {
-        case 1:
-            current_item_sprites.push_back(item_sprites[0]); //Wooden Sword
-            items_dropped[4].push_back(1); //weapon
-            break; //replace this shit with returning array [sprite, int]
-        case 2:
-            current_item_sprites.push_back(item_sprites[1]);
-            items_dropped[4].push_back(2); //shield
-            break;
-        case 3:
-            current_item_sprites.push_back(item_sprites[2]);
-            items_dropped[4].push_back(3); //helmet
-            break;
-        case 4:
-            current_item_sprites.push_back(item_sprites[3]);
-            items_dropped[4].push_back(4); //chestplate
-            break;
-        case 5:
-            current_item_sprites.push_back(item_sprites[4]);
-            items_dropped[4].push_back(5); //pants
-            break;
-        case 6:
-            current_item_sprites.push_back(item_sprites[5]);
-            items_dropped[4].push_back(6); //boots
-            break;
-        case 7:
-            current_item_sprites.push_back(item_sprites[6]);
-            items_dropped[4].push_back(7); //ring
-            break;
-        case 8:
-            current_item_sprites.push_back(item_sprites[7]);
-            items_dropped[4].push_back(8); //item
-            break;
+#include "Item.h"
+
+class WoodenSword: public Item {
+public:
+    WoodenSword(float& x_, float& y_, unsigned int& id_, int& sprite):
+    Item(x_, y_, 1, sprite) {
+        type = 1; //weapon
     }
-}
+};
+
+class IronShield: public Item {
+public:
+    IronShield(float& x_, float& y_, unsigned int& id_, int& sprite):
+    Item(x_, y_, 2, sprite) {
+        type = 2; //shield
+    }
+};
+
+class IronHelmet: public Item {
+public:
+    IronHelmet(float& x_, float& y_, unsigned int& id_, int& sprite):
+    Item(x_, y_, 3, sprite) {
+        type = 3; //helmet
+    }
+};
+
+class IronChestplate: public Item {
+public:
+    IronChestplate(float& x_, float& y_, unsigned int& id_, int& sprite):
+    Item(x_, y_, 4, sprite) {
+        type = 4; //chestplate
+    }
+};
+
+class IronPants: public Item {
+public:
+    IronPants(float& x_, float& y_, unsigned int& id_, int& sprite):
+    Item(x_, y_, 5, sprite) {
+        type = 5; //pants
+    }
+};
+
+class IronBoots: public Item {
+public:
+    IronBoots(float& x_, float& y_, unsigned int& id_, int& sprite):
+    Item(x_, y_, 6, sprite) {
+        type = 6; //boots
+    }
+};
+
+class IronRing: public Item {
+public:
+    IronRing(float& x_, float& y_, unsigned int& id_, int& sprite):
+    Item(x_, y_, 7, sprite) {
+        type = 7; //ring
+    }
+};
+
+class RatTail: public Item {
+public:
+    RatTail(float& x_, float& y_, unsigned int& id_, int& sprite):
+    Item(x_, y_, 8, sprite) {
+        type = 8; //item
+    }
+};
