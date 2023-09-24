@@ -1,8 +1,0 @@
-------------------------------------------------------------
-Lord World (LW) by DangeL
-------------------------------------------------------------
-Info/Info.h
-------------------------------------------------------------
-setInfo(bool is_item, int get_id, auto& text_info) //global function
-Sets info about item or spell depending on it's ID.
-------------------------------------------------------------
