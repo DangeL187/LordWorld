@@ -3,11 +3,12 @@
 #include "SpriteLoader.h"
 #include "Info/Info.h"
 #include "Items/Items.h"
-#include "EntityManager.h"
+#include "Buff/Buff.h"
 #include "Spells/Spells.h"
 #include "Player/Player.h"
 #include "NPC/NPC.h"
-#include "Monster/Monster.h"
+#include "Monster/Monsters.h"
+#include "EntityManager.h"
 
 class Game {
 public:
@@ -16,7 +17,6 @@ public:
     Monster *target_m = NULL; //pointer to targeted monster
     std::shared_ptr<Player> player;
     std::vector<NPC> v_NPC;
-    std::vector<Monster> v_monsters;
     std::vector<int> damaged_numbers;
     std::shared_ptr<Map> map;
     std::shared_ptr<WindowManager> window_manager;
@@ -43,10 +43,6 @@ public:
     }
     void createPlayer(float x, float y, float w, float h) {
         player = std::make_shared<Player>(x, y, w, h);
-    }
-    void createMonster(float x, float y, float w, float h, std::string name) {
-        Monster m(x, y, w, h, name, renderer->monster_sprites, renderer->other_sprite_counter, renderer->current_other_sprites);
-        v_monsters.push_back(m);
     }
     void createNPC(float x, float y, float w, float h, std::string name) {
         NPC m(x, y, w, h, name, renderer->NPC_sprites, renderer->other_sprite_counter, renderer->current_other_sprites);
@@ -192,7 +188,7 @@ public:
         setImages(*this, 9, player->hotbar_spells, renderer->SpellsHotbarSprites);
         renderer->updateGuiSprites(*this);
         player->update(time, *this);
-        //v_monsters[2].hitMonster(300, time, player); //stress test
+        //game.entity_manager->v_monsters[2].hitMonster(300, time, player); //stress test
         renderer->updateText(time, *this);
         monsterDeath(*this);
         renderer->guiTarget(*this);
@@ -294,13 +290,13 @@ public:
     void targeting(auto& game) {
         int out = game.player->getX() - (962 - Mouse::getPosition().x);
         int outy = game.player->getY() - (544 - Mouse::getPosition().y);
-        for (int v = 0; v < v_monsters.size(); v++) {
-            float mx = v_monsters[v].getX();
-    		float my = v_monsters[v].getY();
+        for (int v = 0; v < game.entity_manager->v_monsters.size(); v++) {
+            float mx = game.entity_manager->v_monsters[v].getX();
+    		float my = game.entity_manager->v_monsters[v].getY();
             float condx = mx/1 + 64 - 14;
             float condy = my/1 + 64;
             if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) {
-                target_m = &v_monsters[v];
+                target_m = &game.entity_manager->v_monsters[v];
             }
         }
     }
@@ -312,11 +308,11 @@ public:
     }
     void updateMonsters(auto& time, auto& game, auto& player) {
         int index1 = 0;
-        for (auto& i: v_monsters) {
+        for (auto& i: game.entity_manager->v_monsters) {
             i.update(time, game, player);
             i.moveMonster(time, game, player);
             int index2 = 0;
-            for (auto& i2: v_monsters) {
+            for (auto& i2: game.entity_manager->v_monsters) {
                 float mx1 = i.getX();
                 float mx2 = i2.getX();
                 float my1 = i.getY();
@@ -348,7 +344,7 @@ public:
         for (auto& i: v_NPC) {
             i.update(time, game);
             /*int index2 = 0;
-            for (auto& i2: v_monsters) {
+            for (auto& i2: game.entity_manager->v_monsters) {
                 float mx1 = i.getX();
                 float mx2 = i2.getX();
                 float my1 = i.getY();
@@ -376,21 +372,21 @@ public:
         }
     }
     void monsterDeath(auto& game) {
-        for (int i = 0; i < v_monsters.size(); i++) {
-            if (v_monsters[i].getHP() <= 0) {
-                std::vector<Sprite> cos = renderer->current_other_sprites;
-                cos.erase(cos.begin() + v_monsters[i].getSprite());
+        for (int i = 0; i < game.entity_manager->v_monsters.size(); i++) {
+            if (game.entity_manager->v_monsters[i].getHP() <= 0) {
+                std::vector<Sprite>& cos = renderer->current_other_sprites;
+                cos.erase(cos.begin() + game.entity_manager->v_monsters[i].getSprite());
                 renderer->other_sprite_counter--;
                 target_m = NULL;
                 renderer->text_target.setString("");
-                for (int j = 0; j < v_monsters.size(); j++) {
+                for (int j = 0; j < game.entity_manager->v_monsters.size(); j++) {
                     if (j > i) {
-                        v_monsters[j].reduceSprite();
+                        game.entity_manager->v_monsters[j].reduceSprite();
                     }
                 }
-                game.player->xp += v_monsters[i].getXP();
-                v_monsters[i].dropMonster(game);
-                v_monsters.erase(v_monsters.begin() + i);
+                game.player->xp += game.entity_manager->v_monsters[i].getXP();
+                game.entity_manager->v_monsters[i].dropMonster(game);
+                game.entity_manager->v_monsters.erase(game.entity_manager->v_monsters.begin() + i);
             }
         }
     }
@@ -398,9 +394,9 @@ public:
         damaged_numbers.clear();
         int out = game.player->getX() - (962 - Mouse::getPosition().x);
     	int outy = game.player->getY() - (544 - Mouse::getPosition().y);
-    	for (int v = 0; v < v_monsters.size(); v++) {
-            float mx = v_monsters[v].getX();
-    		float my = v_monsters[v].getY();
+    	for (int v = 0; v < game.entity_manager->v_monsters.size(); v++) {
+            float mx = game.entity_manager->v_monsters[v].getX();
+    		float my = game.entity_manager->v_monsters[v].getY();
             float condx = mx/1 + 1*64; //replace with unique number
             float condy = my/1 + 1*64; //replace with unique number
     		if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) { //TODO: fix aoe range?

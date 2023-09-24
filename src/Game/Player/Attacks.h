@@ -10,9 +10,9 @@ protected:
             attack_cd = game.player->attack_speed * attack_type;
             bool is_monster_damaged = false;
             int old_combo_counter = game.player->combo_counter;
-            for (int v = 0; v < game.v_monsters.size(); v++) {
-                float mx = game.v_monsters[v].getX();
-                float my = game.v_monsters[v].getY();
+            for (int v = 0; v < game.entity_manager->v_monsters.size(); v++) {
+                float mx = game.entity_manager->v_monsters[v].getX();
+                float my = game.entity_manager->v_monsters[v].getY();
                 if (game.player->checkWeaponsRange(game, mx, my)) {
                     int random_crit = rand() % 100;
                     int ah = game.player->damage * (attack_type-1); //additional hit
@@ -31,16 +31,16 @@ protected:
                         ah += game.player->damage;
                     }
                     if (game.player->attack_stun) {
-                      game.v_monsters[v].giveBuff("AttackStun", 1500);
+                      game.entity_manager->v_monsters[v].giveBuff("AttackStun", 1500);
                       game.player->attack_stun = false;
                     }
                     if (game.player->space_hit) {
                         ah += game.player->damage * (3 - attack_type);
                         attack_cd = game.player->attack_speed * 3;
                     }
-                    game.v_monsters[v].hitMonster(game.player->damage + ah, time, game.player);
-                    auto get_pos_x = game.v_monsters[v].getX() + int(game.v_monsters[v].getWidth() / 2);
-                    auto get_pos_y = game.v_monsters[v].getY() + 20;
+                    game.entity_manager->v_monsters[v].hitMonster(game.player->damage + ah, time, game.player);
+                    auto get_pos_x = game.entity_manager->v_monsters[v].getX() + int(game.entity_manager->v_monsters[v].getWidth() / 2);
+                    auto get_pos_y = game.entity_manager->v_monsters[v].getY() + 20;
                     game.renderer->createDynamicText(game.renderer->font, 30, 500, std::to_string(game.player->damage + ah), get_pos_x, get_pos_y);
                 }
             }

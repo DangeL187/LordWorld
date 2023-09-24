@@ -1,18 +1,32 @@
-#include "MonsterBase.h"
-
-class Monster: public MonsterBase {
+class Monster {
+protected:
+	float x, y;
+	float w, h, dx, dy, speed;
+    unsigned int id;
+    int dmg, hp, mp, lvl, as, xp;
+	int dir = 0;
+	int random_generated_dir = 0;
+    int static_sprite;
+	float as_cd;
+	float monster_frame;
+    float move_monster_timer = 0;
+	std::string name;
+	std::vector<Buff> v_buffs;
+    std::vector<int> drop;
+	std::vector<int> drop_chance;
+	std::vector<int> timers; //spells timers
+	Image image;
+	Texture texture;
+	Sprite sprite;
+	bool dealt = false;
+	bool stun = false;
 public:
-	Monster(float x_, float y_, float w_, float h_, std::string name_, auto& monster_sprites, auto& other_sprite_counter, auto& current_other_sprites) {
-		static_sprite = other_sprite_counter;
+	Monster(float x_, float y_, float w_, float h_, unsigned int id_, int sprite) {
 		dx=0; dy=0; speed=0;
-		w = w_; h = h_;
-		name = name_;
-		defineMonster(name, monster_sprites, sprite);
-		as_cd = as;
-		current_other_sprites.push_back(sprite);
 		x = x_; y = y_;
-		current_other_sprites[static_sprite].setTextureRect(IntRect(0, 0, w, h));
-		other_sprite_counter++;
+		w = w_; h = h_;
+		id = id_;
+		static_sprite = sprite;
 	}
 
 	void interactionWithMap(auto& time, auto& game, auto& player) {
@@ -164,17 +178,17 @@ public:
 	}
 	void checkBuff(auto& time, auto& player) {
 		stun = false;
-		for (int v = 0; v < buffs.size(); v++) {
+		/*for (int v = 0; v < v_buffs.size(); v++) {
 			defineBuff(v, player);
 			buffTimers(v, time);
 			if (timers[v] <= 0) {
 				buffs.erase(buffs.begin() + v);
 		        timers.erase(timers.begin() + v);
 			}
-		}
+		}*/
 	}
 	void giveBuff(auto buff, auto time) {
-	    buffs.push_back(buff);
+	    v_buffs.push_back(buff);
 		timers.push_back(time);
 	}
 	void hitMonster(int local_dmg, auto& time, auto& player) {
@@ -211,6 +225,9 @@ public:
 			y--;
 		}
 	}
+	void setHP(int hp_) {
+		hp = hp_;
+	}
 	int getSprite() {
 		return static_sprite;
 	}
@@ -243,6 +260,9 @@ public:
 	}
 	int getLVL() {
 		return lvl;
+	}
+	bool isDealt() {
+		return dealt;
 	}
 	std::string getName() {
 		return name;
