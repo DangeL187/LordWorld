@@ -32,16 +32,14 @@ public:
 	void interactionWithMap(auto& game) {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
-				for (int l = 0; l < game.v_NPC.size(); l++) {
-					if (x < game.v_NPC[l].getX() + w &&
-					    x + w > game.v_NPC[l].getX() &&
-					    y < game.v_NPC[l].getY() + h &&
-					    y + h > game.v_NPC[l].getY())
-					{
-						if (dy>0) y = (game.v_NPC[l].getY() - h);
-				        if (dy<0) y = (game.v_NPC[l].getY() + h);
-				        if (dx>0) x = (game.v_NPC[l].getX() - w);
-				        if (dx<0) x = (game.v_NPC[l].getX() + w);
+				for (auto& v: game.v_NPC) {
+                    float nx = v.getX();
+                    float ny = v.getY();
+					if (x < nx + w && x + w > nx && y < ny + h && y + h > ny) {
+						if (dy>0) y = (ny - h);
+				        if (dy<0) y = (ny + h);
+				        if (dx>0) x = (nx - w);
+				        if (dx<0) x = (nx + w);
 					}
 				}
                 auto t = game.map->getTileMapID(i, j);
@@ -73,7 +71,7 @@ public:
 
 		interactionWithMap(game);
 		sprite.setPosition(getX(), getY());
-		setEquipmentStats(game, inv_items);
+		setEquipmentStats(game.renderer->sprite_manager, inv_items);
         keys(time, game);
         attacks(time, game);
         animations(game);

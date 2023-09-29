@@ -22,8 +22,8 @@ public:
     int range_weapon = 1; //*64
 	int weapon_type = 1; //1-circle attack; 2-straight; 3-conus; 4-vertical line;
 protected:
-	void setEquipmentStats(auto& game, auto& inv_items) {
-	    setArmorStats(game, inv_items);
+	void setEquipmentStats(auto& sprite_manager, auto& inv_items) {
+	    setArmorStats(sprite_manager, inv_items);
 		armor = armor_shield + armor_helmet + armor_chestplate + armor_pants + armor_boots;
 		setOtherStats(inv_items);
 		if (armor_helmet == armor_chestplate &&
@@ -34,30 +34,30 @@ protected:
 				armor += armor_helmet;
 		}
 	}
-	void setWeaponStats(auto& game, auto& inv_items) {
+	void setWeaponStats(auto& sprite_manager, auto& inv_items) {
 		switch (inv_items[27]) { //Weapon stats
         	case 1:
-			    game.renderer->AnimationWeaponSprite = game.renderer->AnimationWoodenSwordSprite;
+			    sprite_manager->AnimationWeaponSprite = sprite_manager->AnimationWoodenSwordSprite;
                 weapon_type = 1;
                 damage = 1 * strength;
                 break;
             default:
-		    	game.renderer->AnimationWeaponSprite = game.renderer->InventoryItemEmptySprite;
-			    game.renderer->AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
+		    	sprite_manager->AnimationWeaponSprite = sprite_manager->InventoryItemEmptySprite;
+			    sprite_manager->AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
                 weapon_type = 1;
-                damage = 0 * strength;
+                damage = 0;
         }
 	}
-	void setArmorStats(auto& game, auto& inv_items) {
+	void setArmorStats(auto& sprite_manager, auto& inv_items) {
         switch (inv_items[28]) { //Shield stats
             case 2:
-                game.renderer->AnimationShieldSprite = game.renderer->AnimationIronShieldSprite;
-				game.renderer->AnimationShieldSprite.setTextureRect(IntRect(0, 0, 1, 1));
+                sprite_manager->AnimationShieldSprite = sprite_manager->AnimationIronShieldSprite;
+				sprite_manager->AnimationShieldSprite.setTextureRect(IntRect(0, 0, 1, 1));
               	armor_shield = 1;
               	break;
             default:
-                game.renderer->AnimationShieldSprite = game.renderer->InventoryItemEmptySprite;
-                game.renderer->AnimationShieldSprite.setTextureRect(IntRect(0, 0, 1, 1));
+                sprite_manager->AnimationShieldSprite = sprite_manager->InventoryItemEmptySprite;
+                sprite_manager->AnimationShieldSprite.setTextureRect(IntRect(0, 0, 1, 1));
                 armor_shield = 0;
         }
 
@@ -113,15 +113,16 @@ protected:
 	}
 
 public:
-    bool checkWeaponsRange(auto& game, float get_x, float get_y) {
+    bool checkWeaponsRange(auto& game, float mx, float my) {
 		switch (weapon_type) {
             case 1: //Wooden Sword
-				float condxm = get_x/1 - melee_weapon*64;
-	        	float condxp = get_x/1 + melee_weapon*64;
-		        float condyp = get_y/1 + melee_weapon*64;
-				float condym = get_y/1 - melee_weapon*64;
-	       		return (condxm <= game.player->getX() && game.player->getX() <= condxp
-					&& condym <= game.player->getY() && game.player->getY() <= condyp);
+				float condxm = mx/1 - melee_weapon*64;
+	        	float condxp = mx/1 + melee_weapon*64;
+		        float condyp = my/1 + melee_weapon*64;
+				float condym = my/1 - melee_weapon*64;
+				float px = game.player->getX();
+				float py = game.player->getY();
+	       		return (condxm <= px && px <= condxp && condym <= py && py <= condyp);
                 break;
         }
 		return false;

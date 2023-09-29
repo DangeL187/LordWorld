@@ -11,8 +11,9 @@ protected:
             bool is_monster_damaged = false;
             int old_combo_counter = game.player->combo_counter;
             for (int v = 0; v < game.entity_manager->v_monsters.size(); v++) {
-                float mx = game.entity_manager->v_monsters[v].getX();
-                float my = game.entity_manager->v_monsters[v].getY();
+                auto& monster = game.entity_manager->v_monsters[v];
+                float mx = monster.getX();
+                float my = monster.getY();
                 if (game.player->checkWeaponsRange(game, mx, my)) {
                     int random_crit = rand() % 100;
                     int ah = game.player->damage * (attack_type-1); //additional hit
@@ -31,17 +32,18 @@ protected:
                         ah += game.player->damage;
                     }
                     if (game.player->attack_stun) {
-                      game.entity_manager->v_monsters[v].giveBuff("AttackStun", 1500);
-                      game.player->attack_stun = false;
+                        monster.giveBuff(2, 1500);
+                        game.player->attack_stun = false;
                     }
                     if (game.player->space_hit) {
                         ah += game.player->damage * (3 - attack_type);
                         attack_cd = game.player->attack_speed * 3;
                     }
-                    game.entity_manager->v_monsters[v].hitMonster(game.player->damage + ah, time, game.player);
-                    auto get_pos_x = game.entity_manager->v_monsters[v].getX() + int(game.entity_manager->v_monsters[v].getWidth() / 2);
-                    auto get_pos_y = game.entity_manager->v_monsters[v].getY() + 20;
-                    game.renderer->createDynamicText(game.renderer->font, 30, 500, std::to_string(game.player->damage + ah), get_pos_x, get_pos_y);
+                    monster.hitMonster(game.player->damage + ah, game);
+                    auto get_pos_x = monster.getX() + int(monster.getWidth() / 2);
+                    auto get_pos_y = monster.getY() + 20;
+                    auto dmg = std::to_string(game.player->damage + ah);
+                    game.renderer->createDynamicText(game.renderer->font, 30, 500, dmg, get_pos_x, get_pos_y);
                 }
             }
             if (game.player->combo_counter == 4 || game.player->combo_counter == old_combo_counter) {
@@ -50,8 +52,10 @@ protected:
             if (game.player->space_hit) {
                 attack_cd = game.player->attack_speed * 3;
             }
-            game.renderer->AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
-            game.renderer->AnimationWeaponSprite.setPosition(game.player->getX() - 20, game.player->getY());
+            auto px = game.player->getX() - 20;
+            auto py = game.player->getY();
+            game.renderer->sprite_manager->AnimationWeaponSprite.setTextureRect(IntRect(0, 0, 1, 1));
+            game.renderer->sprite_manager->AnimationWeaponSprite.setPosition(px, py);
             game.player->attack = 0;
             game.player->attack_animation = 1;
         }

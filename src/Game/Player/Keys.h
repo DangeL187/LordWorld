@@ -182,7 +182,7 @@ protected:
 		if (!Mouse::isButtonPressed(Mouse::Left)) {
 			key_m1 = true;
 			if (key_m1_go && !Mouse::isButtonPressed(Mouse::Right)) {
-				if (!is_inventory_open && !is_spells_inventory_open && !aiming && attack_animation == 0) {
+				if (!is_inventory_open && !is_spells_inventory_open && attack_animation == 0 && !aiming && attack1_cd == 0) {
 					attack = 1; //first type of attack
 				} else {
 					attack = 0;
@@ -203,7 +203,8 @@ protected:
 		if (!Mouse::isButtonPressed(Mouse::Right)) {
 			key_m2 = true;
 			if (key_m2_go && !Mouse::isButtonPressed(Mouse::Left)) {
-				if (!is_inventory_open && !is_spells_inventory_open && attack_animation == 0 && !Keyboard::isKeyPressed(Keyboard::LControl)) {
+				bool is_ctrl = Keyboard::isKeyPressed(Keyboard::LControl);
+				if (!is_inventory_open && !is_spells_inventory_open && attack_animation == 0 && attack2_cd == 0 && !is_ctrl) {
 					attack = 2; //second type of attack
 				} else {
 					attack = 0;
@@ -232,28 +233,31 @@ protected:
 		}
 	}
 	void eventPickItem(auto& game) {
-		for (int i = 0; i < game.entity_manager->v_items.size(); i++) {
-			float x_m = game.entity_manager->v_items[i].getX()/1 - range*64;
-			float x_p = game.entity_manager->v_items[i].getX()/1 + range*64;
-			float y_m = game.entity_manager->v_items[i].getY()/1 - range*64;
-			float y_p = game.entity_manager->v_items[i].getY()/1 + range*64;
+		auto& items = game.entity_manager->v_items;
+		auto& cis = game.renderer->sprite_manager->current_item_sprites;
+		auto& sprites = game.renderer->sprite_manager->InventoryItemsSprite;
+		for (int i = 0; i < items.size(); i++) {
+			float x_m = items[i].getX()/1 - range*64;
+			float x_p = items[i].getX()/1 + range*64;
+			float y_m = items[i].getY()/1 - range*64;
+			float y_p = items[i].getY()/1 + range*64;
 			if (x_m <= game.player->getX() && game.player->getX() <= x_p &&
 				y_m <= game.player->getY() && game.player->getY() <= y_p) {
 				for (int j = 0; j < 24; j++) {
 					if (inv_items[j] == 0) {
-						inv_items[j] = game.entity_manager->v_items[i].getID();
-						inv_types[j] = game.entity_manager->v_items[i].getType();
-						game.renderer->InventoryItemsSprite[j] = game.renderer->current_item_sprites[game.entity_manager->v_items[i].getSprite()];
-						game.renderer->InventoryItemsSprite[j].setTextureRect(IntRect(0, 0, 56, 56));
-						game.renderer->InventoryItemsSprite[j].setScale(1.5, 1.5);
-						for (int k = 0; k < game.entity_manager->v_items.size(); k++) {
+						inv_items[j] = items[i].getID();
+						inv_types[j] = items[i].getType();
+						sprites[j] = cis[items[i].getSprite()];
+						sprites[j].setTextureRect(IntRect(0, 0, 56, 56));
+						sprites[j].setScale(1.5, 1.5);
+						for (int k = 0; k < items.size(); k++) {
 							if (k > i) {
-								game.entity_manager->v_items[k].setSprite(game.entity_manager->v_items[k].getID() - 1);
+								items[k].setSprite(items[k].getID() - 1);
 							}
 						}
-						game.renderer->current_item_sprites.erase(game.renderer->current_item_sprites.begin() + game.entity_manager->v_items[i].getSprite());
-						game.entity_manager->v_items.erase(game.entity_manager->v_items.begin() + i);
-						game.renderer->item_sprite_counter--;
+						cis.erase(cis.begin() + items[i].getSprite());
+						items.erase(items.begin() + i);
+						game.renderer->sprite_manager->item_sprite_counter--;
 						break4items = true;
 						break;
 					}
@@ -277,8 +281,12 @@ protected:
 				for (int j = 0; j < 4; j++) {
 					if (inv_items[i * 4 + j] != 0) {
 						if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
-							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
-							game.entity_manager->createItem(game.player->getX(), game.player->getY(), inv_items[i * 4 + j], game);
+							auto& sprites = game.renderer->sprite_manager->InventoryItemsSprite;
+							auto& empty = game.renderer->sprite_manager->InventoryItemEmptySprite;
+							auto px = game.player->getX();
+							auto py = game.player->getY();
+							sprites[i * 4 + j] = empty;
+							game.entity_manager->createItem(px, py, inv_items[i * 4 + j], game);
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
@@ -378,71 +386,74 @@ protected:
 		float vx = game.window_manager->viewGetCenterX() + 261;
 		float vy = game.window_manager->viewGetCenterY() - 343;
 		if (is_inventory_open) {
+			auto& sprites = game.renderer->sprite_manager->InventoryItemsSprite;
+			auto& eq_sprites = game.renderer->sprite_manager->GuiEquipmentSprites;
+			auto& empty = game.renderer->sprite_manager->InventoryItemEmptySprite;
 			game.renderer->text_info.setString("");
 			for (int i = 0; i < 6; i++) {
 				vx = game.window_manager->viewGetCenterX() + 261;
 				for (int j = 0; j < 4; j++) {
 					if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 						if (inv_types[i * 4 + j] == 7 && inv_items[24] == 0) { //other1
-							game.renderer->InventoryItemsSprite[24] = game.renderer->InventoryItemsSprite[i * 4 + j];
-							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
+							sprites[24] = sprites[i * 4 + j];
+							sprites[i * 4 + j] = empty;
 							inv_items[24] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
-							}
+						}
 						if (inv_types[i * 4 + j] == 7 && inv_items[25] == 0) { //other2
-							game.renderer->InventoryItemsSprite[25] = game.renderer->InventoryItemsSprite[i * 4 + j];
-							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
+							sprites[25] = sprites[i * 4 + j];
+							sprites[i * 4 + j] = empty;
 							inv_items[25] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
-							}
+						}
 						if (inv_types[i * 4 + j] == 7 && inv_items[26] == 0) { //other3
-							game.renderer->InventoryItemsSprite[26] = game.renderer->InventoryItemsSprite[i * 4 + j];
-							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
+							sprites[26] = sprites[i * 4 + j];
+							sprites[i * 4 + j] = empty;
 							inv_items[26] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
-							}
+						}
 							if (inv_types[i * 4 + j] == 1 && inv_items[27] == 0) { //weapon
-							game.renderer->GuiEquipmentSprites[0] = game.renderer->InventoryItemsSprite[i * 4 + j];
-							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
+							eq_sprites[0] = sprites[i * 4 + j];
+							sprites[i * 4 + j] = empty;
 							inv_items[27] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
-							setWeaponStats(game, inv_items);
-							}
+							setWeaponStats(game.renderer->sprite_manager, inv_items);
+						}
 						if (inv_types[i * 4 + j] == 2 && inv_items[28] == 0) { //shield
-							game.renderer->GuiEquipmentSprites[1] = game.renderer->InventoryItemsSprite[i * 4 + j];
-							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
+							eq_sprites[1] = sprites[i * 4 + j];
+							sprites[i * 4 + j] = empty;
 							inv_items[28] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
 						if (inv_types[i * 4 + j] == 3 && inv_items[29] == 0) { //helmet
-							game.renderer->GuiEquipmentSprites[2] = game.renderer->InventoryItemsSprite[i * 4 + j];
-							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
+							eq_sprites[2] = sprites[i * 4 + j];
+							sprites[i * 4 + j] = empty;
 							inv_items[29] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
 						if (inv_types[i * 4 + j] == 4 && inv_items[30] == 0) { //chestplate
-							game.renderer->GuiEquipmentSprites[3] = game.renderer->InventoryItemsSprite[i * 4 + j];
-							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
+							eq_sprites[3] = sprites[i * 4 + j];
+							sprites[i * 4 + j] = empty;
 							inv_items[30] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
 						if (inv_types[i * 4 + j] == 5 && inv_items[31] == 0) { //pants
-							game.renderer->GuiEquipmentSprites[4] = game.renderer->InventoryItemsSprite[i * 4 + j];
-							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
+							eq_sprites[4] = sprites[i * 4 + j];
+							sprites[i * 4 + j] = empty;
 							inv_items[31] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
 						}
 						if (inv_types[i * 4 + j] == 6 && inv_items[32] == 0) { //boots
-							game.renderer->GuiEquipmentSprites[5] = game.renderer->InventoryItemsSprite[i * 4 + j];
-							game.renderer->InventoryItemsSprite[i * 4 + j] = game.renderer->InventoryItemEmptySprite;
+							eq_sprites[5] = sprites[i * 4 + j];
+							sprites[i * 4 + j] = empty;
 							inv_items[32] = inv_items[i * 4 + j];
 							inv_items[i * 4 + j] = 0;
 							inv_types[i * 4 + j] = 0;
@@ -458,11 +469,11 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.renderer->InventoryItemsSprite[j] = game.renderer->InventoryItemsSprite[24];
-									game.renderer->InventoryItemsSprite[24] = game.renderer->InventoryItemEmptySprite;
+							sprites[j] = sprites[24];
+							sprites[24] = empty;
 							inv_items[j] = inv_items[24];
 							inv_types[j] = 7;
-									inv_items[24] = 0;
+							inv_items[24] = 0;
 						}
 					}
 				}
@@ -473,11 +484,11 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.renderer->InventoryItemsSprite[j] = game.renderer->InventoryItemsSprite[25];
-									game.renderer->InventoryItemsSprite[25] = game.renderer->InventoryItemEmptySprite;
+							sprites[j] = sprites[25];
+							sprites[25] = empty;
 							inv_items[j] = inv_items[25];
 							inv_types[j] = 7;
-									inv_items[25] = 0;
+							inv_items[25] = 0;
 						}
 					}
 				}
@@ -488,11 +499,11 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.renderer->InventoryItemsSprite[j] = game.renderer->InventoryItemsSprite[26];
-									game.renderer->InventoryItemsSprite[26] = game.renderer->InventoryItemEmptySprite;
+							sprites[j] = sprites[26];
+							sprites[26] = empty;
 							inv_items[j] = inv_items[26];
 							inv_types[j] = 7;
-									inv_items[26] = 0;
+							inv_items[26] = 0;
 						}
 					}
 				}
@@ -503,18 +514,18 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[0];
-									game.renderer->GuiEquipmentSprites[0] = game.renderer->InventoryItemEmptySprite;
+							sprites[j] = sprites[0];
+							sprites[0] = empty;
 							inv_items[j] = inv_items[27];
 							inv_types[j] = 1;
-									inv_items[27] = 0;
-							game.renderer->GuiEquipmentSprites[0] = createSprite("GuiSlotWeapon.png");
-							game.renderer->GuiEquipmentSprites[0].setTextureRect(IntRect(0, 0, 116, 116));
+							inv_items[27] = 0;
+							eq_sprites[0] = createSprite("GuiSlotWeapon.png");
+							eq_sprites[0].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
 				}
-				setWeaponStats(game, inv_items);
+				setWeaponStats(game.renderer->sprite_manager, inv_items);
 			}
 			if (inv_items[28] != 0) {
 				vx = game.window_manager->viewGetCenterX() + 89;
@@ -522,13 +533,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[1];
-									game.renderer->GuiEquipmentSprites[1] = game.renderer->InventoryItemEmptySprite;
+							sprites[j] = eq_sprites[1];
+							eq_sprites[1] = empty;
 							inv_items[j] = inv_items[28];
 							inv_types[j] = 2;
-									inv_items[28] = 0;
-							game.renderer->GuiEquipmentSprites[1] = createSprite("GuiSlotShield.png");
-							game.renderer->GuiEquipmentSprites[1].setTextureRect(IntRect(0, 0, 116, 116));
+							inv_items[28] = 0;
+							eq_sprites[1] = createSprite("GuiSlotShield.png");
+							eq_sprites[1].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -540,13 +551,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[2];
-									game.renderer->GuiEquipmentSprites[2] = game.renderer->InventoryItemEmptySprite;
+							sprites[j] = eq_sprites[2];
+							eq_sprites[2] = empty;
 							inv_items[j] = inv_items[29];
 							inv_types[j] = 3;
-									inv_items[29] = 0;
-							game.renderer->GuiEquipmentSprites[2] = createSprite("GuiSlotHelm.png");
-							game.renderer->GuiEquipmentSprites[2].setTextureRect(IntRect(0, 0, 116, 116));
+							inv_items[29] = 0;
+							eq_sprites[2] = createSprite("GuiSlotHelm.png");
+							eq_sprites[2].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -558,13 +569,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[3];
-									game.renderer->GuiEquipmentSprites[3] = game.renderer->InventoryItemEmptySprite;
+							sprites[j] = eq_sprites[3];
+							eq_sprites[3] = empty;
 							inv_items[j] = inv_items[30];
 							inv_types[j] = 4;
-									inv_items[30] = 0;
-							game.renderer->GuiEquipmentSprites[3] = createSprite("GuiSlotChest.png");
-							game.renderer->GuiEquipmentSprites[3].setTextureRect(IntRect(0, 0, 116, 116));
+							inv_items[30] = 0;
+							eq_sprites[3] = createSprite("GuiSlotChest.png");
+							eq_sprites[3].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -576,13 +587,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[4];
-									game.renderer->GuiEquipmentSprites[4] = game.renderer->InventoryItemEmptySprite;
+							sprites[j] = eq_sprites[4];
+							eq_sprites[4] = empty;
 							inv_items[j] = inv_items[31];
 							inv_types[j] = 5;
-									inv_items[31] = 0;
-							game.renderer->GuiEquipmentSprites[4] = createSprite("GuiSlotPants.png");
-							game.renderer->GuiEquipmentSprites[4].setTextureRect(IntRect(0, 0, 116, 116));
+							inv_items[31] = 0;
+							eq_sprites[4] = createSprite("GuiSlotPants.png");
+							eq_sprites[4].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -594,13 +605,13 @@ protected:
 				if (vx/1 <= out && out <= vx/1 + 56 && vy/1 <= outy && outy <= vy/1 + 56) {
 					for (int j = 0; j < 24; j++) {
 						if (inv_items[j] == 0) {
-									game.renderer->InventoryItemsSprite[j] = game.renderer->GuiEquipmentSprites[5];
-									game.renderer->GuiEquipmentSprites[5] = game.renderer->InventoryItemEmptySprite;
+							sprites[j] = eq_sprites[5];
+							eq_sprites[5] = empty;
 							inv_items[j] = inv_items[32];
 							inv_types[j] = 6;
-									inv_items[32] = 0;
-							game.renderer->GuiEquipmentSprites[5] = createSprite("GuiSlotBoots.png");
-							game.renderer->GuiEquipmentSprites[5].setTextureRect(IntRect(0, 0, 116, 116));
+							inv_items[32] = 0;
+							eq_sprites[5] = createSprite("GuiSlotBoots.png");
+							eq_sprites[5].setTextureRect(IntRect(0, 0, 116, 116));
 							break;
 						}
 					}
@@ -654,7 +665,7 @@ protected:
 				for (int j = 0; j < 4; j++) {
 					if (vx/1 - 25 <= out && out <= vx/1 + 80 && vy/1 - 25 <= outy && outy <= vy/1 + 80) {
 						setInfo(true, inv_items[i * 4 + j], game.renderer->text_info);
-						game.renderer->GuiInfoSprite.setPosition(out - 10, outy);
+						game.renderer->sprite_manager->GuiInfoSprite.setPosition(out - 10, outy);
 						game.renderer->text_info.setPosition(out, outy + 15);
 						is_info = true;
 					}
@@ -671,7 +682,7 @@ protected:
 			    for (int j = 0; j < 4; j++) {
 					if (vx/1 - 25 <= out && out <= vx/1 + 80 && vy/1 - 25 <= outy && outy <= vy/1 + 80) {
 						setInfo(false, inv_spells[i * 4 + j], game.renderer->text_info);
-						game.renderer->GuiInfoSprite.setPosition(out - 10, outy);
+						game.renderer->sprite_manager->GuiInfoSprite.setPosition(out - 10, outy);
 						game.renderer->text_info.setPosition(out, outy + 15);
 						is_info = true;
 					}
@@ -686,7 +697,7 @@ protected:
 		for (int i = 0; i < 9; i++) {
 			if (vx/1 - 30 <= out && out <= vx/1 + 80 && vy/1 - 30 <= outy && outy <= vy/1 + 80 && hotbar_spells[i] != 0) {
 				setInfo(false, hotbar_spells[i], game.renderer->text_info);
-				game.renderer->GuiInfoSprite.setPosition(vx - 34, vy - 270);
+				game.renderer->sprite_manager->GuiInfoSprite.setPosition(vx - 34, vy - 270);
 				game.renderer->text_info.setPosition(vx - 24, vy - 270 + 15);
 				is_info = true;
 			}
