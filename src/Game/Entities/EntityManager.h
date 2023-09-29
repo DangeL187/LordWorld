@@ -1,3 +1,7 @@
+#include "Item/Items.h"
+#include "Monster/Monsters.h"
+#include "NPC/NPC.h"
+
 class EntityManager {
 public:
     std::vector<Item> v_items;
@@ -6,7 +10,7 @@ public:
     EntityManager() = default;
 
     void createItem(float x, float y, unsigned int id, auto& game) {
-        int sprite = game.sprite_loader->loadItemSprite(x, y, id, game.renderer);
+        int sprite = game.renderer->sprite_manager->loadItemSprite(x, y, id);
         switch (id) {
             case 1: {
                 WoodenSword m(x, y, id, sprite);
@@ -52,7 +56,7 @@ public:
     }
 
     void createMonster(float x, float y, float w, float h, unsigned int id, auto& game) {
-        int sprite = game.sprite_loader->loadMonsterSprite(x, y, w, h, id, game.renderer);
+        int sprite = game.renderer->sprite_manager->loadMonsterSprite(x, y, w, h, id);
         switch (id) {
             case 1: {
                 Rat m(x, y, w, h, id, sprite);

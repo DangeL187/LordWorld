@@ -46,7 +46,7 @@ public:
 		speed = 0;
 		interactionWithMap(game.map);
 		updateDialog(game);
-		game.renderer->current_other_sprites[static_sprite].setPosition(x, y);
+		game.renderer->sprite_manager->current_other_sprites[static_sprite].setPosition(x, y);
 	}
 
     void updateDialog(auto& game) {

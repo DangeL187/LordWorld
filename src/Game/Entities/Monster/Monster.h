@@ -11,10 +11,9 @@ protected:
 	float monster_frame;
     float move_monster_timer = 0;
 	std::string name;
-	std::vector<Buff> v_buffs;
     std::vector<int> drop;
 	std::vector<int> drop_chance;
-	std::vector<int> timers; //spells timers
+	std::shared_ptr<BuffManager> buff_manager;
 	Image image;
 	Texture texture;
 	Sprite sprite;
@@ -22,6 +21,7 @@ protected:
 	bool stun = false;
 public:
 	Monster(float x_, float y_, float w_, float h_, unsigned int id_, int sprite) {
+		buff_manager = std::make_shared<BuffManager>();
 		dx=0; dy=0; speed=0;
 		x = x_; y = y_;
 		w = w_; h = h_;
@@ -51,11 +51,12 @@ public:
 			if (as_cd > 0) {
 	            as_cd -= time;
 				if (as_cd <= (as - 300)) {
+					auto& sprite = game.renderer->sprite_manager->current_other_sprites[static_sprite];
 					switch (dir) {
-					    case 0: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 128, w, h)); break;
-					    case 1: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 64, w, h)); break;
-					    case 2: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 192, w, h)); break;
-					    case 3: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 0, w, h)); break;
+					    case 0: sprite.setTextureRect(IntRect(52 * int(monster_frame), 128, w, h)); break;
+					    case 1: sprite.setTextureRect(IntRect(52 * int(monster_frame), 64, w, h)); break;
+					    case 2: sprite.setTextureRect(IntRect(52 * int(monster_frame), 192, w, h)); break;
+					    case 3: sprite.setTextureRect(IntRect(52 * int(monster_frame), 0, w, h)); break;
 					}
 				}
 	        } else {
@@ -71,11 +72,12 @@ public:
 				} else {
 					player->shield_cd = 0;
 				}
+				auto& sprite = game.renderer->sprite_manager->current_other_sprites[static_sprite];
 				switch (dir) {
-					case 0: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 128, w, h)); break;
-					case 1: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 64, w, h)); break;
-					case 2: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 192, w, h)); break;
-					case 3: game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * 3, 0, w, h)); break;
+					case 0: sprite.setTextureRect(IntRect(52 * 3, 128, w, h)); break;
+					case 1: sprite.setTextureRect(IntRect(52 * 3, 64, w, h)); break;
+					case 2: sprite.setTextureRect(IntRect(52 * 3, 192, w, h)); break;
+					case 3: sprite.setTextureRect(IntRect(52 * 3, 0, w, h)); break;
 				}
 	            as_cd = as;
 	        }
@@ -95,8 +97,9 @@ public:
 
 		speed = 0;
 		interactionWithMap(time, game, player);
-		game.renderer->current_other_sprites[static_sprite].setPosition(x, y);
-		checkBuff(time, player);
+		game.renderer->sprite_manager->current_other_sprites[static_sprite].setPosition(x, y);
+		stun = false;
+		buff_manager->update(game, *this);
 	}
 
 	void moveMonster(auto& time, auto& game, auto& player) {
@@ -111,9 +114,10 @@ public:
 		if (condx <= 300 && condy <= 300 && !stun) {
 			if (condx <= 52 && condy <= 64) {} //collision with player
 			else {
+				auto& sprite = game.renderer->sprite_manager->current_other_sprites[static_sprite];
 				if (y <= player->getY()) {
 					speed = 0.1; dir = 3;
-					game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 0, w, h));
+					sprite.setTextureRect(IntRect(52 * int(monster_frame), 0, w, h));
 					monster_frame += 0.005 * time;
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
@@ -122,7 +126,7 @@ public:
 				}
 				if (y >= player->getY()) {
 					speed = 0.1; dir = 2;
-					game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 192, w, h));
+					sprite.setTextureRect(IntRect(52 * int(monster_frame), 192, w, h));
 					monster_frame += 0.005 * time;
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
@@ -131,7 +135,7 @@ public:
 				}
 				if (x <= player->getX()) {
 					speed = 0.1; dir = 0;
-					game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 128, w, h));
+					sprite.setTextureRect(IntRect(52 * int(monster_frame), 128, w, h));
 					monster_frame += 0.005 * time;
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
@@ -140,7 +144,7 @@ public:
 				}
 				if (x >= player->getX()) {
 					speed = 0.1; dir = 1;
-					game.renderer->current_other_sprites[static_sprite].setTextureRect(IntRect(52 * int(monster_frame), 64, w, h));
+					sprite.setTextureRect(IntRect(52 * int(monster_frame), 64, w, h));
 					monster_frame += 0.005 * time;
 					if (monster_frame > 3) {
 				        monster_frame -= 3;
@@ -176,26 +180,21 @@ public:
 			}
 		}
 	}
-	void checkBuff(auto& time, auto& player) {
-		stun = false;
-		/*for (int v = 0; v < v_buffs.size(); v++) {
-			defineBuff(v, player);
-			buffTimers(v, time);
-			if (timers[v] <= 0) {
-				buffs.erase(buffs.begin() + v);
-		        timers.erase(timers.begin() + v);
-			}
-		}*/
+	void giveBuff(int id, float duration) {
+		buff_manager->giveBuff(id, duration);
 	}
-	void giveBuff(auto buff, auto time) {
-	    v_buffs.push_back(buff);
-		timers.push_back(time);
-	}
-	void hitMonster(int local_dmg, auto& time, auto& player) {
-		hp -= local_dmg;
+	void hitMonster(int taken_dmg, auto& game) {
+		hp -= taken_dmg;
 		dealt = true;
-		checkBuff(time, player);
+		buff_manager->update(game, *this);
 		dealt = false;
+	}
+	void stunMonster(bool enable) {
+		if (enable) {
+			stun = true;
+		} else {
+			stun = false;
+		}
 	}
 	void dropMonster(auto& game) {
 		for (int r = 0; r < drop_chance.size(); r++) {
