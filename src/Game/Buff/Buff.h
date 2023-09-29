@@ -1,35 +1,23 @@
 class Buff {
 protected:
     std::string name;
-    int timer_buff = 0;
+    float timer_buff = 0;
 public:
-    Buff() {}
-
-    void updateTimers(std::vector<std::reference_wrapper<int>> timers) {
-        if (timers[v] > 0) {
-            timers[v] -= time;
-        } else {
-            timers[v] = 0;
-        }
-        if (timer_ColdSnap_tick > 0) {
-            timer_ColdSnap_tick -= time;
-        } else {
-            timer_ColdSnap_tick = 0;
-        }
+    Buff(float duration) {
+        timer_buff = duration;
     }
 
-    /*void defineBuff(auto& v, auto& game) {
-        if (buffs[v] == "ColdSnap") {
-            if (timer_ColdSnap_tick == 0 && dealt) { //replace with some global counter
-                hp -= 1 * player->magic_ice;
-                timer_ColdSnap_tick = 1000;
-            }
-            if (timers[v] <= 0) {
-                timer_ColdSnap_tick = 0;
+    void updateTimers(std::vector<std::reference_wrapper<float>>& timers, float time) {
+        timers.push_back(timer_buff);
+        for (auto& i: timers) {
+            if (i.get() > 0) {
+                i.get() -= time;
+            } else {
+                i.get() = 0;
             }
         }
-        if (buffs[v] == "AttackStun") {
-            stun = true;
-        }
-    }*/
+    }
+    float getTimer() {
+        return timer_buff;
+    }
 };
