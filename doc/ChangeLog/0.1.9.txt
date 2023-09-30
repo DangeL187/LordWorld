@@ -7,3 +7,20 @@ Version 0.1.9 ChangeLog
 07.07.2023 - added mana cost for spells, added hotbar spell info, added showing if no mana to cast
 07.07.2023 - added dynamic dmg counters
 ----------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------
+Version 0.1.9.1 ChangeLog
+----------------------------------------------------------------------------------------------------
+22.09.2023 - replaced inheritance with composition in the Game class,
+22.09.2023 - now the Game class does not inherit from Render and WindowManager
+23.09.2023 - added EntityManager and SpriteLoader classes
+23.09.2023 - Added Item classes, different items will be represented as different classes
+29.09.2023 - Added Monster classes, different monsters will be represented as different classes
+29.09.2023 - Added Buff classes, different buffs will be represented as different classes
+29.09.2023 - Renderer and other graphics-related classes are grouped into the "Graphics" folder
+29.09.2023 - Sprite-related classes are now located in the "Graphics/Sprite" folder
+29.09.2023 - Drawing and initialization of sprites is now handled by the SpriteManager class
+29.09.2023 - Updating of entities, sprites, timers is now handled by the UpdateManager class
+----------------------------------------------------------------------------------------------------
