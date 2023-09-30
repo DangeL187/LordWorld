@@ -27,6 +27,13 @@ public:
         }
         hotbar_spells[0] = 1;
         hotbar_spells[1] = 2;
+        hotbar_spells[2] = 1;
+        hotbar_spells[3] = 2;
+        hotbar_spells[4] = 1;
+        hotbar_spells[5] = 2;
+        hotbar_spells[6] = 1;
+        hotbar_spells[7] = 2;
+        hotbar_spells[8] = 1;
 	}
 
 	void interactionWithMap(auto& game) {

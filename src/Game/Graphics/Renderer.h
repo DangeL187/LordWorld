@@ -117,17 +117,8 @@ public:
         float view_y = game.window_manager->viewGetCenterY();
 
         for (int i = 0; i < 9; i++) {
-            text_cd[i].setPosition(view_x - 490 - 110 * i, view_y + 404);
+            text_cd[i].setPosition(view_x - 490 + 112 * i, view_y + 404);
         }
-        /*text_cd_0.setPosition(view_x - 490, view_y + 404);
-        text_cd_1.setPosition(view_x - 380, view_y + 404);
-        text_cd_2.setPosition(view_x - 265, view_y + 404);
-        text_cd_3.setPosition(view_x - 155, view_y + 404);
-        text_cd_4.setPosition(view_x - 45, view_y + 404);
-        text_cd_5.setPosition(view_x + 70, view_y + 404);
-        text_cd_6.setPosition(view_x + 180, view_y + 404);
-        text_cd_7.setPosition(view_x + 295, view_y + 404);
-        text_cd_8.setPosition(view_x + 405, view_y + 404);*/
         player_stats_hp.setPosition(view_x - 690, view_y - 511);
         player_stats_mp.setPosition(view_x - 690, view_y - 443);
         player_stats_lvl.setPosition(view_x - 690, view_y - 375);
