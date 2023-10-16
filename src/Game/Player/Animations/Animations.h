@@ -1,11 +1,5 @@
-class Animations {
-protected:
-    void animations(auto& game) {
-        attackAnimation(game);
-        shieldAnimation(game);
-        dashAnimation(game);
-    }
-
+class Animations: virtual public Initializer {
+private:
     void attackAnimation(auto& game) {
         auto& pam = game.player->attack_animation;
         auto& pw = game.player->w;
@@ -43,5 +37,11 @@ protected:
             game.renderer->sprite_manager->AnimationDashSprite.setTextureRect(IntRect(94 * pdir + pdir + 1, 1, 94, 108));
             game.renderer->sprite_manager->AnimationDashSprite.setPosition(px - 26, py - 22);
         }
+    }
+protected:
+    void animations(auto& game) {
+        attackAnimation(game);
+        shieldAnimation(game);
+        dashAnimation(game);
     }
 };
