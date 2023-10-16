@@ -13,15 +13,15 @@ void setInfo(bool is_item, int get_id, auto& text_info) {
             text_info.setString(name + stats + lore);
         }
         else if (get_id == 3) {
-            std::string name = "      Iron Chestplate\n";
+            std::string name = "      Iron Helmet\n";
             std::string stats = " + 1 Armor\n";
-            std::string lore = "\n Chestplate forged from\n high-quality iron";
+            std::string lore = "\n Helmet forged from\n high-quality iron";
             text_info.setString(name + stats + lore);
         }
         else if (get_id == 4) {
-            std::string name = "       Iron Helmet\n";
+            std::string name = "       Iron Chestplate\n";
             std::string stats = " + 1 Armor\n";
-            std::string lore = "\n Helmet forged from\n high-quality iron";
+            std::string lore = "\n Chestplate forged from\n high-quality iron";
             text_info.setString(name + stats + lore);
         }
         else if (get_id == 5) {

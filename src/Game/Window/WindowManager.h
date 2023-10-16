@@ -7,6 +7,7 @@ private:
 
     void createWindow(std::string name) {
         window = std::make_shared<RenderWindow>(VideoMode(window_w, window_h), name, sf::Style::Fullscreen);
+        window->setFramerateLimit(120);
     }
 public:
     WindowManager(std::string name, int w, int h) {
@@ -50,6 +51,11 @@ public:
     }
     void windowDraw(Text to_draw) {
         window->draw(to_draw);
+    }
+
+    //TODO: remove AUTO
+    void windowDraw(auto to_draw) {
+        window->draw(*to_draw);
     }
     bool windowIsOpen() {
         return window->isOpen();

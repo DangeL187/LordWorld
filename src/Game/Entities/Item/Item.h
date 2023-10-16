@@ -5,16 +5,16 @@ protected:
     int type;
     int static_sprite;
 public:
-    Item(float x_, float y_, unsigned int id_, int sprite) {
+    Item(float x_=0, float y_=0, unsigned int id_=0, int sprite=0) {
         x = x_;
         y = y_;
         id = id_;
         static_sprite = sprite;
     }
 
-    void setSprite(int sprite) {
-        static_sprite = sprite;
-    }
+    void reduceSprite() {
+		static_sprite--;
+	}
     unsigned int getID() {
         return id;
     }

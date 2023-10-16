@@ -1,5 +1,7 @@
 #include "Item.h"
 
+//TODO: add class for each weapon type
+
 class WoodenSword: public Item {
 public:
     WoodenSword(float& x_, float& y_, unsigned int& id_, int& sprite):

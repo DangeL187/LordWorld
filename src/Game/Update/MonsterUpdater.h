@@ -8,7 +8,7 @@ private:
                 cos.erase(cos.begin() + monsters[i].getSprite());
                 game.renderer->sprite_manager->other_sprite_counter--;
                 game.target_m = NULL;
-                game.renderer->text_target.setString("");
+                game.renderer->text_manager->text_target.setString("");
                 for (int j = 0; j < monsters.size(); j++) {
                     if (j > i) {
                         monsters[j].reduceSprite();

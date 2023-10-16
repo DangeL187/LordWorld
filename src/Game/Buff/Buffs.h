@@ -1,36 +1,34 @@
 #include "Buff.h"
 
-class ColdSnap: public Buff {
+class ColdSnapBuff: public Buff {
 private:
-    float timer_tick = 1000;
+    std::shared_ptr<Timer> tick_timer;
 public:
-    ColdSnap(float duration):
+    ColdSnapBuff(float duration):
     Buff(duration) {
         name = "ColdSnap";
+        tick_timer = std::make_shared<Timer>();
+        tick_timer->run(1000);
     }
     void update(auto& game, auto& monster) {
-        std::vector<std::reference_wrapper<float>> timers;
-        timers.push_back(timer_tick);
-        updateTimers(timers, game.update_manager->getTime());
-
-        if (timer_tick == 0 && monster.isDealt()) {
+        if (tick_timer->getTime() == 0 && monster.isDealt()) {
+            //std::cout << "BUFF!\n";
+            //TODO: add dynamic text
             monster.setHP(monster.getHP() - 1 * game.player->magic_ice);
-            timer_tick = 1000;
+            tick_timer->run(1000);
         }
-        if (timer_buff <= 0) {
-            timer_tick = 0;
+        if (buff_timer->getTime() <= 0) {
+            tick_timer->stop();
         }
     }
 };
-class AttackStun: public Buff {
+class AttackStunBuff: public Buff {
 public:
-    AttackStun(float duration):
+    AttackStunBuff(float duration):
     Buff(duration) {
         name = "AttackStun";
     }
     void update(auto& game, auto& monster) {
-        std::vector<std::reference_wrapper<float>> timers;
-        updateTimers(timers, game.update_manager->getTime());
         monster.stunMonster(true);
     }
 };

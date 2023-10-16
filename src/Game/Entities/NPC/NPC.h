@@ -1,17 +1,25 @@
-#include "NPCBase.h"
-
-class NPC: public NPCBase {
+class NPC {
+protected:
+	float x, y;
+	float w, h, dx, dy, speed;
+	unsigned int id;
+	int dir = 0;
+	int static_sprite;
+    int start_dialog_phase = 0;
+    int end_dialog_phase = 0;
+	std::vector<int> start_dialog_phases;
+	std::vector<int> end_dialog_phases;
+	std::string name;
+	std::vector<std::string> dialog;
+	Image image;
+	Texture texture;
 public:
-	NPC(float x_, float y_, float w_, float h_, std::string name_, auto& NPC_sprites_, auto& other_sprite_counter_, auto& current_other_sprites_) {
+	NPC(float x_, float y_, float w_, float h_, unsigned int id_, int sprite) {
 		dx=0; dy=0; speed=0;
-		w = w_; h = h_;
-		name = name_;
-    	static_sprite = other_sprite_counter_;
-		defineNPC(name, NPC_sprites_, sprite, dialog);
-		current_other_sprites_.push_back(sprite);
 		x = x_; y = y_;
-		current_other_sprites_[static_sprite].setTextureRect(IntRect(1, 1, w, h));
-		other_sprite_counter_++;
+		w = w_; h = h_;
+		id = id_;
+    	static_sprite = sprite;
 	}
 
 	void interactionWithMap(auto& map) {
@@ -52,17 +60,17 @@ public:
     void updateDialog(auto& game) {
 		if (game.player->is_dialog) {
 			if (game.player->dialog_phase == end_dialog_phases[end_dialog_phase]) {
-				if (end_dialog_phase+1 != end_dialog_phases.size()) {
+				if (end_dialog_phase + 1 != end_dialog_phases.size()) {
 					start_dialog_phase++;
 					end_dialog_phase++;
 				}
-				game.renderer->text_NPC_talk.setString("");
+				game.renderer->text_manager->text_NPC_talk.setString("");
 				game.player->is_dialog = false;
 			} else {
-				game.renderer->text_NPC_talk.setString(dialog[game.player->dialog_phase]);
+				game.renderer->text_manager->text_NPC_talk.setString(dialog[game.player->dialog_phase]);
 			}
 		} else {
-			game.renderer->text_NPC_talk.setString("");
+			game.renderer->text_manager->text_NPC_talk.setString("");
 		}
 	}
 	int getStartDialogPhase() {
@@ -77,6 +85,12 @@ public:
     float getY() {
 	    return y;
     }
+	float getWidth() {
+		return w;
+	}
+	float getHeight() {
+		return h;
+	}
 	std::string getName() {
 		return name;
 	}

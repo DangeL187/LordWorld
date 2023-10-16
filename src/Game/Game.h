@@ -3,30 +3,21 @@
 #include "Graphics/Renderer.h"
 #include "Info/Info.h"
 #include "Buff/BuffManager.h"
-#include "Spell/Spells.h"
-#include "Player/Player.h"
+#include "Spell/SpellManager.h"
 #include "Entities/EntityManager.h"
+#include "Player/Player.h"
 #include "Update/UpdateManager.h"
 
 class Game {
-public:
-    Monster *target_m = NULL; //pointer to targeted monster
-    std::shared_ptr<Player> player;
-    std::vector<NPC> v_NPC;
-    std::vector<int> damaged_numbers;
-    std::shared_ptr<Map> map;
-    std::shared_ptr<WindowManager> window_manager;
-    std::shared_ptr<Renderer> renderer;
-    std::shared_ptr<EntityManager> entity_manager;
-    std::shared_ptr<UpdateManager> update_manager;
-
-    Game() = default;
-
+private:
     void createEntityManager() {
         entity_manager = std::make_shared<EntityManager>();
     }
     void createRenderer() {
         renderer = std::make_shared<Renderer>(map);
+    }
+    void createSpellManager() {
+        spell_manager = std::make_shared<SpellManager>();
     }
     void createUpdateManager() {
         update_manager = std::make_shared<UpdateManager>();
@@ -40,36 +31,55 @@ public:
     void createPlayer(float x, float y, float w, float h) {
         player = std::make_shared<Player>(x, y, w, h);
     }
-    void createNPC(float x, float y, float w, float h, std::string name) {
-        NPC m(x, y, w, h, name, renderer->sprite_manager->NPC_sprites, renderer->sprite_manager->other_sprite_counter, renderer->sprite_manager->current_other_sprites);
-        v_NPC.push_back(m);
-    }
 
-    void targeting(auto& game) {
-        int out = game.player->getX() - (962 - Mouse::getPosition().x);
-        int outy = game.player->getY() - (544 - Mouse::getPosition().y);
-        for (int v = 0; v < game.entity_manager->v_monsters.size(); v++) {
-            float mx = game.entity_manager->v_monsters[v].getX();
-    		float my = game.entity_manager->v_monsters[v].getY();
-            float condx = mx/1 + 64 - 14;
-            float condy = my/1 + 64;
-            if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) {
-                target_m = &game.entity_manager->v_monsters[v];
-            }
-        }
+public:
+    Monster *target_m = NULL; //pointer to targeted monster
+    std::shared_ptr<Player> player;
+    std::shared_ptr<Map> map;
+    std::shared_ptr<Renderer> renderer;
+    std::shared_ptr<SpellManager> spell_manager;
+    std::shared_ptr<EntityManager> entity_manager;
+    std::shared_ptr<UpdateManager> update_manager;
+    std::shared_ptr<WindowManager> window_manager;
+
+    Game() {
+        createWindowManager("Lord World", 1920, 1080);
+        createMap();
+        createRenderer();
+        createEntityManager();
+        createSpellManager();
+        createUpdateManager();
+        window_manager->viewReset();
+        createPlayer(500, 500, 44.0, 64.0);
+        entity_manager->createMonster(300, 300, 50.0, 62.0, 1, renderer->sprite_manager);
+        entity_manager->createMonster(400, 400, 50.0, 62.0, 2, renderer->sprite_manager);
+        entity_manager->createNPC(800, 804, 44.0, 64.0, 1, renderer->sprite_manager);
+        entity_manager->createItem(600, 600, 1, renderer->sprite_manager);
+        entity_manager->createItem(700, 600, 2, renderer->sprite_manager);
+        entity_manager->createItem(800, 600, 3, renderer->sprite_manager);
+        entity_manager->createItem(900, 600, 4, renderer->sprite_manager);
+        entity_manager->createItem(1000, 600, 5, renderer->sprite_manager);
+        entity_manager->createItem(1100, 600, 6, renderer->sprite_manager);
+
+        //just for testing:
+        player->hotbar_spells[0] = 1;
+        player->hotbar_spells[1] = 2;
+        player->hotbar_spells[2] = 1;
+        player->hotbar_spells[3] = 2;
+        player->hotbar_spells[4] = 1;
+        player->hotbar_spells[5] = 2;
+        player->hotbar_spells[6] = 1;
+        player->hotbar_spells[7] = 2;
+        player->hotbar_spells[8] = 1;
     }
-    void spellDamaged(auto& game) { //TODO: different types of damage range
-        damaged_numbers.clear();
-        int out = game.player->getX() - (962 - Mouse::getPosition().x);
-    	int outy = game.player->getY() - (544 - Mouse::getPosition().y);
-    	for (int v = 0; v < game.entity_manager->v_monsters.size(); v++) {
-            float mx = game.entity_manager->v_monsters[v].getX();
-    		float my = game.entity_manager->v_monsters[v].getY();
-            float condx = mx/1 + 1*64; //replace with unique number
-            float condy = my/1 + 1*64; //replace with unique number
-    		if (mx/1 <= out && out <= condx && my/1 <= outy && outy <= condy) { //TODO: fix aoe range?
-    			damaged_numbers.push_back(v);
-    		}
-    	}
+    void run() {
+        while(window_manager->windowIsOpen()) {
+            window_manager->windowHandleEvents();
+            window_manager->windowSetView();
+            window_manager->windowClear();
+            update_manager->update(*this);
+            renderer->draw(*this);
+            window_manager->windowDisplay();
+        }
     }
 };

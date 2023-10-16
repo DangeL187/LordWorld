@@ -1,23 +1,14 @@
 class Buff {
 protected:
     std::string name;
-    float timer_buff = 0;
+    std::shared_ptr<Timer> buff_timer;
 public:
     Buff(float duration) {
-        timer_buff = duration;
+        buff_timer = std::make_shared<Timer>();
+        buff_timer->run(duration);
     }
 
-    void updateTimers(std::vector<std::reference_wrapper<float>>& timers, float time) {
-        timers.push_back(timer_buff);
-        for (auto& i: timers) {
-            if (i.get() > 0) {
-                i.get() -= time;
-            } else {
-                i.get() = 0;
-            }
-        }
-    }
-    float getTimer() {
-        return timer_buff;
+    float getBuffTime() {
+        return buff_timer->getTime();
     }
 };

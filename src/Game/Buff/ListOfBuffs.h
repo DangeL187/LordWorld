@@ -1,1 +1,1 @@
-std::vector<std::variant<ColdSnap, AttackStun>> v_buffs;
+std::vector<std::variant<ColdSnapBuff, AttackStunBuff>> v_buffs;

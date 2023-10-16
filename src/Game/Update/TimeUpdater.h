@@ -1,18 +1,18 @@
 class TimeUpdater {
 protected:
-    float time;
+    float time = 0;
     Clock clock;
 
     void updateTimers(auto& game) {
-        if (game.player->space_timer > 0) {
-            game.player->space_timer -= time;
-            if (500 <= game.player->space_timer && game.player->space_timer <= 750) {
-                game.player->space_hit = true;
+        if (game.player->critical_timer > 0) {
+            game.player->critical_timer -= time;
+            if (500 <= game.player->critical_timer && game.player->critical_timer <= 750) {
+                game.player->is_space_hit = true;
             } else {
-                game.player->space_hit = false;
+                game.player->is_space_hit = false;
             }
         } else {
-            game.player->space_timer = 0;
+            game.player->critical_timer = 0;
         }
 
         if (game.player->timer_hp_regen > 0) {
@@ -36,7 +36,7 @@ protected:
         if (Mouse::isButtonPressed(Mouse::Left) && game.player->attack_animation == 0) {
             game.player->hold_attack_timer += time;
             if (game.player->hold_attack_timer >= 1000) {
-                game.player->attack_stun = true;
+                game.player->is_attack_stun = true;
             }
         } else {
             game.player->hold_attack_timer = 0;
@@ -53,12 +53,12 @@ protected:
             }
         }
 
-        if (game.player->defence_timer > 0 && game.player->inv_items[28] != 0) {
+        if (game.player->defence_timer > 0 && game.player->inv_items[28].getID() != 0) {
             game.player->defence_timer -= time;
-            game.player->defence = true;
+            game.player->is_defence = true;
         } else {
             game.player->defence_timer = 0;
-            game.player->defence = false;
+            game.player->is_defence = false;
         }
 
         if (game.player->attack1_cd > 0) {

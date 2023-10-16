@@ -3,25 +3,26 @@ protected:
 	float x, y;
 	float w, h, dx, dy, speed;
     unsigned int id;
-    int dmg, hp, mp, lvl, as, xp;
+    int damage, hp, mp, lvl, xp;
 	int dir = 0;
 	int random_generated_dir = 0;
     int static_sprite;
-	float as_cd;
+	float attack_speed;
 	float monster_frame;
     float move_monster_timer = 0;
 	std::string name;
     std::vector<int> drop;
 	std::vector<int> drop_chance;
 	std::shared_ptr<BuffManager> buff_manager;
+	std::shared_ptr<Timer> attack_speed_timer;
 	Image image;
 	Texture texture;
-	Sprite sprite;
 	bool dealt = false;
 	bool stun = false;
 public:
 	Monster(float x_, float y_, float w_, float h_, unsigned int id_, int sprite) {
 		buff_manager = std::make_shared<BuffManager>();
+		attack_speed_timer = std::make_shared<Timer>();
 		dx=0; dy=0; speed=0;
 		x = x_; y = y_;
 		w = w_; h = h_;
@@ -29,7 +30,7 @@ public:
 		static_sprite = sprite;
 	}
 
-	void interactionWithMap(auto& time, auto& game, auto& player) {
+	void interactionWithMap(auto& game, auto& player) {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
 				auto t = game.map->getTileMapID(i, j);
@@ -45,43 +46,39 @@ public:
 		        }
 	        }
 	    }
-		float condx0 = pow(pow((x - player->getX()), 2), 0.5);
-		float condy0 = pow(pow((y - player->getY()), 2), 0.5);
-		if (condx0 <= 52 && condy0 <= 64 && !stun) { //collision with player
-			if (as_cd > 0) {
-	            as_cd -= time;
-				if (as_cd <= (as - 300)) {
-					auto& sprite = game.renderer->sprite_manager->current_other_sprites[static_sprite];
-					switch (dir) {
-					    case 0: sprite.setTextureRect(IntRect(52 * int(monster_frame), 128, w, h)); break;
-					    case 1: sprite.setTextureRect(IntRect(52 * int(monster_frame), 64, w, h)); break;
-					    case 2: sprite.setTextureRect(IntRect(52 * int(monster_frame), 192, w, h)); break;
-					    case 3: sprite.setTextureRect(IntRect(52 * int(monster_frame), 0, w, h)); break;
+		float px = player->getX() - 3;
+		float py = player->getY() - 3;
+		float pw = player->getWidth() + 6;
+		float ph = player->getHeight() + 6;
+		if (isCollision(x, y, w, h, px, py, pw, ph) && !stun) {
+			if (attack_speed_timer->getTime() > 0) {
+	            int frame = int(monster_frame);
+				if (attack_speed_timer->getTime() <= 500) {
+					frame = 3;
+					if (player->is_defence) {
+						player->shield_cd = 1000;
+						attack_speed_timer->run(attack_speed);
 					}
-				}
-	        } else {
-				float a = player->armor / 5;
-				float aa = dmg - (dmg * (player->physical_resistance / 100));
-				int b = static_cast<int>(aa) - static_cast<int>(a);
-				if (b >= 0 && !player->defence) {
-					player->hp -= b;
-					player->shield_cd = 5000;
-					auto get_pos_x = player->getX() + int(w / 2);
-	                auto get_pos_y = player->getY() + 20;
-	                game.renderer->createDynamicText(game.renderer->font, 30, 500, std::to_string(0-b), get_pos_x, get_pos_y, true);
-				} else {
-					player->shield_cd = 0;
 				}
 				auto& sprite = game.renderer->sprite_manager->current_other_sprites[static_sprite];
 				switch (dir) {
-					case 0: sprite.setTextureRect(IntRect(52 * 3, 128, w, h)); break;
-					case 1: sprite.setTextureRect(IntRect(52 * 3, 64, w, h)); break;
-					case 2: sprite.setTextureRect(IntRect(52 * 3, 192, w, h)); break;
-					case 3: sprite.setTextureRect(IntRect(52 * 3, 0, w, h)); break;
+					case 0: sprite.setTextureRect(IntRect(52 * frame, 128, w, h)); break;
+					case 1: sprite.setTextureRect(IntRect(52 * frame, 64, w, h)); break;
+					case 2: sprite.setTextureRect(IntRect(52 * frame, 192, w, h)); break;
+					case 3: sprite.setTextureRect(IntRect(52 * frame, 0, w, h)); break;
 				}
-	            as_cd = as;
+	        } else {
+				int dmg = damage - player->armor / 5;
+				if (dmg > 0) {
+					player->hp -= dmg;
+					player->shield_cd = 5000;
+	                game.renderer->text_manager->createDynamicText(game.renderer->text_manager->font, 30, 500, std::to_string(0-dmg), px + int(pw / 2), py + 20, true);
+				}
+	            attack_speed_timer->run(attack_speed);
 	        }
-		} else { as_cd = as; }
+		} else {
+			attack_speed_timer->run(attack_speed);
+		}
     }
 
     void update(auto& time, auto& game, auto& player) {
@@ -96,24 +93,29 @@ public:
 		y += dy*time;
 
 		speed = 0;
-		interactionWithMap(time, game, player);
+		interactionWithMap(game, player);
 		game.renderer->sprite_manager->current_other_sprites[static_sprite].setPosition(x, y);
 		stun = false;
 		buff_manager->update(game, *this);
 	}
 
-	void moveMonster(auto& time, auto& game, auto& player) {
+	void moveMonster(auto& time, auto& game, auto& player) { //TODO: UPDATE!
 		if (move_monster_timer > 0) {
             move_monster_timer -= time;
         } else {
             random_generated_dir = rand() % 5;
             move_monster_timer = 1000;
         }
-		float condx = pow(pow((x - player->getX()), 2), 0.5);
-		float condy = pow(pow((y - player->getY()), 2), 0.5);
-		if (condx <= 300 && condy <= 300 && !stun) {
-			if (condx <= 52 && condy <= 64) {} //collision with player
-			else {
+		float px = player->getX();
+		float py = player->getY();
+		float pw = player->getWidth();
+		float ph = player->getHeight();
+		float monster_center_x = x + w / 2;
+		float monster_center_y = y + h / 2;
+		float player_center_x = px + pw / 2;
+		float player_center_y = py + ph / 2;
+		if (getDistanceBetween(monster_center_x, monster_center_y, player_center_x, player_center_y) <= 300 && !stun) {
+			if (!isCollision(x, y, w, h, px, py, pw, ph)) {
 				auto& sprite = game.renderer->sprite_manager->current_other_sprites[static_sprite];
 				if (y <= player->getY()) {
 					speed = 0.1; dir = 3;
@@ -183,8 +185,8 @@ public:
 	void giveBuff(int id, float duration) {
 		buff_manager->giveBuff(id, duration);
 	}
-	void hitMonster(int taken_dmg, auto& game) {
-		hp -= taken_dmg;
+	void hitMonster(int dmg, auto& game) {
+		hp -= dmg;
 		dealt = true;
 		buff_manager->update(game, *this);
 		dealt = false;
@@ -201,7 +203,7 @@ public:
 			int random_drop = rand() % 100;
 			random_drop++;
 			if (random_drop <= drop_chance[r]) {
-				game.entity_manager->createItem(x, y, drop[r], game);
+				game.entity_manager->createItem(x, y, drop[r], game.renderer->sprite_manager);
 			}
 		}
 	}
