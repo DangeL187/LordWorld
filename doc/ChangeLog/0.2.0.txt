@@ -1,0 +1,24 @@
+----------------------------------------------------------------------------------------------------
+Version 0.2.0 ChangeLog
+----------------------------------------------------------------------------------------------------
+22.09.2023 - replaced inheritance with composition in the Game class,
+22.09.2023 - now the Game class does not inherit from Render and WindowManager
+23.09.2023 - added EntityManager and SpriteLoader classes
+23.09.2023 - Added Item classes, different items will be represented as different classes
+29.09.2023 - Added Monster classes, different monsters will be represented as different classes
+29.09.2023 - Added Buff classes, different buffs will be represented as different classes
+29.09.2023 - Renderer and other graphics-related classes are grouped into the "Graphics" folder
+29.09.2023 - Sprite-related classes are now located in the "Graphics/Sprite" folder
+29.09.2023 - Drawing and initialization of sprites is now handled by the SpriteManager class
+29.09.2023 - Updating of entities, sprites, timers is now handled by the UpdateManager class
+10.10.2023 - The Game class no longer creates NPCs or handles targeting
+10.10.2023 - From now, game's initialization happens in Game::Game(), the infinite loop - Game::run()
+10.10.2023 - Creating NPCs is now handled by the EntityManager
+11.10.2023 - Some algorithms have been replaced by the corresponding functions from cordOperations.h.
+12.10.2023 - Added TextManager class, text and sprites are now processed separately
+13.10.2023 - The Player's classes have been divided into several classes
+14.10.2023 - Fixed some bugs (incorrect behavior of items, monsters, etc.)
+14.10.2023 - Added SpellManager class
+15.10.2023 - Added supporting class - cordOperaions in order to make calculations simplier
+15.10.2023 - Added Timer class, Buff classes now use Timer, monsters' attack speed is a Timer now
+----------------------------------------------------------------------------------------------------
