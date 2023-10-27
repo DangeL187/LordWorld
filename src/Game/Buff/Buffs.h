@@ -10,15 +10,12 @@ public:
         tick_timer = std::make_shared<Timer>();
         tick_timer->run(1000);
     }
-    void update(auto& game, auto& monster) {
-        if (tick_timer->getTime() == 0 && monster.isDealt()) {
+    void update(bool is_dealt, int& hp, bool& stun_monster) override {
+        if (tick_timer->isOver() && is_dealt) {
             //std::cout << "BUFF!\n";
             //TODO: add dynamic text
-            monster.setHP(monster.getHP() - 1 * game.player->magic_ice);
+            hp -= 1;
             tick_timer->run(1000);
-        }
-        if (buff_timer->getTime() <= 0) {
-            tick_timer->stop();
         }
     }
 };
@@ -28,7 +25,7 @@ public:
     Buff(duration) {
         name = "AttackStun";
     }
-    void update(auto& game, auto& monster) {
-        monster.stunMonster(true);
+    void update(bool is_dealt, int& hp, bool& stun_monster) override {
+        stun_monster = true;
     }
 };
