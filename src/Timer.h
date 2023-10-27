@@ -1,49 +1,42 @@
 class Timer {
 private:
-    bool should_terminate = false;
-    std::thread::id thread_id;
+    bool auto_restart = false;
     float duration = -1;
     float time_passed = 0;
-    std::thread thread_for_updating;
+    float time_left = -1;
     std::chrono::time_point<std::chrono::system_clock> start;
     std::chrono::time_point<std::chrono::system_clock> end;
-
-    void updating() {
-        while (time_passed < duration && !should_terminate) {
-            end = std::chrono::high_resolution_clock::now();
-            time_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-        }
-        should_terminate = false;
-    }
 public:
     Timer() = default;
 
     void run(float duration_) {
-        stop();
         duration = duration_;
         time_passed = 0;
         start = std::chrono::high_resolution_clock::now();
-        thread_for_updating = std::thread(&Timer::updating, this);
-        thread_id = thread_for_updating.get_id();
-        thread_for_updating.detach();
     }
 
-    void stop() {
-        if (time_passed < duration) {
-            should_terminate = true;
+    void update() {
+        if (time_passed <= duration) {
+            end = std::chrono::high_resolution_clock::now();
+            time_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
-        while (thread_id == thread_for_updating.get_id() && should_terminate) {}
+        time_left = duration - time_passed;
+        if (time_left <= 0) {
+            time_left = 0;
+        }
     }
 
     float getTime() {
-        float time_left = duration - time_passed;
-        if (time_left <= 0) {
-            return 0;
-        }
+        update();
         return time_left;
     }
 
-    ~Timer() {
-        stop();
+    bool isRunning() {
+        return (getTime() > 0);
     }
+    bool isOver() {
+        return (getTime() == 0);
+    }
+
+    ~Timer() {}
 };

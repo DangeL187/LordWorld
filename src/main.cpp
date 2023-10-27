@@ -18,7 +18,6 @@
 #include "Timer.h"
 #define PI 3.14159265
 using namespace sf;
-std::vector<float> fuck;
 #include "Game/Game.h"
 
 int main() {

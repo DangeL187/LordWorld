@@ -17,3 +17,24 @@ bool isInsideRectangle(float obj_x, float obj_y, float rect_x, float rect_y, flo
             rect_y <= obj_y &&
             obj_y <= rect_y + rect_h);
 }
+
+bool isInsideRectangle(sf::Vector2f obj_pos, float rect_x, float rect_y, float rect_w, float rect_h) {
+    return (rect_x <= obj_pos.x &&
+            obj_pos.x <= rect_x + rect_w &&
+            rect_y <= obj_pos.y &&
+            obj_pos.y <= rect_y + rect_h);
+}
+
+bool isInsideRectangle(float obj_x, float obj_y, sf::Vector2f rect_pos, float rect_w, float rect_h) {
+    return (rect_pos.x <= obj_x &&
+            obj_x <= rect_pos.x + rect_w &&
+            rect_pos.y <= obj_y &&
+            obj_y <= rect_pos.y + rect_h);
+}
+
+bool isInsideRectangle(sf::Vector2f obj_pos, sf::Vector2f rect_pos, float rect_w, float rect_h) {
+    return (rect_pos.x <= obj_pos.x &&
+            obj_pos.x <= rect_pos.x + rect_w &&
+            rect_pos.y <= obj_pos.y &&
+            obj_pos.y <= rect_pos.y + rect_h);
+}
