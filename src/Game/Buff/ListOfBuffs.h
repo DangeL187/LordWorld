@@ -1,1 +1,0 @@
-std::vector<std::variant<ColdSnapBuff, AttackStunBuff>> v_buffs;
