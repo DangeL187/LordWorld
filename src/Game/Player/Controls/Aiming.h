@@ -23,7 +23,7 @@ protected:
             }
 
             if (!is_keys[i] && is_keys_kid[i]) {
-                spell_id = hotbar_spells[i];
+                //spell_id = hotbar_spells[i];
                 spell_slot = i;
                 is_aiming = true;
                 is_keys_kid[i] = false;

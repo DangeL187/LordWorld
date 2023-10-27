@@ -22,7 +22,7 @@ protected:
             }
         }
 		if (std::accumulate(is_movement_keys.begin(), is_movement_keys.end(), 0)) {
-			speed = 0.15;
+			speed = basic_speed;
 			int cf = current_frame; if (cf == 3) { cf = 1; }
 			sprite.setTextureRect(IntRect(w * cf + cf + 1, h * dir + dir + 1, w, h));
 		}

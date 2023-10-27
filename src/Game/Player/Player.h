@@ -6,6 +6,26 @@
 
 class Player: virtual public Initializer, virtual protected Equipment, protected Combat, protected Animations, protected Controls {
 private:
+    void updateHP() {
+        hp_max = 10 + strength * 10;
+        hp_regen = 0.1 + strength * 0.1;
+        if (hp_regen_timer->isOver()) {
+            hp_regen_timer->run(1000.0 / hp_regen);
+            if (hp < hp_max) {
+                hp += 1;
+            }
+        }
+    }
+    void updateMP() {
+        mp_max = 10 + intelligence * 10;
+        mp_regen = 0.1 + intelligence * 0.1;
+        if (mp_regen_timer->isOver()) {
+            mp_regen_timer->run(1000.0 / mp_regen);
+            if (mp < mp_max) {
+                mp += 1;
+            }
+        }
+    }
     void updateLVL() {
         if (xp >= lvl * 100) {
             xp -= lvl * 100;
@@ -63,10 +83,12 @@ public:
 		speed = 0;
 
 		interactionWithMap(game);
-		Equipment::setEquipmentStats(game.renderer->sprite_manager);
+		updateEquipmentStats();
         controls(time, game);
         combat(time, game);
         animations(game);
+        updateHP();
+        updateMP();
         updateLVL();
         sprite.setPosition(x, y);
 	}
@@ -91,5 +113,8 @@ public:
     }
     Sprite getSprite() {
         return sprite;
+    }
+    Sprite getAnimationDashSprite() {
+        return AnimationDashSprite;
     }
 };
