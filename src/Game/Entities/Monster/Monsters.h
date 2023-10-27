@@ -2,9 +2,10 @@
 
 class Rat: public Monster {
 public:
-    Rat(float& x_, float& y_, float& w_, float& h_, unsigned int& id_, int& sprite):
-    Monster(x_, y_, w_, h_, 1, sprite) {
+    Rat(float& x_, float& y_, float& w_, float& h_):
+    Monster(x_, y_, w_, h_, 1) {
         name = "Rat";
+        sprite = createSprite("Rat.png");
         damage = 2;
         hp = 10;
         mp = 10;
@@ -18,9 +19,10 @@ public:
 
 class Rat2: public Monster {
 public:
-    Rat2(float& x_, float& y_, float& w_, float& h_, unsigned int& id_, int& sprite):
-    Monster(x_, y_, w_, h_, 2, sprite) {
+    Rat2(float& x_, float& y_, float& w_, float& h_):
+    Monster(x_, y_, w_, h_, 2) {
         name = "Rat2";
+        sprite = createSprite("Rat2.png");
         damage = 4;
         hp = 100;
         mp = 10;

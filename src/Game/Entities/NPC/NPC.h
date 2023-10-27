@@ -4,22 +4,19 @@ protected:
 	float w, h, dx, dy, speed;
 	unsigned int id;
 	int dir = 0;
-	int static_sprite;
     int start_dialog_phase = 0;
     int end_dialog_phase = 0;
 	std::vector<int> start_dialog_phases;
 	std::vector<int> end_dialog_phases;
 	std::string name;
 	std::vector<std::string> dialog;
-	Image image;
-	Texture texture;
+	Sprite sprite;
 public:
-	NPC(float x_, float y_, float w_, float h_, unsigned int id_, int sprite) {
+	NPC(float x_, float y_, float w_, float h_, unsigned int id_) {
 		dx=0; dy=0; speed=0;
 		x = x_; y = y_;
 		w = w_; h = h_;
 		id = id_;
-    	static_sprite = sprite;
 	}
 
 	void interactionWithMap(auto& map) {
@@ -54,7 +51,7 @@ public:
 		speed = 0;
 		interactionWithMap(game.map);
 		updateDialog(game);
-		game.renderer->sprite_manager->current_other_sprites[static_sprite].setPosition(x, y);
+		sprite.setPosition(x, y);
 	}
 
     void updateDialog(auto& game) {
@@ -64,20 +61,20 @@ public:
 					start_dialog_phase++;
 					end_dialog_phase++;
 				}
-				game.renderer->text_manager->text_NPC_talk.setString("");
+				game.renderer->interface_manager->interface_dialog.getDialog().setString("");
 				game.player->is_dialog = false;
 			} else {
-				game.renderer->text_manager->text_NPC_talk.setString(dialog[game.player->dialog_phase]);
+				game.renderer->interface_manager->interface_dialog.getDialog().setString(dialog[game.player->dialog_phase]);
 			}
 		} else {
-			game.renderer->text_manager->text_NPC_talk.setString("");
+			game.renderer->interface_manager->interface_dialog.getDialog().setString("");
 		}
 	}
 	int getStartDialogPhase() {
 		return start_dialog_phases[start_dialog_phase];
 	}
-	int getSprite() {
-		return static_sprite;
+	Sprite getSprite() {
+		return sprite;
 	}
 	float getX() {
         return x;

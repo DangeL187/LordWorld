@@ -6,7 +6,6 @@ protected:
     int damage, hp, mp, lvl, xp;
 	int dir = 0;
 	int random_generated_dir = 0;
-    int static_sprite;
 	float attack_speed;
 	float monster_frame;
     float move_monster_timer = 0;
@@ -15,22 +14,20 @@ protected:
 	std::vector<int> drop_chance;
 	std::shared_ptr<BuffManager> buff_manager;
 	std::shared_ptr<Timer> attack_speed_timer;
-	Image image;
-	Texture texture;
 	bool dealt = false;
 	bool stun = false;
+	Sprite sprite;
 public:
-	Monster(float x_, float y_, float w_, float h_, unsigned int id_, int sprite) {
+	Monster(float x_, float y_, float w_, float h_, unsigned int id_) {
 		buff_manager = std::make_shared<BuffManager>();
 		attack_speed_timer = std::make_shared<Timer>();
 		dx=0; dy=0; speed=0;
 		x = x_; y = y_;
 		w = w_; h = h_;
 		id = id_;
-		static_sprite = sprite;
 	}
 
-	void interactionWithMap(auto& game, auto& player) {
+	void interactionWithMap(float time, auto& game, auto& player) {
 	    for (int i = y / 64; i < (y + h) / 64; i++) {
 	        for (int j = x / 64; j < (x + w) / 64; j++) {
 				auto t = game.map->getTileMapID(i, j);
@@ -51,16 +48,11 @@ public:
 		float pw = player->getWidth() + 6;
 		float ph = player->getHeight() + 6;
 		if (isCollision(x, y, w, h, px, py, pw, ph) && !stun) {
-			if (attack_speed_timer->getTime() > 0) {
+			if (attack_speed_timer->isRunning()) {
 	            int frame = int(monster_frame);
 				if (attack_speed_timer->getTime() <= 500) {
 					frame = 3;
-					if (player->is_defence) {
-						player->shield_cd = 1000;
-						attack_speed_timer->run(attack_speed);
-					}
 				}
-				auto& sprite = game.renderer->sprite_manager->current_other_sprites[static_sprite];
 				switch (dir) {
 					case 0: sprite.setTextureRect(IntRect(52 * frame, 128, w, h)); break;
 					case 1: sprite.setTextureRect(IntRect(52 * frame, 64, w, h)); break;
@@ -69,10 +61,9 @@ public:
 				}
 	        } else {
 				int dmg = damage - player->armor / 5;
-				if (dmg > 0) {
+				if (dmg > 0 && !player->is_defence) {
 					player->hp -= dmg;
-					player->shield_cd = 5000;
-	                game.renderer->text_manager->createDynamicText(game.renderer->text_manager->font, 30, 500, std::to_string(0-dmg), px + int(pw / 2), py + 20, true);
+	                game.renderer->interface_manager->interface_dynamic_text.createDynamicText(18, 500, std::to_string(0-dmg), px + int(pw / 2), py + 20, true);
 				}
 	            attack_speed_timer->run(attack_speed);
 	        }
@@ -93,10 +84,10 @@ public:
 		y += dy*time;
 
 		speed = 0;
-		interactionWithMap(game, player);
-		game.renderer->sprite_manager->current_other_sprites[static_sprite].setPosition(x, y);
+		interactionWithMap(time, game, player);
+		sprite.setPosition(x, y);
 		stun = false;
-		buff_manager->update(game, *this);
+		buff_manager->update(*this);
 	}
 
 	void moveMonster(auto& time, auto& game, auto& player) { //TODO: UPDATE!
@@ -116,7 +107,6 @@ public:
 		float player_center_y = py + ph / 2;
 		if (getDistanceBetween(monster_center_x, monster_center_y, player_center_x, player_center_y) <= 300 && !stun) {
 			if (!isCollision(x, y, w, h, px, py, pw, ph)) {
-				auto& sprite = game.renderer->sprite_manager->current_other_sprites[static_sprite];
 				if (y <= player->getY()) {
 					speed = 0.1; dir = 3;
 					sprite.setTextureRect(IntRect(52 * int(monster_frame), 0, w, h));
@@ -185,11 +175,13 @@ public:
 	void giveBuff(int id, float duration) {
 		buff_manager->giveBuff(id, duration);
 	}
-	void hitMonster(int dmg, auto& game) {
+	void hitMonster(int dmg, bool update_buffs=true) {
 		hp -= dmg;
-		dealt = true;
-		buff_manager->update(game, *this);
-		dealt = false;
+		if (update_buffs) {
+			dealt = true;
+			buff_manager->update(*this);
+			dealt = false;
+		}
 	}
 	void stunMonster(bool enable) {
 		if (enable) {
@@ -203,12 +195,9 @@ public:
 			int random_drop = rand() % 100;
 			random_drop++;
 			if (random_drop <= drop_chance[r]) {
-				game.entity_manager->createItem(x, y, drop[r], game.renderer->sprite_manager);
+				game.entity_manager->createItem(x, y, drop[r]);
 			}
 		}
-	}
-	void reduceSprite() {
-		static_sprite--;
 	}
 	void addX(bool get_operation) {
 		if (get_operation) {
@@ -229,8 +218,8 @@ public:
 	void setHP(int hp_) {
 		hp = hp_;
 	}
-	int getSprite() {
-		return static_sprite;
+	Sprite getSprite() {
+		return sprite;
 	}
 	int getXP() {
 		return xp;
@@ -254,6 +243,9 @@ public:
 	    return h;
     }
 	int getHP() {
+        return hp;
+    }
+	int& getHP(bool get_reference) {
         return hp;
     }
 	int getMP() {
