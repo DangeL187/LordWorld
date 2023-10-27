@@ -29,5 +29,6 @@ Lord World (LW) by DangeL
 0.1.7  - code was rewritten using OOP
 0.1.8  - improved combat and movement system, changed character 
 0.1.9  - first NPC, dialog system
-0.2.0  - large-scale refactoring [current]
+0.2.0  - large-scale refactoring
+0.2.1  - interface update [current]
 ----------------------------------------------------------------------------------------------------

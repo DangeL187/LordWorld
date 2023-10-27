@@ -21,4 +21,5 @@ Version 0.2.0 ChangeLog
 14.10.2023 - Added SpellManager class
 15.10.2023 - Added supporting class - cordOperaions in order to make calculations simplier
 15.10.2023 - Added Timer class, Buff classes now use Timer, monsters' attack speed is a Timer now
+27.10.2023 - Added InterfaceManager instead of SpriteManager and TextManager
 ----------------------------------------------------------------------------------------------------
