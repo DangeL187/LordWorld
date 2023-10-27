@@ -2,18 +2,9 @@ class MonsterUpdater {
 private:
     void monsterDeath(auto& game) {
         auto& monsters = game.entity_manager->v_monsters;
-        for (int i = 0; i < monsters.size(); i++) {
+        for (unsigned int i = 0; i < monsters.size(); i++) {
             if (monsters[i].getHP() <= 0) {
-                std::vector<Sprite>& cos = game.renderer->sprite_manager->current_other_sprites;
-                cos.erase(cos.begin() + monsters[i].getSprite());
-                game.renderer->sprite_manager->other_sprite_counter--;
-                game.target_m = NULL;
-                game.renderer->text_manager->text_target.setString("");
-                for (int j = 0; j < monsters.size(); j++) {
-                    if (j > i) {
-                        monsters[j].reduceSprite();
-                    }
-                }
+                game.renderer->interface_manager->interface_target.setTargetedMonster(NULL);
                 game.player->xp += monsters[i].getXP();
                 monsters[i].dropMonster(game);
                 monsters.erase(monsters.begin() + i);
