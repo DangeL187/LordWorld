@@ -2,7 +2,7 @@ class Map {
 private:
 	static const int HEIGHT_MAP = 25;
 	static const int WIDTH_MAP = 40;
-	Sprite map_sprite;
+	Sprite sprite;
 
 	int TileMap[HEIGHT_MAP][WIDTH_MAP] = {
 		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -77,6 +77,7 @@ private:
 public:
 	Map() {
 		loadMap();
+		sprite = createSprite("map.png");
 	}
 
 	int getMapHeight() {
@@ -86,11 +87,8 @@ public:
 		return WIDTH_MAP;
 	}
 
-	void setSprite(auto new_sprite) {
-        map_sprite = new_sprite;
-    }
     void setSpritePosition(int i, int j) {
-        map_sprite.setPosition(i, j);
+        sprite.setPosition(i, j);
     }
     void setTileMapID(int i, int j, int id) {
         TileMap[i][j] = id;
@@ -99,13 +97,13 @@ public:
         return TileMap[i][j];
     }
     Sprite getSprite() {
-        return map_sprite;
+        return sprite;
     }
 
 	void defineTile(int it, int jt) {
         auto t = getTileMapID(it, jt) + 1;
-        int ty = ((t - 1) / (map_sprite.getTexture()->getSize().y / 64 + 1) + 1) - 1;
-        int tx = t - ty * (map_sprite.getTexture()->getSize().x / 64) - 1;
-        map_sprite.setTextureRect(IntRect(tx*64, ty*64, 64, 64));
+        int ty = ((t - 1) / (sprite.getTexture()->getSize().y / 64 + 1) + 1) - 1;
+        int tx = t - ty * (sprite.getTexture()->getSize().x / 64) - 1;
+        sprite.setTextureRect(IntRect(tx*64, ty*64, 64, 64));
     }
 };
