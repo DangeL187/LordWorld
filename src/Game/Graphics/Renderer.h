@@ -1,34 +1,24 @@
-#include "Text/TextManager.h"
-#include "Sprite/SpriteManager.h"
+#include "DynamicText.h"
+#include "DrawManager.h"
+#include "Interface/InterfaceManager.h"
 
-class Renderer {
-private:
-    void createSpriteManager(std::shared_ptr<Map>& map) {
-        sprite_manager = std::make_shared<SpriteManager>(map);
-    }
-    void createTextManager() {
-        text_manager = std::make_shared<TextManager>();
-    }
+class Renderer: protected DrawManager {
 public:
-    std::shared_ptr<TextManager> text_manager;
-    std::shared_ptr<SpriteManager> sprite_manager;
+    std::shared_ptr<InterfaceManager> interface_manager;
 
-    Renderer(std::shared_ptr<Map>& map) {
-        createSpriteManager(map);
-        createTextManager();
+    Renderer() {
+        createInterfaceManager();
     }
 
     void draw(auto& game) {
-        sprite_manager->drawMap(game);
-        sprite_manager->drawEntities(game);
-        sprite_manager->drawAnimations(game);
-        sprite_manager->drawInterface(game);
-        text_manager->drawDialogText(game);
-        sprite_manager->drawStats(game);
-        text_manager->drawDynamicText(game);
-        sprite_manager->drawInventory(game);
-        sprite_manager->drawHotbar(game);
-        sprite_manager->drawinfo(game);
-        text_manager->drawStatsText(game);
+        drawMap(game.window_manager, game.map);
+        drawEntities(game.window_manager, game.entity_manager, game.player);
+        drawAnimations(game.window_manager, game.player);
+
+        interface_manager->draw(game.window_manager, game.player);
+    }
+private:
+    void createInterfaceManager() {
+        interface_manager = std::make_shared<InterfaceManager>();
     }
 };
