@@ -9,7 +9,6 @@ build - build files
 doc - changelog and other documentation
 lib - libraries that you will need to build LW
 src - LW's source code
-test - LW's files used for tests
 ------------------------------------------------------------
 Compilation:
 ./build/build.sh
